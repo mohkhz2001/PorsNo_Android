@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.security.MessageDigest;
+
 public class StaticFun {
 
     // error handler
@@ -82,5 +84,27 @@ public class StaticFun {
         // if no network is available networkInfo will be null
         // otherwise check if we are connected
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    // hashing password
+    public static String md5(String password) {
+        try {
+
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+
+            return hexString.toString();
+
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+
     }
 }

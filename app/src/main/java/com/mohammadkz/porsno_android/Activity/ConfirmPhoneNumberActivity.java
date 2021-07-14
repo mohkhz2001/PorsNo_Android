@@ -264,7 +264,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     }
 
     private void completeRegister() {
-        user.setPwd(md5(user.getPwd()));
+        user.setPwd(StaticFun.md5(user.getPwd()));
         Log.e("hash", user.getPwd());
         Call<SignUpResponse> get = request.SignUp(user.getPn(), user.getPwd(), user.getName(), user.getCreatedTime());
 
@@ -297,28 +297,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     private void start() {
         Intent intent = new Intent();
         startActivity(intent);
-    }
-
-    // hashing password
-    public String md5(String password) {
-        try {
-
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            digest.update(password.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-
-            return hexString.toString();
-
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-
     }
 
     // generate the code for send sms to confirm phone number
