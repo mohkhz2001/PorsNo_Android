@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
 import com.mohammadkz.porsno_android.Model.Response.SMSResponse;
 import com.mohammadkz.porsno_android.Model.Response.SignUpResponse;
 import com.mohammadkz.porsno_android.Model.User;
@@ -43,10 +44,11 @@ import retrofit2.Response;
 
 public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     EditText code1, code2, code3, code4;
-    TextView reSend, timer;
+    TextView reSend, second, minute;
     User user;
     Button complete;
     String codeToConfirm;
+    int timer = 120, m = 0;
 
     ApiConfig request;
 
@@ -62,6 +64,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
 
         initViews();
         controllerViews();
+        flipTimer();
         getDate();
         if (user != null && StaticFun.isNetworkAvailable(getApplicationContext()))
             codeToConfirm = String.valueOf(getRandomNumberString());
@@ -74,8 +77,10 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         code2 = findViewById(R.id.code2);
         code3 = findViewById(R.id.code3);
         code4 = findViewById(R.id.code4);
-//        reSend = findViewById(R.id.reSend);
-        timer = findViewById(R.id.timer);
+        reSend = findViewById(R.id.reSend);
+        reSend.setEnabled(false);
+        minute = findViewById(R.id.minute);
+        second = findViewById(R.id.second);
         complete = findViewById(R.id.complete);
     }
 
@@ -208,6 +213,13 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             return false;
         });
 
+        reSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flipTimer();
+            }
+        });
+
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,8 +286,9 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
 
                 if (response.body().getStatus_code().equals("200")) {
                     start();
+                    Log.e("code", 200 + "");
                 } else {
-
+                    Log.e("code", 2000 + "");
                 }
 
             }
@@ -314,37 +327,58 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
     }
 
+    private void checkPN(String phoneNumber) {
+        Call<CheckPhoneResponse> get = request.checkPhoneNumber(phoneNumber);
+        get.enqueue(new Callback<CheckPhoneResponse>() {
+            @Override
+            public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> response) {
+                if (response.body().getStatus_code().equals("200")) {
+
+                } else {
+                    Log.e("error", "exists");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
+                t.getMessage();
+                StaticFun.alertDialog_connectionFail(getApplicationContext());
+            }
+        });
+
+    }
+
     // countdown timer ==> 2 min
-//    private void flipTimer() {
-//        reSend.setEnabled(false);
-//        int timer = 120;
-//        CountDownTimer countDownTimer = new CountDownTimer(120000, 1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                m = 0;
-//                int time = timer--;
-//                if (time <= 60) {
-//                    m = 0;
-//                } else
-//                    while (time >= 60) {
-//                        m++;
-//                        time -= 60;
-//                    }
-//
-//                minute.setText(String.valueOf(m));
-//                if (time < 10)
-//                    second.setText("0" + time);
-//                else
-//                    second.setText(String.valueOf(time));
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                minute.setText(String.valueOf(00));
-//                second.setText(String.valueOf(00));
-//                reSend.setEnabled(true);
-//            }
-//        }.start();
-//
-//    }
+    private void flipTimer() {
+        reSend.setEnabled(false);
+        timer = 120;
+        CountDownTimer countDownTimer = new CountDownTimer(120000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                m = 0;
+                int time = timer--;
+                if (time <= 60) {
+                    m = 0;
+                } else
+                    while (time >= 60) {
+                        m++;
+                        time -= 60;
+                    }
+
+                minute.setText(String.valueOf(m));
+                if (time < 10)
+                    second.setText("0" + time);
+                else
+                    second.setText(String.valueOf(time));
+            }
+
+            @Override
+            public void onFinish() {
+                minute.setText(String.valueOf(00));
+                second.setText(String.valueOf(00));
+                reSend.setEnabled(true);
+            }
+        }.start();
+
+    }
 }
