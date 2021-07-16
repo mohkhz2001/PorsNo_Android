@@ -10,6 +10,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.security.MessageDigest;
 
 public class StaticFun {
+    // account level enum  ==> there is 4 level
+    public enum account {}
 
     // error handler
     public static void alertDialog_connectionFail(Context context) {
@@ -29,7 +31,7 @@ public class StaticFun {
             });
 
             builder.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
 
