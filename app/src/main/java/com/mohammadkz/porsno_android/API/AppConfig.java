@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppConfig {
     private static Retrofit retrofit;
-    public static final String url = "http://192.168.1.109/porsNo/";
+    public static final String url = "http://192.168.1.107/Porseshno_backend/API/";
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
