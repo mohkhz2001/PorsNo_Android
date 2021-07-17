@@ -11,17 +11,19 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
+        android:supportsRtl="true"
         android:theme="@style/Theme.PorsNo_Android">
-        <activity android:name=".Activity.ConfirmPhoneNumberActivity"></activity>
-        <activity android:name=".Activity.SignUp">
+        <activity android:name=".Activity.MainPageActivity"></activity>
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.ConfirmPhoneNumberActivity" />
+        <activity android:name=".Activity.SignUp" />
     </application>
 
 </manifest>
