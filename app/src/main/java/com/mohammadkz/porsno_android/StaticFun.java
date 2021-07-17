@@ -11,7 +11,7 @@ import java.security.MessageDigest;
 
 public class StaticFun {
     // account level enum  ==> there is 4 level
-    public enum account {}
+    public enum account {Bronze, Steel, Gold, Diamond}
 
     // error handler
     public static void alertDialog_connectionFail(Context context) {
