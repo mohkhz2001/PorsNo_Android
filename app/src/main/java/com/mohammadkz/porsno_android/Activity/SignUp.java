@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,7 +66,7 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (StaticFun.isNetworkAvailable(getApplicationContext())) {
                     if (checkValue()) {
-                        signUp();
+                        checkPN(phoneNumber.getText().toString());
                     } else {
                         Toasty.error(getApplicationContext(), "لطفا تمامی موارد را تکمیل نمایید.", Toast.LENGTH_LONG, true).show();
                     }
@@ -77,33 +78,25 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    private void signUp() {
-        if (true) {//!checkPN(phoneNumber.getText().toString())
-            confirmPhoneNumber(new User(name.getText().toString(), phoneNumber.getText().toString(), pwd.getText().toString()));
-        } else {
-
-        }
-    }
-
-    // convert inputed data to json code then send it to another activity
-    private boolean checkPN(String phoneNumber) {
-        final boolean[] check = {false};
+    private void checkPN(String phoneNumber) {
         Call<CheckPhoneResponse> get = request.checkPhoneNumber(phoneNumber);
         get.enqueue(new Callback<CheckPhoneResponse>() {
             @Override
             public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> response) {
-
+                if (response.body().getStatus_code().equals("200")) {
+                    confirmPhoneNumber(new User(name.getText().toString(), phoneNumber, pwd.getText().toString()));
+                } else {
+                    Log.e("error", "exists");
+                }
             }
 
             @Override
             public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
                 t.getMessage();
                 StaticFun.alertDialog_connectionFail(getApplicationContext());
-                check[0] = true;
             }
         });
 
-        return check[0];
     }
 
     private void confirmPhoneNumber(User user) {
@@ -112,6 +105,7 @@ public class SignUp extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // convert inputed data to json code then send it to another activity
     private void transferData(User user, Intent intent) {
         Gson gson = new Gson();
         String userToTransfer = gson.toJson(user);
