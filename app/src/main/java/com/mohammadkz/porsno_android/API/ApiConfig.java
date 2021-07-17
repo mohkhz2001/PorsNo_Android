@@ -14,26 +14,26 @@ import retrofit2.http.POST;
 public interface ApiConfig {
 
     @FormUrlEncoded
-    @POST("")
+    @POST("User_Insert.php")
     Call<SignUpResponse> SignUp(@Field("phoneNumber") String phoneNumber
             , @Field("pwd") String pwd
-            , @Field("name") String name
-            , @Field("timeStamp") String time
+            , @Field("userName") String name
+            , @Field("created") String time
     );
 
     @FormUrlEncoded
-    @POST("")
+    @POST("User_SELECT.php")
     Call<CheckPhoneResponse> checkPhoneNumber(@Field("phoneNumber") String phoneNumber);
 
     @FormUrlEncoded
-    @POST("")
+    @POST("User_login.php")
     Call<LoginResponse> loginResponse(
             @Field("phoneNumber") String phoneNumber
             , @Field("pwd") String pwd
     );
 
     @FormUrlEncoded
-    @POST("")
+    @POST("User_confirm_code.php")
     Call<SMSResponse> SendSMS(@Field("phone") String phoneNumber
     );
 
