@@ -1,7 +1,10 @@
 package com.mohammadkz.porsno_android.Model;
 
+import com.mohammadkz.porsno_android.StaticFun;
+
 public class User {
-    private String ID ,name, pn, pwd, createdTime, accountLevel , endTime;
+    private String ID, name, pn, pwd, createdTime, endTime;
+    private StaticFun.account accountLevel;
 
     public User(String name, String pn, String pwd) {
         this.name = name;
@@ -9,7 +12,8 @@ public class User {
         this.pwd = pwd;
     }
 
-    public User(){}
+    public User() {
+    }
 
     public String getName() {
         return name;
@@ -43,14 +47,6 @@ public class User {
         this.createdTime = createdTime;
     }
 
-    public String getAccountLevel() {
-        return accountLevel;
-    }
-
-    public void setAccountLevel(String accountLevel) {
-        this.accountLevel = accountLevel;
-    }
-
     public String getEndTime() {
         return endTime;
     }
@@ -65,5 +61,13 @@ public class User {
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public StaticFun.account getAccountLevel() {
+        return accountLevel;
+    }
+
+    public void setAccountLevel(StaticFun.account accountLevel) {
+        this.accountLevel = accountLevel;
     }
 }
