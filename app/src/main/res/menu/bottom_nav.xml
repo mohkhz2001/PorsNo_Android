@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/myQuestion"
+        android:icon="@drawable/ic_my_quesion"
+        android:title="پرسشنامه ی های من" />
+
+    <item
+        android:id="@+id/allQuestion"
+        android:icon="@drawable/ic_all_quesion"
+        android:title="پرسشنامه ها" />
+
+</menu>

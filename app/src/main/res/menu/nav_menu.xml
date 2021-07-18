@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main"
+        android:title="صفحه ی اصلی" />
+    <item
+        android:id="@+id/newQuestion"
+        android:title="پرسشنامه جدید" />
+    <item
+        android:id="@+id/account"
+        android:title="حساب کاربری" />
+    <item
+        android:id="@+id/reBuy"
+        android:title="تمدید حساب" />
+    <item
+        android:id="@+id/history"
+        android:title="تاریخچه" />
+    <item
+        android:id="@+id/about"
+        android:title="درباره ی ما" />
+    <item
+        android:id="@+id/contact"
+        android:title="راه های ارتباطی" />
+    <item
+        android:id="@+id/exit"
+        android:title="خروج" />
+
+</menu>
