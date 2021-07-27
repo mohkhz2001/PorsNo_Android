@@ -3,6 +3,7 @@ package com.mohammadkz.porsno_android.Activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 public class SignUp extends AppCompatActivity {
     EditText pwd, name, phoneNumber;
     Button sendSMS;
-
+    ProgressDialog progressDialog;
     ApiConfig request;
 
     @Override
@@ -40,10 +41,10 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-
         request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+        progressDialog = new ProgressDialog(SignUp.this);
+        progressDialog.setMessage("منتظر باشید...");
 
         initViews();
         controllerViews();
@@ -52,11 +53,8 @@ public class SignUp extends AppCompatActivity {
 
     private void initViews() {
         pwd = findViewById(R.id.password);
-        pwd.setText("m98783110");
         name = findViewById(R.id.name);
-        name.setText("mohammadmehdi khajehzADEH");
         phoneNumber = findViewById(R.id.phoneNumber);
-        phoneNumber.setText("09388209270");
         sendSMS = findViewById(R.id.send);
     }
 
@@ -64,13 +62,16 @@ public class SignUp extends AppCompatActivity {
         sendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 if (StaticFun.isNetworkAvailable(getApplicationContext())) {
                     if (checkValue()) {
                         checkPN(phoneNumber.getText().toString());
                     } else {
+                        progressDialog.dismiss();
                         Toasty.error(getApplicationContext(), "لطفا تمامی موارد را تکمیل نمایید.", Toast.LENGTH_LONG, true).show();
                     }
                 } else {
+                    progressDialog.dismiss();
                     StaticFun.alertDialog_connectionFail(getApplicationContext());
                 }
 
@@ -86,7 +87,8 @@ public class SignUp extends AppCompatActivity {
                 if (response.body().getStatus_code().equals("200")) {
                     confirmPhoneNumber(new User(name.getText().toString(), phoneNumber, pwd.getText().toString()));
                 } else {
-                    Log.e("error", "exists");
+                    progressDialog.dismiss();
+                    Toasty.error(getApplicationContext(), "این مشخصات موجود است", Toasty.LENGTH_LONG).show();
                 }
             }
 
@@ -94,6 +96,7 @@ public class SignUp extends AppCompatActivity {
             public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
                 t.getMessage();
                 StaticFun.alertDialog_connectionFail(getApplicationContext());
+                progressDialog.dismiss();
             }
         });
 
@@ -102,6 +105,7 @@ public class SignUp extends AppCompatActivity {
     private void confirmPhoneNumber(User user) {
         Intent intent = new Intent(this, ConfirmPhoneNumberActivity.class);
         transferData(user, intent);
+        progressDialog.dismiss();
         startActivity(intent);
     }
 

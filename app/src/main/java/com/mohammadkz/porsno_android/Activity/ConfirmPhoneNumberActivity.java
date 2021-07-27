@@ -3,6 +3,7 @@ package com.mohammadkz.porsno_android.Activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -50,6 +51,8 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     String codeToConfirm;
     int timer = 120, m = 0;
 
+    ProgressDialog progressDialog;
+
     ApiConfig request;
 
     @Override
@@ -57,8 +60,8 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_phone_number);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        progressDialog = new ProgressDialog(ConfirmPhoneNumberActivity.this);
+        progressDialog.setMessage("منتظر باشید...");
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
@@ -223,6 +226,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString() + "";
                 if (codeToConfirm.equals(code)) {
                     user.setCreatedTime(setCreatedTime());
@@ -230,6 +234,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                     completeRegister();
 
                 } else {
+                    progressDialog.dismiss();
                     Toasty.error(getApplicationContext(), "کد وارد شده صحیح نمی باشد.", Toasty.LENGTH_LONG).show();
                 }
             }
@@ -255,6 +260,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     }
 
     private void requestCode() {
+        progressDialog.show();
         Call<SMSResponse> get = request.SendSMS(user.getPn());
 
         get.enqueue(new Callback<SMSResponse>() {
@@ -262,8 +268,10 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onResponse(Call<SMSResponse> call, Response<SMSResponse> response) {
                 if (response.body().getSmsCode().equals("200")) {
                     codeToConfirm = response.body().getSmsCode();
+                    progressDialog.dismiss();
                 } else {
                     StaticFun.alertDialog_connectionFail(getApplicationContext());
+                    progressDialog.dismiss();
                 }
             }
 
@@ -271,6 +279,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onFailure(Call<SMSResponse> call, Throwable t) {
                 t.getMessage();
                 StaticFun.alertDialog_connectionFail(getApplicationContext());
+                progressDialog.dismiss();
             }
         });
     }
@@ -286,9 +295,9 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
 
                 if (response.body().getStatus_code().equals("200")) {
                     start();
-                    Log.e("code", 200 + "");
                 } else {
-                    Log.e("code", 2000 + "");
+                    progressDialog.dismiss();
+                    StaticFun.alertDialog_connectionFail(getApplicationContext());
                 }
 
             }
@@ -308,7 +317,8 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     }
 
     private void start() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, MainPageActivity.class);
+        progressDialog.dismiss();
         startActivity(intent);
     }
 

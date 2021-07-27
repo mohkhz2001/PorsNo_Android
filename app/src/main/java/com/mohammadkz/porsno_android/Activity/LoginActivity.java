@@ -3,6 +3,7 @@ package com.mohammadkz.porsno_android.Activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,16 +32,17 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     ApiConfig request;
     User user;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-
         request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("منتظر باشید...");
 
         initViews();
         controllerViews();
@@ -58,8 +60,13 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkValue())
+                progressDialog.show();
+                if (checkValue()) {
                     login();
+                }else {
+                    progressDialog.dismiss();
+                    Toasty.error(getApplicationContext() , "تمامی موارد خواسته شده را وارد نمایید!" , Toasty.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -96,10 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.body().getStatus_code().equals("200")) {
                     autoLogin(pass);
                     setUser(response.body());
-                    Intent intent = new Intent();
+                    Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                     transferData(intent);
                     start(intent);
                 } else {
+                    progressDialog.dismiss();
                     StaticFun.alertDialog_connectionFail(getApplicationContext());
                 }
             }
@@ -108,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.getMessage();
                 StaticFun.alertDialog_connectionFail(getApplicationContext());
+                progressDialog.dismiss();
             }
         });
 
@@ -147,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void start(Intent intent) {
+        progressDialog.dismiss();
         startActivity(intent);
     }
 
