@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+    tools:context=".Fragment.NewQuestion.NewQuestion_NewFragment">
+
+    <TextView
+        android:id="@+id/questionCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="1"
+        android:textColor="#F44336"
+        android:textSize="25dp"
+        android:textStyle="italic" />
+
+    <com.animsh.animatedcheckbox.AnimatedCheckBox
+        android:id="@+id/testQuestion"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        app:border_stroke_width="2dp"
+        app:color_checked="#0CD404"
+        app:color_tick="@color/white"
+        app:color_unchecked="@color/white"
+        app:color_unchecked_stroke="#2ABD24"
+        app:small_tick="true"
+        app:tick_stroke_width="1dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@id/testQuestion"
+        android:fontFamily="@font/vazir"
+        android:text="سوال تشریحی"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/question_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/testQuestion"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:enabled="true"
+        android:hint="صورت سوال"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#FF9800"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#FF9800"
+        app:hintEnabled="true"
+        app:hintTextColor="#000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxLines="6"
+            android:minLines="3"
+            android:singleLine="false"
+            android:textSize="18dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/answer_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:enabled="true"
+        android:hint="جواب"
+        android:visibility="gone"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#FF9800"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#FF9800"
+        app:hintEnabled="true"
+        app:hintTextColor="#000"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:focusedByDefault="false"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxLines="6"
+            android:minLines="3"
+            android:singleLine="false"
+            android:textSize="18dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fab_add"
+        android:layout_below="@id/answer_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer1_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer1_checkBox"
+                        android:hint="گزینه ی اول"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer1_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer1_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer2_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer2_checkBox"
+                        android:hint="گزینه ی دوم"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer2_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer2_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer3_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer3_checkBox"
+                        android:hint="گزینه ی سوم"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer3_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer3_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer4_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer4_checkBox"
+                        android:hint="گزینه ی چهارم"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer4_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer4_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer5_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer5_checkBox"
+                        android:hint="گزینه ی پنجم"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer5_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer5_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/answer6_field_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_toLeftOf="@id/answer6_checkBox"
+                        android:hint="گزینه ی ششم"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#FF9800"
+                        app:boxStrokeWidth="2dp"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#FF9800"
+                        app:helperTextEnabled="false"
+                        app:hintEnabled="true"
+                        app:hintTextColor="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/answer6_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:focusedByDefault="false"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLines="6"
+                            android:minLines="3"
+                            android:singleLine="false"
+                            android:textSize="18dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.animsh.animatedcheckbox.AnimatedCheckBox
+                        android:id="@+id/answer6_checkBox"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:border_stroke_width="2dp"
+                        app:color_checked="#0CD404"
+                        app:color_tick="@color/white"
+                        app:color_unchecked="@color/white"
+                        app:color_unchecked_stroke="#2ABD24"
+                        app:small_tick="true"
+                        app:tick_stroke_width="1dp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/imgs"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="#09FF00"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_add" />
+
+    <RelativeLayout
+        android:id="@+id/imgs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/prev"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/last_question" />
+
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/next_question" />
+
+        <ImageView
+            android:id="@+id/confirm"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/confirm_question" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer1_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer1_checkBox"-->
+    <!--                android:hint="گزینه ی اول"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer1_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer1_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer2_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer2_checkBox"-->
+    <!--                android:hint="گزینه ی دوم"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer2_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer2_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/relative3"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:visibility="gone">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer3_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer3_checkBox"-->
+    <!--                android:hint="گزینه ی سوم"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer3_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer3_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/relative4"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:visibility="gone">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer4_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer4_checkBox"-->
+    <!--                android:hint="گزینه ی چهارم"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer4_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer4_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/relative5"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:visibility="gone">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer5_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer5_checkBox"-->
+    <!--                android:hint="گزینه ی پنجم"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer5_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer5_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/relative6"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:visibility="gone">-->
+
+    <!--            <com.google.android.material.textfield.TextInputLayout-->
+    <!--                android:id="@+id/answer6_field_layout"-->
+    <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_alignParentLeft="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_marginRight="20dp"-->
+    <!--                android:layout_toLeftOf="@id/answer6_checkBox"-->
+    <!--                android:hint="گزینه ی ششم"-->
+    <!--                app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--                app:boxCornerRadiusBottomStart="12dp"-->
+    <!--                app:boxCornerRadiusTopEnd="12dp"-->
+    <!--                app:boxCornerRadiusTopStart="12dp"-->
+    <!--                app:boxStrokeColor="#FF9800"-->
+    <!--                app:boxStrokeWidth="2dp"-->
+    <!--                app:endIconMode="clear_text"-->
+    <!--                app:endIconTint="#FF9800"-->
+    <!--                app:helperTextEnabled="false"-->
+    <!--                app:hintEnabled="true"-->
+    <!--                app:hintTextColor="#000">-->
+
+    <!--                <com.google.android.material.textfield.TextInputEditText-->
+    <!--                    android:id="@+id/answer6_field"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginBottom="20dp"-->
+    <!--                    android:focusedByDefault="false"-->
+    <!--                    android:gravity="top"-->
+    <!--                    android:inputType="textMultiLine"-->
+    <!--                    android:maxLines="6"-->
+    <!--                    android:minLines="3"-->
+    <!--                    android:singleLine="false"-->
+    <!--                    android:textSize="18dp" />-->
+
+    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--            <com.animsh.animatedcheckbox.AnimatedCheckBox-->
+    <!--                android:id="@+id/answer6_checkBox"-->
+    <!--                android:layout_width="25dp"-->
+    <!--                android:layout_height="25dp"-->
+    <!--                android:layout_alignParentRight="true"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                app:border_stroke_width="2dp"-->
+    <!--                app:color_checked="#0CD404"-->
+    <!--                app:color_tick="@color/white"-->
+    <!--                app:color_unchecked="@color/white"-->
+    <!--                app:color_unchecked_stroke="#2ABD24"-->
+    <!--                app:small_tick="true"-->
+    <!--                app:tick_stroke_width="1dp" />-->
+
+    <!--        </RelativeLayout>-->
