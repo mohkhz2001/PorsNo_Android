@@ -5,16 +5,23 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.mohammadkz.porsno_android.Fragment.MyQuestionFragment;
+import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
+
+import org.json.JSONObject;
 
 public class MainPageActivity extends AppCompatActivity {
 
@@ -22,8 +29,9 @@ public class MainPageActivity extends AppCompatActivity {
     MaterialToolbar topAppBar;
     NavigationView nav_view;
     BottomNavigationView bottom_nav;
-    TextView name , phoneNumber;
+    TextView name, phoneNumber;
     View header;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +39,9 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
         initViews();
+        getDate();
         controllerViews();
+        startFragment();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, R.string.openDrawerContentRes, R.string.closeDrawerContentRes);
         drawer_layout.addDrawerListener(toggle);
@@ -82,7 +92,31 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     private void startFragment() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        MyQuestionFragment myQuestionFragment = new MyQuestionFragment(user);
+        fragmentTransaction.replace(R.id.frameLayout, myQuestionFragment).commit();
+    }
 
+    // get data from sign up page(intent)
+    private void getDate() {
+        String data = getIntent().getStringExtra("userInfo");
+        Log.e("user", " " + data);
+        if (data != null)
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+
+                user = new User();
+                user.setID(jsonObject.getString("ID"));
+                user.setPn(jsonObject.getString("pn"));
+                user.setName(jsonObject.getString("name"));
+                user.setCreatedTime(jsonObject.getString("createdTime"));
+                user.setEndTime(jsonObject.getString("endTime"));
+
+                // account level ....
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
 }
