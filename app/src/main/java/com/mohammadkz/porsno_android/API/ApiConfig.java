@@ -3,6 +3,7 @@ package com.mohammadkz.porsno_android.API;
 
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
+import com.mohammadkz.porsno_android.Model.Response.NewQuestionaire;
 import com.mohammadkz.porsno_android.Model.Response.SMSResponse;
 import com.mohammadkz.porsno_android.Model.Response.SignUpResponse;
 
@@ -37,4 +38,15 @@ public interface ApiConfig {
     Call<SMSResponse> SendSMS(@Field("phone") String phoneNumber
     );
 
-}
+    @FormUrlEncoded
+    @POST("Question_post.php")
+    Call<NewQuestionaire> newQuestnaire(@Field("icon") String icon,
+                                        @Field("questionName") String name,
+                                        @Field("start") String start,
+                                        @Field("end") String end,
+                                        @Field("cat") String cat,
+                                        @Field("desc") String desc,
+                                        @Field("question") String question,
+                                        @Field("userId") String userId);
+
+    }
