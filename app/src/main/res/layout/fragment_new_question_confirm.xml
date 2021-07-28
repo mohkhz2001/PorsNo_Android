@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.NewQuestion.NewQuestion_ConfirmFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:fontFamily="@font/vazir"
+        android:paddingLeft="35dp"
+        android:paddingTop="5dp"
+        android:paddingRight="35dp"
+        android:paddingBottom="5dp"
+        android:text="تایید"
+        android:textColor="#353535"
+        android:textSize="29dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
