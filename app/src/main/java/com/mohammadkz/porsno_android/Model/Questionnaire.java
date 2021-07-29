@@ -6,9 +6,11 @@ import java.util.List;
 public class Questionnaire {
     private String name, category, startDate, endDate, startDate_stamp, endDate_stamp, description , userId;
     private List<Question> questions;
+    private boolean expended;
 
     public Questionnaire() {
         questions = new ArrayList<>();
+        expended = false;
     }
 
     public String getName() {
@@ -81,5 +83,13 @@ public class Questionnaire {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isExpended() {
+        return expended;
+    }
+
+    public void setExpended(boolean expended) {
+        this.expended = expended;
     }
 }
