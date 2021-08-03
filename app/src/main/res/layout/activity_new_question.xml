@@ -20,10 +20,11 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#4AE54A"
+            android:background="@color/main"
             app:navigationIcon="@drawable/ic_back"
             app:navigationIconTint="#000"
-            app:title="پرسش نو"
+            app:title="پرسشنامه جدید"
+            app:titleTextAppearance="@style/appBar"
             app:titleCentered="true"
             app:titleTextColor="#000" />
 

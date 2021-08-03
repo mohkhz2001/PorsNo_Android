@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_header"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="160dp"
     android:layout_alignParentRight="true"
     android:layout_gravity="right"
-    android:background="@drawable/bg_header"
+    android:background="@color/main"
     android:gravity="bottom"
     android:orientation="horizontal"
     android:padding="16dp"
@@ -29,22 +29,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:fontFamily="@font/vazir"
             android:text="محمدمهدی خواجه زاده"
             android:textColor="#000000"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/phoneNumber"
-            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_name"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/vazir"
             android:text="09388209270"
             android:textColor="#000"
-            android:layout_marginRight="5dp"
-            android:textStyle="bold"/>
+            android:textSize="14dp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

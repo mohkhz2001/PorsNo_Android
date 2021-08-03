@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
+        android:fontFamily="@font/mitra"
         android:text="پرسش نو"
         android:textColor="#000"
-        android:textSize="50dp"
+        android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +23,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="330dp"
+        android:layout_width="317dp"
         android:layout_height="wrap_content"
-        android:elevation="20dp"
         app:cardCornerRadius="30dp"
+        app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
@@ -42,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/mitra"
                 android:text="ورود"
                 android:textColor="#000"
                 android:textSize="40dp"
@@ -60,20 +62,22 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
-                    app:cardCornerRadius="9dp">
+                    app:cardCornerRadius="9dp"
+                    app:cardElevation="5dp">
 
                     <EditText
                         android:id="@+id/phoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/yekan"
+                        android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:hint="تلفن همراه"
                         android:inputType="phone"
                         android:padding="10dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
+                        android:textColor="#7c7c7c"
                         android:textSize="23dp" />
 
                 </androidx.cardview.widget.CardView>
@@ -84,14 +88,15 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginRight="10dp"
-                    app:cardCornerRadius="9dp">
+                    app:cardCornerRadius="9dp"
+                    app:cardElevation="5dp">
 
                     <EditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/yekan"
+                        android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:hint="رمز عبور"
                         android:inputType="textPassword"
@@ -109,29 +114,29 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/forgotPWD"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:fontFamily="@font/vazir"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:text="رمز عبور را فراموش کرده ام!"
-                        android:textColor="#081EE4"
+                        android:textColor="#0063e7"
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:layout_marginRight="10dp"
                         android:id="@+id/signUp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginTop="3dp"
-                        android:fontFamily="@font/vazir"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:text="ساخت حساب کاربری"
-                        android:textColor="#081EE4"
+                        android:textColor="#0063e7"
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
@@ -145,15 +150,17 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:background="@drawable/bg_confirm_btn"
-        android:paddingLeft="35dp"
-        android:paddingTop="5dp"
-        android:paddingRight="35dp"
-        android:paddingBottom="5dp"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
         android:text="ورود"
-        android:textColor="#353535"
+        android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
