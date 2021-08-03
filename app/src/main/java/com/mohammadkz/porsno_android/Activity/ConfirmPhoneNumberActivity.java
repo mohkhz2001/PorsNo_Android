@@ -320,6 +320,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainPageActivity.class);
         progressDialog.dismiss();
         startActivity(intent);
+        finish();
     }
 
     // generate the code for send sms to confirm phone number
