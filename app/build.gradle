@@ -44,4 +44,18 @@ dependencies {
     // toast
     implementation 'com.github.GrenderG:Toasty:1.5.0'
 
+    implementation 'com.google.android.material:material:1.5.0-alpha01'
+
+    //seek bar
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
+    // persion date picker
+    implementation 'com.github.aliab:Persian-Date-Picker-Dialog:1.7.0'
+
+    //checkbox
+    implementation 'com.github.animsh:AnimatedCheckBox:1.0.0'
+
+    implementation "androidx.drawerlayout:drawerlayout:1.1.1"
+
+
 }
