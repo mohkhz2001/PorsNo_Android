@@ -2,13 +2,18 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <font
-        android:font="@font/yekan_font"
+        android:font="@font/yekan"
         android:fontStyle="normal"
         android:fontWeight="400"
         tools:ignore="ResourceCycle" />
 
     <font
         android:font="@font/vazir"
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        tools:ignore="ResourceCycle" />
+    <font
+        android:font="@font/mitra"
         android:fontStyle="normal"
         android:fontWeight="400"
         tools:ignore="ResourceCycle" />
