@@ -3,30 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/main"
-        android:checked="true"
-        android:title="صفحه ی اصلی" />
-    <item
-        android:id="@+id/newQuestion"
-        android:title="پرسشنامه جدید" />
-    <item
-        android:id="@+id/account"
-        android:title="حساب کاربری" />
-    <item
-        android:id="@+id/reBuy"
-        android:title="تمدید حساب" />
-    <item
-        android:id="@+id/history"
-        android:title="تاریخچه" />
-    <item
-        android:id="@+id/about"
-        android:title="درباره ی ما" />
-    <item
-        android:id="@+id/contact"
-        android:title="راه های ارتباطی" />
-    <item
-        android:id="@+id/exit"
-        android:title="خروج" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/main"
+            android:checked="true"
+            android:icon="@drawable/main_menu"
+            android:title="صفحه ی اصلی" />
+        <item
+            android:id="@+id/newQuestion"
+            android:icon="@drawable/new_question"
+            android:title="پرسشنامه جدید" />
+        <item
+            android:id="@+id/account"
+            android:icon="@drawable/ic_person"
+            android:title="حساب کاربری" />
+        <item
+            android:id="@+id/reBuy"
+            android:icon="@drawable/upgrade_acc"
+            android:title="تمدید حساب" />
+        <item
+            android:id="@+id/history"
+            android:icon="@drawable/history"
+            android:title="تاریخچه" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/information"
+            android:title="درباره ی ما" />
+        <item
+            android:id="@+id/contact"
+            android:icon="@drawable/contact_us"
+            android:title="راه های ارتباطی" />
+        <item
+            android:id="@+id/exit"
+            android:icon="@drawable/logout"
+            android:title="خروج" />
+    </group>
+
 
 </menu>
