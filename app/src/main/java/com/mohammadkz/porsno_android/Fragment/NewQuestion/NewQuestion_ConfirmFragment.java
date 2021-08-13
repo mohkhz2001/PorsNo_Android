@@ -83,7 +83,7 @@ public class NewQuestion_ConfirmFragment extends Fragment {
     }
 
     private void setAdapter() {
-        confirmNewQuestionaireAdapter = new ConfirmNewQuestionaireAdapter(getContext(), questionnaire.getQuestions());
+        confirmNewQuestionaireAdapter = new ConfirmNewQuestionaireAdapter(getContext(), questionnaire.getQuestions() , true);
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
         list.setAdapter(confirmNewQuestionaireAdapter);
 
