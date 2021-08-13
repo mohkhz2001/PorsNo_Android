@@ -3,7 +3,7 @@ package com.mohammadkz.porsno_android.Model;
 import com.mohammadkz.porsno_android.StaticFun;
 
 public class User {
-    private String ID, name, pn, pwd, createdTime, endTime;
+    private String ID, name, pn, pwd, createdTime, endTime , birthdayDate;
     private StaticFun.account accountLevel;
 
     public User(String name, String pn, String pwd) {
@@ -13,6 +13,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public String getBirthdayDate() {
+        return birthdayDate;
+    }
+
+    public void setBirthdayDate(String birthdayDate) {
+        this.birthdayDate = birthdayDate;
     }
 
     public String getName() {
