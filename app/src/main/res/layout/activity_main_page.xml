@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:screenOrientation="portrait"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     tools:context=".Activity.MainPageActivity"
     tools:openDrawer="start">
@@ -29,8 +30,8 @@
                     style="@style/Widget.MaterialComponents.Toolbar.Primary"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="#26FF00"
-                    app:navigationIcon="@drawable/ic_nav"
+                    android:background="@color/main_green"
+                    app:navigationIcon="@drawable/ic_hamburger_menu"
                     app:navigationIconTint="#000"
                     app:title="پرسش نو"
                     app:titleCentered="true"
@@ -39,29 +40,12 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <FrameLayout
+                android:visibility="visible"
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/bottom_nav"
                 android:layout_below="@id/toolbar" />
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nav"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/bg_bottom_nav"
-                android:elevation="20dp"
-                android:foregroundGravity="center_horizontal"
-                android:textAlignment="center"
-                android:textDirection="rtl"
-                android:textSize="20dp"
-                android:visibility="visible"
-                app:elevation="10dp"
-                app:itemIconTint="@drawable/bg_bottom_select"
-                app:itemTextColor="@drawable/bg_bottom_select"
-                app:labelVisibilityMode="selected"
-                app:menu="@menu/bottom_nav" />
 
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -72,8 +56,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
         app:headerLayout="@layout/nav_header"
+        app:itemTextAppearance="@style/RobotoTextViewStyle"
         app:menu="@menu/nav_menu" />
 
 
