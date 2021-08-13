@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
@@ -228,15 +229,21 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.show();
                 String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString() + "";
-                if (codeToConfirm.equals(code)) {
-                    user.setCreatedTime(setCreatedTime());
 
-                    completeRegister();
+                if (StaticFun.isNetworkAvailable(ConfirmPhoneNumberActivity.this)) {
+                    if (codeToConfirm.equals(code)) {
 
+                        user.setCreatedTime(setCreatedTime());
+                        completeRegister();
+
+                    } else {
+                        progressDialog.dismiss();
+                        Toasty.error(getApplicationContext(), "کد وارد شده صحیح نمی باشد.", Toasty.LENGTH_LONG).show();
+                    }
                 } else {
-                    progressDialog.dismiss();
-                    Toasty.error(getApplicationContext(), "کد وارد شده صحیح نمی باشد.", Toasty.LENGTH_LONG).show();
+                    StaticFun.alertDialog_serverConnectFail(ConfirmPhoneNumberActivity.this);
                 }
+
             }
         });
     }
@@ -292,35 +299,51 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         get.enqueue(new Callback<SignUpResponse>() {
             @Override
             public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
-
                 if (response.body().getStatus_code().equals("200")) {
+                    setUser(response.body());
                     start();
                 } else {
                     progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(getApplicationContext());
+                    StaticFun.alertDialog_connectionFail(ConfirmPhoneNumberActivity.this);
                 }
-
             }
 
             @Override
             public void onFailure(Call<SignUpResponse> call, Throwable t) {
                 t.getMessage();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
+                StaticFun.alertDialog_serverConnectFail(ConfirmPhoneNumberActivity.this);
             }
         });
+    }
+
+    private void setUser(SignUpResponse response) {
+        user.setID(response.getUserId());
+        user.setAccountLevel(StaticFun.account.Bronze);
+        user.setEndTime(response.getEnd());
+        user.setBirthdayDate("");
+
     }
 
     private String setCreatedTime() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         System.out.println(timestamp.getTime());
-        return timestamp.getTime() + "";
+        Log.e("test time stamp", " " + timestamp.getTime() / 1000);
+        return timestamp.getTime() / 1000 + "";
     }
 
     private void start() {
         Intent intent = new Intent(this, MainPageActivity.class);
+        transferData(intent);
         progressDialog.dismiss();
         startActivity(intent);
         finish();
+    }
+
+    private void transferData(Intent intent) {
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        intent.putExtra("userInfo", json);
+
     }
 
     // generate the code for send sms to confirm phone number

@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
+        android:fontFamily="@font/mitra"
         android:text="پرسش نو"
         android:textColor="#000"
-        android:textSize="50dp"
+        android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:fontFamily="@font/mitra"
                 android:text="کد تایید"
                 android:textColor="#000"
                 android:textSize="40dp"
@@ -57,12 +59,13 @@
                 android:weightSum="4">
 
                 <androidx.cardview.widget.CardView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:elevation="20dp"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="1dp">
 
                     <EditText
                         android:id="@+id/code1"
@@ -81,8 +84,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:elevation="20dp"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="1dp">
 
                     <EditText
                         android:id="@+id/code2"
@@ -101,8 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:elevation="20dp"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="1dp">
 
                     <EditText
                         android:id="@+id/code3"
@@ -120,8 +123,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:elevation="20dp"
-                    app:cardCornerRadius="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="1dp">
 
                     <EditText
                         android:id="@+id/code4"
@@ -150,11 +153,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:fontFamily="@font/vazir"
+                    android:fontFamily="@font/mitra"
                     android:gravity="center"
                     android:text="ارسال مجدد"
-                    android:textColor="#081EE4"
-                    android:textSize="16dp"
+                    android:textColor="#7c7c7c"
+                    android:textSize="17dp"
                     android:textStyle="bold"
                     app:itemTextColor="@drawable/re_send_enable" />
 
@@ -173,6 +176,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginRight="1dp"
+                        android:fontFamily="@font/mitra"
+                        android:paddingTop="1dp"
                         android:text="00"
                         android:textSize="16dp" />
 
@@ -190,6 +195,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginLeft="1dp"
+                        android:fontFamily="@font/mitra"
+                        android:paddingTop="1dp"
                         android:text="00"
                         android:textSize="16dp" />
                 </LinearLayout>
@@ -202,21 +209,23 @@
 
     <Button
         android:id="@+id/complete"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/bg_confirm_btn"
-        android:paddingLeft="35dp"
-        android:paddingTop="5dp"
-        android:paddingRight="35dp"
-        android:paddingBottom="5dp"
-        android:text="ثبت نام"
-        android:textColor="#353535"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="تایید"
+        android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
