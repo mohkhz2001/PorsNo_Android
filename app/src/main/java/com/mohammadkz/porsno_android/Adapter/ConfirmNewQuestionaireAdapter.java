@@ -1,6 +1,8 @@
 package com.mohammadkz.porsno_android.Adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mohammadkz.porsno_android.Model.Answer;
 import com.mohammadkz.porsno_android.Model.Question;
+import com.mohammadkz.porsno_android.Model.QuestionAnswer;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.R;
 
@@ -27,11 +30,13 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
 
     private Context context;
     private List<Question> questions;
-    private List<Answer> answers = new ArrayList<>();
+    private List<QuestionAnswer> answers = new ArrayList<>();
+    boolean editable;
 
-    public ConfirmNewQuestionaireAdapter(Context context, List<Question> questions) {
+    public ConfirmNewQuestionaireAdapter(Context context, List<Question> questions, boolean editable) {
         this.context = context;
         this.questions = questions;
+        this.editable = editable;
     }
 
     @NonNull
@@ -42,29 +47,61 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ConfirmNewQuestionaireAdapter.viewHolder viewHolder, int pos) {
+    public void onBindViewHolder(@NonNull ConfirmNewQuestionaireAdapter.viewHolder viewHolder, int position) {
 
-        viewHolder.question.setText(questions.get(pos).getQuestion());
 
-        if (questions.get(pos).isTest()) {
+
+        viewHolder.question.setText(questions.get(position).getQuestion());
+
+        if (questions.get(position).isTest()) {
             viewHolder.answer_layout.setVisibility(View.GONE);
-            viewHolder.setAdapter(questions.get(pos).getAnswers());
+            viewHolder.setAdapter(questions.get(position).getAnswers());
 
-            viewHolder.answerAdapter.setOnCheckedChangeListener(new AnswerAdapter.OnCheckedChangeListener() {
+            viewHolder.answerAdapter.setOnClickListener(new AnswerAdapter.OnClickListener() {
                 @Override
-                public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked, int pos, List<AnswerAdapter.viewHolder> views) {
-                    if (views.get(pos).checkbox.isChecked()) {
-                        answers.add(new Answer(views.get(pos).answer.getText().toString()));
-                        if (views.size() == 2) {
-                            if (pos == 1) {
-                                views.get(0).checkbox.setChecked(false, true);
+                public void onClickListener(boolean isChecked, int pos, List<AnswerAdapter.viewHolder> views) {
+                    QuestionAnswer questionAnswer = new QuestionAnswer(views.get(pos).answer.getText().toString(), String.valueOf(position + 1));
 
-                            } else {
-                                views.get(1).checkbox.setChecked(false, true);
+                    if (isChecked) {
 
+                        for (int i = 0; i < answers.size(); i++) {
+                            if (answers.get(i).getQuestionNumber().equals(questionAnswer.getQuestionNumber())) {
+                                answers.remove(i);
+                                break;
+                            }
+                        }
+
+                        for (int i = 0; i < views.size(); i++) {
+                            if (i == pos) {
+                                views.get(i).checkbox.setChecked(false);
+                            }
+                        }
+
+                        answers.remove(questionAnswer);
+
+                    }
+                    else if (!isChecked) {
+
+                        if (!checkAvailable(questionAnswer))
+                            answers.add(questionAnswer);
+                        else {
+                            for (int i = 0; i < answers.size(); i++) {
+                                if (answers.get(i).getQuestionNumber().equals(questionAnswer.getQuestionNumber())) {
+                                    answers.get(i).setAnswer(questionAnswer.getAnswer());
+                                    break;
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < views.size(); i++) {
+                            if (i != pos) {
+                                views.get(i).checkbox.setChecked(false);
+                            }else if (i == pos){
+                                views.get(i).checkbox.setChecked(true , true);
                             }
                         }
                     }
+
                 }
             });
 
@@ -72,9 +109,37 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
             viewHolder.answer_layout.setVisibility(View.VISIBLE);
         }
 
+        if (editable) {
+            viewHolder.edit.setVisibility(View.VISIBLE);
+            viewHolder.remove.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.edit.setVisibility(View.GONE);
+            viewHolder.remove.setVisibility(View.GONE);
+        }
+
+    }
+    private void test(List<AnswerAdapter.viewHolder> views ,  int pos){
+        for (int i = 0; i < views.size(); i++) {
+            if (i != pos) {
+                views.get(i).checkbox.setChecked(false);
+            }
+        }
     }
 
-    public List<Answer> answers() {
+    private boolean checkAvailable(QuestionAnswer questionAnswer) {
+        boolean check = false;
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getQuestionNumber().equals(questionAnswer.getQuestionNumber())) {
+                check = true;
+                break;
+            } else if (answers.size() - 1 == i) {
+                check = false;
+            }
+        }
+        return check;
+    }
+
+    public List<QuestionAnswer> answers() {
         return answers;
     }
 
@@ -88,7 +153,7 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
         ImageView remove, edit;
         TextView question;
         TextInputLayout answer_layout;
-        TextInputEditText answer;
+        TextInputEditText answerField;
         RecyclerView answerList;
         AnswerAdapter answerAdapter;
 
@@ -97,9 +162,39 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
             remove = itemView.findViewById(R.id.remove);
             edit = itemView.findViewById(R.id.edit);
             question = itemView.findViewById(R.id.question);
-            answer = itemView.findViewById(R.id.answer);
+            answerField = itemView.findViewById(R.id.answerField);
             answer_layout = itemView.findViewById(R.id.answer_layout);
             answerList = itemView.findViewById(R.id.answerList);
+
+            answerField.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    QuestionAnswer questionAnswer = new QuestionAnswer(s.toString(), String.valueOf(getAdapterPosition() + 1));
+
+                    if (answers.size() == 0) {
+                        answers.add(questionAnswer);
+                    } else
+                        for (int i = 0; i < answers.size(); i++) {
+                            if (answers.get(i).getQuestionNumber().equals(questionAnswer.getQuestionNumber())) {
+                                answers.get(i).setAnswer(questionAnswer.getAnswer().toString());
+                                break;
+                            } else if (i == answers.size() - 1) {
+                                answers.add(questionAnswer);
+                            }
+                        }
+
+                }
+            });
 
         }
 
