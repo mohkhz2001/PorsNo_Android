@@ -72,7 +72,7 @@ public class SignUp extends AppCompatActivity {
                     }
                 } else {
                     progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(getApplicationContext());
+                    StaticFun.alertDialog_connectionFail(SignUp.this);
                 }
 
             }
@@ -81,11 +81,12 @@ public class SignUp extends AppCompatActivity {
 
     private void checkPN(String phoneNumber) {
         Call<CheckPhoneResponse> get = request.checkPhoneNumber(phoneNumber);
+        String finalPhoneNumber = phoneNumber;
         get.enqueue(new Callback<CheckPhoneResponse>() {
             @Override
             public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
-                    confirmPhoneNumber(new User(name.getText().toString(), phoneNumber, pwd.getText().toString()));
+                    confirmPhoneNumber(new User(name.getText().toString(), finalPhoneNumber, pwd.getText().toString()));
                 } else {
                     progressDialog.dismiss();
                     Toasty.error(getApplicationContext(), "این مشخصات موجود است", Toasty.LENGTH_LONG).show();
@@ -95,7 +96,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
                 t.getMessage();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
+                StaticFun.alertDialog_serverConnectFail(SignUp.this);
                 progressDialog.dismiss();
             }
         });
@@ -107,6 +108,7 @@ public class SignUp extends AppCompatActivity {
         transferData(user, intent);
         progressDialog.dismiss();
         startActivity(intent);
+        finish();
     }
 
     // convert inputed data to json code then send it to another activity
