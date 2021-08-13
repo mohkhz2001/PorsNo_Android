@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingTop="10dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="10dp"
+    tools:background="#000">
+
+    <com.animsh.animatedcheckbox.AnimatedCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="20dp"
+        app:border_stroke_width="2dp"
+        app:color_checked="#0CD404"
+        app:color_tick="@color/white"
+        app:color_unchecked="@color/white"
+        app:color_unchecked_stroke="#2ABD24"
+        app:small_tick="true"
+        app:tick_stroke_width="1dp" />
+
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/checkbox"
+        android:background="@drawable/bg_answer"
+        android:fontFamily="@font/vazir"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        tools:text="جاوا"
+
+        />
+
+</RelativeLayout>
