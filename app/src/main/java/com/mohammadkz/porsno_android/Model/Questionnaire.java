@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Questionnaire {
-    private String name, category, startDate, endDate, startDate_stamp, endDate_stamp, description , userId;
+    private String name, category, startDate, endDate, startDate_stamp, endDate_stamp, description, userId, views, done , Id;
     private List<Question> questions;
     private boolean expended;
 
@@ -91,5 +91,29 @@ public class Questionnaire {
 
     public void setExpended(boolean expended) {
         this.expended = expended;
+    }
+
+    public String getViews() {
+        return views;
+    }
+
+    public void setViews(String views) {
+        this.views = views;
+    }
+
+    public String getDone() {
+        return done;
+    }
+
+    public void setDone(String done) {
+        this.done = done;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 }
