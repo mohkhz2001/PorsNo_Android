@@ -24,5 +24,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomMaterialDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+<!--        &lt;!&ndash; Background Color&ndash;&gt;-->
+<!--        <item name="android:background">#006db3</item>-->
+<!--        &lt;!&ndash; Text Color for title and message &ndash;&gt;-->
+<!--        <item name="colorOnSurface">#000</item>-->
+<!--        &lt;!&ndash; Text Color for buttons &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/white</item>-->
+
+        <item name="android:theme">@style/Theme.PorsNo_Android</item>
+
+    </style>
 
 </resources>
