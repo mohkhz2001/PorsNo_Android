@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_now_pas"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:enabled="true"
+        android:hint="رمز عبور فعلی"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="visible"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/now_pas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_new_pas"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:enabled="true"
+        android:hint="رمز عبور جدید"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="visible"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/new_pas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_new_pas_re"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:enabled="true"
+        android:hint="تکرار رمز عبور جدید"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="visible"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/new_pas_re"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="تایید"
+        android:textColor="#2e2e2e"
+        android:textSize="29dp"
+        android:textStyle="bold" />
+
+</LinearLayout>
