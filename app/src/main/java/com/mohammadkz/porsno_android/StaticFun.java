@@ -14,34 +14,56 @@ public class StaticFun {
     public enum account {Bronze, Steel, Gold, Diamond}
 
     // error handler
+    // connect to net error
     public static void alertDialog_connectionFail(Context context) {
         try {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-            builder.setTitle("");
-            builder.setMessage("");
-            String positive = "بستن";
 
-            // have one btn ==> close
-            builder.setPositiveButton(positive, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            new MaterialAlertDialogBuilder(context, R.style.CustomMaterialDialog)
+                    .setTitle("مشکل در برقراری ارتباط")
+                    .setMessage("مشکل در برقراری ارتباط با سرور\nلطفا بعد از اطمینان از اتصال خود به اینترنت دوباره تلاش نمایید.")
+                    .setCancelable(true)
+                    .setNegativeButton("بستن", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
 
-                    dialog.dismiss();
-                }
-            });
-
-            builder.show();
         } catch (Exception e) {
             e.getMessage();
+            e.printStackTrace();
+        }
+
+    }
+
+    // error handler
+    // when have time out or ... that about the server
+    public static void alertDialog_serverConnectFail(Context context) {
+        try {
+
+            new MaterialAlertDialogBuilder(context, R.style.CustomMaterialDialog)
+                    .setTitle("مشکل در برقراری ارتباط")
+                    .setMessage("ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.")
+                    .setCancelable(true)
+                    .setNegativeButton("بستن", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
         }
 
     }
 
     // error handler for input wrong phone number or pass
     public static void alertDialog_error_login(Context context) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle("");
-        builder.setMessage("");
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context , R.style.CustomMaterialDialog);
+        builder.setTitle("مشکل در ورود");
+        builder.setMessage("نام کاربری یا رمز عبور اشتباه است");
         String positive = "بستن";
 
         // have one btn ==> close
@@ -58,7 +80,7 @@ public class StaticFun {
 
     // error handler for exists phone number for sign up
     public static void alertDialog_error_exist_pn(Context context) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.CustomMaterialDialog);
         builder.setTitle("");
         builder.setMessage("");
         String positive = "بستن";
