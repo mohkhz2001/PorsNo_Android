@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,12 +62,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                if (checkValue()) {
-                    login();
+                if (StaticFun.isNetworkAvailable(getApplicationContext())){
+                    if (checkValue()) {
+                        login();
+                    } else {
+                        progressDialog.dismiss();
+                        Toasty.error(getApplicationContext(), "تمامی موارد خواسته شده را وارد نمایید!", Toasty.LENGTH_LONG).show();
+                    }
                 }else {
                     progressDialog.dismiss();
-                    Toasty.error(getApplicationContext() , "تمامی موارد خواسته شده را وارد نمایید!" , Toasty.LENGTH_LONG).show();
+                    StaticFun.alertDialog_connectionFail(LoginActivity.this);
                 }
+
             }
         });
 
@@ -108,15 +115,15 @@ public class LoginActivity extends AppCompatActivity {
                     start(intent);
                 } else {
                     progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(getApplicationContext());
+                    StaticFun.alertDialog_error_login(LoginActivity.this);
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.getMessage();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
                 progressDialog.dismiss();
+                StaticFun.alertDialog_serverConnectFail(LoginActivity.this);
             }
         });
 
@@ -151,13 +158,22 @@ public class LoginActivity extends AppCompatActivity {
         user.setEndTime(loginResponse.getEnd());
         user.setID(loginResponse.getId());
 
-//        if (loginResponse.getAccountLevel().equals(""))
-//            user.setAccountLevel();
+        if (loginResponse.getAccountLevel().equals("bronze")) {
+            user.setAccountLevel(StaticFun.account.Bronze);
+        } else if (loginResponse.getAccountLevel().equals("steel")) {
+            user.setAccountLevel(StaticFun.account.Steel);
+        } else if (loginResponse.getAccountLevel().equals("gold")) {
+            user.setAccountLevel(StaticFun.account.Gold);
+        } else if (loginResponse.getAccountLevel().equals("diamond")) {
+            user.setAccountLevel(StaticFun.account.Diamond);
+        }
+
     }
 
     private void start(Intent intent) {
         progressDialog.dismiss();
         startActivity(intent);
+        finish();
     }
 
 }

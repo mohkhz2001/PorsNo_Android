@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:screenOrientation="portrait"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
     tools:context=".Activity.LoginActivity">
@@ -157,16 +158,17 @@
         android:background="@drawable/bg_confirm_btn"
         android:elevation="5dp"
         android:fontFamily="@font/mitra"
-        android:paddingTop="7dp"
-        android:paddingBottom="7dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="ورود"
         android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        />
 
 
     <androidx.constraintlayout.widget.Guideline
