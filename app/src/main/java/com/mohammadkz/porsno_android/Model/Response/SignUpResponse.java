@@ -2,14 +2,14 @@ package com.mohammadkz.porsno_android.Model.Response;
 
 public class SignUpResponse {
 
-    private String id, userName, phoneNumber, created, accountLevel, end, birthday, message, status_code;
+    private String userId, userName, phoneNumber, created, accountLevel, end, birthday, message, status_code;
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
