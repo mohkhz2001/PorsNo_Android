@@ -7,7 +7,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -117,6 +119,7 @@ public class MainPageActivity extends AppCompatActivity {
 
                         break;
                     case R.id.exit:
+                        removeSharedPreferences();
                         finish();
                         break;
                 }
@@ -177,5 +180,12 @@ public class MainPageActivity extends AppCompatActivity {
 
     public void setDrawerSelect(int id){
         nav_view.setCheckedItem(id);
+    }
+
+    private void removeSharedPreferences() {
+        SharedPreferences preferences = getSharedPreferences("userLogin_info", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
     }
 }
