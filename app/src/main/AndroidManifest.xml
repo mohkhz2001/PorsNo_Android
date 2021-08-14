@@ -39,8 +39,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.ConfirmPhoneNumberActivity" />
-        <activity android:name=".Activity.SignUp" />
+        <activity
+            android:name=".Activity.ConfirmPhoneNumberActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SignUp"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
