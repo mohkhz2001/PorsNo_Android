@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -301,6 +302,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
                     setUser(response.body());
+                    setData_SharedPreferences();
                     start();
                 } else {
                     progressDialog.dismiss();
@@ -361,25 +363,19 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
     }
 
-    private void checkPN(String phoneNumber) {
-        Call<CheckPhoneResponse> get = request.checkPhoneNumber(phoneNumber);
-        get.enqueue(new Callback<CheckPhoneResponse>() {
-            @Override
-            public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> response) {
-                if (response.body().getStatus_code().equals("200")) {
+    private void setData_SharedPreferences() {
+        SharedPreferences sh = getSharedPreferences("userLogin_info", MODE_PRIVATE);
 
-                } else {
-                    Log.e("error", "exists");
-                }
-            }
+        SharedPreferences.Editor editor = sh.edit();
+        editor.clear();
+        editor.commit();
 
-            @Override
-            public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
-                t.getMessage();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
-            }
-        });
-
+        Gson gson = new Gson();
+        String userToSave = gson.toJson(user);
+        SharedPreferences.Editor myEdit = sh.edit();
+        myEdit.clear();
+        myEdit.putString("userLogin_info", userToSave);
+        myEdit.commit();
     }
 
     // countdown timer ==> 2 min

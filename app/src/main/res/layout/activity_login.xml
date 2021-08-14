@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:screenOrientation="portrait"
+    android:visibility="gone"
+    android:id="@+id/root"
+    tools:visibility="visible"
+    style="@style/Theme.AppCompat.Light.NoActionBar"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
     tools:context=".Activity.LoginActivity">
