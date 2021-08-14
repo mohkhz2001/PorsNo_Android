@@ -155,7 +155,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/answer1_field_layout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
@@ -183,7 +183,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
@@ -213,7 +212,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/answer2_field_layout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
@@ -241,7 +240,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
@@ -301,7 +299,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
@@ -361,7 +358,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
@@ -421,7 +417,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
@@ -481,7 +476,6 @@
                             android:gravity="top"
                             android:inputType="textMultiLine"
                             android:maxLines="6"
-                            android:minLines="3"
                             android:singleLine="false"
                             android:textSize="18dp" />
 
