@@ -32,6 +32,7 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
     private List<Question> questions;
     private List<QuestionAnswer> answers = new ArrayList<>();
     boolean editable;
+    OnClickListener onClickListener;
 
     public ConfirmNewQuestionaireAdapter(Context context, List<Question> questions, boolean editable) {
         this.context = context;
@@ -196,6 +197,20 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
                 }
             });
 
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onEditClickListener(getAdapterPosition());
+                }
+            });
+
+            remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickListener.onRemoveClickListener(getAdapterPosition());
+                }
+            });
+
         }
 
         public void setAdapter(List<Answer> answers) {
@@ -203,5 +218,14 @@ public class ConfirmNewQuestionaireAdapter extends RecyclerView.Adapter<ConfirmN
             answerList.setLayoutManager(new LinearLayoutManager(context));
             answerList.setAdapter(answerAdapter);
         }
+    }
+
+    public interface OnClickListener {
+        void onRemoveClickListener( int pos);
+        void onEditClickListener( int pos);
+    }
+
+    public void setOnClickListener(OnClickListener OnClickListener) {
+        this.onClickListener = OnClickListener;
     }
 }
