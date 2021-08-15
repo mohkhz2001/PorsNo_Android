@@ -29,6 +29,9 @@ import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class NewQuestion_NewFragment extends Fragment {
 
@@ -41,7 +44,8 @@ public class NewQuestion_NewFragment extends Fragment {
     TextInputLayout answer_layout;
     TextView questionCounter_txt;
     LinearLayout answerLayout;
-    RelativeLayout relative3, relative4, relative5, relative6;
+    ImageView answer1_remove, answer2_remove, answer3_remove, answer4_remove, answer5_remove, answer6_remove;
+    RelativeLayout relative1, relative2, relative3, relative4, relative5, relative6;
     int questionNumber = 1;
     int answerCounter = 2;
 
@@ -82,16 +86,27 @@ public class NewQuestion_NewFragment extends Fragment {
         answer_layout = view.findViewById(R.id.answer_layout);
         questionCounter_txt = view.findViewById(R.id.questionCounter);
 
-        answer1_field = view.findViewById(R.id.answer1_field);
-        answer2_field = view.findViewById(R.id.answer2_field);
-        answer3_field = view.findViewById(R.id.answer3_field);
-        answer4_field = view.findViewById(R.id.answer4_field);
-        answer5_field = view.findViewById(R.id.answer5_field);
-        answer6_field = view.findViewById(R.id.answer6_field);
-        relative3 = view.findViewById(R.id.relative3);
-        relative4 = view.findViewById(R.id.relative4);
-        relative5 = view.findViewById(R.id.relative5);
-        relative6 = view.findViewById(R.id.relative6);
+//        answer1_field = view.findViewById(R.id.answer1_field);
+//        answer2_field = view.findViewById(R.id.answer2_field);
+//        answer3_field = view.findViewById(R.id.answer3_field);
+//        answer4_field = view.findViewById(R.id.answer4_field);
+//        answer5_field = view.findViewById(R.id.answer5_field);
+//        answer6_field = view.findViewById(R.id.answer6_field);
+//
+//        answer1_remove = view.findViewById(R.id.answer1_remove);
+//        answer2_remove = view.findViewById(R.id.answer2_remove);
+//        answer3_remove = view.findViewById(R.id.answer3_remove);
+//        answer4_remove = view.findViewById(R.id.answer4_remove);
+//        answer5_remove = view.findViewById(R.id.answer5_remove);
+//        answer6_remove = view.findViewById(R.id.answer6_remove);
+//
+//        relative1 = view.findViewById(R.id.relative1);
+//        relative2 = view.findViewById(R.id.relative2);
+//        relative3 = view.findViewById(R.id.relative3);
+//        relative4 = view.findViewById(R.id.relative4);
+//        relative5 = view.findViewById(R.id.relative5);
+//        relative6 = view.findViewById(R.id.relative6);
+
         answer = view.findViewById(R.id.answer);
     }
 
@@ -152,6 +167,48 @@ public class NewQuestion_NewFragment extends Fragment {
             }
         });
 
+        answer1_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                relative3.setVisibility(View.GONE);
+            }
+        });
+
+        answer1_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        answer3_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                relative3.setVisibility(View.GONE);
+            }
+        });
+
+        answer4_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                relative4.setVisibility(View.GONE);
+            }
+        });
+
+        answer5_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                relative5.setVisibility(View.GONE);
+            }
+        });
+
+        answer6_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                relative6.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private void clearField() {
@@ -195,6 +252,10 @@ public class NewQuestion_NewFragment extends Fragment {
 
         } else {
             questionnaire.getQuestions().get(questionNumber - 1).setTest(true);
+
+            if (relative3.getVisibility() == View.VISIBLE) {
+
+            }
             if (answerCounter == 2) {
                 questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
                 questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
