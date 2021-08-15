@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
+
+
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/answer1_field_layout"-->
+    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentLeft="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginLeft="10dp"-->
+    <!--        android:layout_marginRight="15dp"-->
+    <!--        android:layout_marginBottom="2dp"-->
+    <!--        android:layout_toLeftOf="@id/remove"-->
+    <!--        app:boxCornerRadiusBottomEnd="12dp"-->
+    <!--        app:boxCornerRadiusBottomStart="12dp"-->
+    <!--        app:boxCornerRadiusTopEnd="12dp"-->
+    <!--        app:boxCornerRadiusTopStart="12dp"-->
+    <!--        app:boxStrokeColor="#FF9800"-->
+    <!--        app:boxStrokeWidth="2dp"-->
+    <!--        app:endIconMode="clear_text"-->
+    <!--        app:endIconTint="#FF9800"-->
+    <!--        app:hintEnabled="true"-->
+    <!--        app:hintTextColor="#000">-->
+
+    <!--        <com.google.android.material.textfield.TextInputEditText-->
+    <!--            android:focusable="true"-->
+    <!--            android:focusableInTouchMode="true"-->
+    <!--            android:id="@+id/answer_field"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:focusedByDefault="false"-->
+    <!--            android:gravity="top"-->
+    <!--            android:inputType="textMultiLine"-->
+    <!--            android:maxLines="6"-->
+    <!--            android:singleLine="false"-->
+    <!--            android:textSize="18dp" />-->
+
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <EditText
+        android:id="@+id/answer_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="2dp"
+        android:layout_toLeftOf="@id/remove"
+        android:background="@drawable/bg_edit_text"
+        android:editable="true"
+        android:fontFamily="@font/vazir"
+        android:gravity="right"
+        android:inputType="textMultiLine"
+        android:maxLines="6"
+        android:padding="10dp"
+        android:singleLine="false"
+        android:textDirection="rtl"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/remove"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/remove_answer" />
+
+
+</RelativeLayout>

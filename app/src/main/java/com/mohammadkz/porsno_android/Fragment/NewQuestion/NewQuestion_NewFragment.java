@@ -1,5 +1,7 @@
 package com.mohammadkz.porsno_android.Fragment.NewQuestion;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,10 +23,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.animsh.animatedcheckbox.AnimatedCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
+import com.mohammadkz.porsno_android.Adapter.NewAnswerAdapter;
 import com.mohammadkz.porsno_android.Model.Answer;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
@@ -32,22 +37,24 @@ import com.mohammadkz.porsno_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 
 public class NewQuestion_NewFragment extends Fragment {
 
     View view;
     Questionnaire questionnaire;
-    AnimatedCheckBox testQuestion;
-    TextInputEditText question, answer1_field, answer2_field, answer3_field, answer4_field, answer5_field, answer6_field, answer;
+    AnimatedCheckBox testQuestion, new_question;
+    TextInputEditText question, answer;
     FloatingActionButton fab_add;
     ImageView confirm, next, prev;
     TextInputLayout answer_layout;
     TextView questionCounter_txt;
-    LinearLayout answerLayout;
-    ImageView answer1_remove, answer2_remove, answer3_remove, answer4_remove, answer5_remove, answer6_remove;
-    RelativeLayout relative1, relative2, relative3, relative4, relative5, relative6;
+    RelativeLayout new_root;
+    RecyclerView list;
+    NewAnswerAdapter newAnswerAdapter;
+    List<Answer> answers = new ArrayList<>();
     int questionNumber = 1;
-    int answerCounter = 2;
 
     public NewQuestion_NewFragment(Questionnaire questionnaire) {
         // Required empty public constructor
@@ -73,215 +80,253 @@ public class NewQuestion_NewFragment extends Fragment {
         questionNumber = 1;
         questionCounter_txt.setText(questionNumber + "");
         questionnaire.getQuestions().add(new Question());
+        setAnswer();
+        setAdapter();
     }
 
     private void initViews() {
         testQuestion = view.findViewById(R.id.testQuestion);
-        answerLayout = view.findViewById(R.id.layout);
+        answer_layout = view.findViewById(R.id.answer_layout);
         question = view.findViewById(R.id.question);
+        new_question = view.findViewById(R.id.new_question);
+        new_question.setChecked(true);
         fab_add = view.findViewById(R.id.fab_add);
         confirm = view.findViewById(R.id.confirm);
         next = view.findViewById(R.id.next);
         prev = view.findViewById(R.id.prev);
         answer_layout = view.findViewById(R.id.answer_layout);
         questionCounter_txt = view.findViewById(R.id.questionCounter);
-
-//        answer1_field = view.findViewById(R.id.answer1_field);
-//        answer2_field = view.findViewById(R.id.answer2_field);
-//        answer3_field = view.findViewById(R.id.answer3_field);
-//        answer4_field = view.findViewById(R.id.answer4_field);
-//        answer5_field = view.findViewById(R.id.answer5_field);
-//        answer6_field = view.findViewById(R.id.answer6_field);
-//
-//        answer1_remove = view.findViewById(R.id.answer1_remove);
-//        answer2_remove = view.findViewById(R.id.answer2_remove);
-//        answer3_remove = view.findViewById(R.id.answer3_remove);
-//        answer4_remove = view.findViewById(R.id.answer4_remove);
-//        answer5_remove = view.findViewById(R.id.answer5_remove);
-//        answer6_remove = view.findViewById(R.id.answer6_remove);
-//
-//        relative1 = view.findViewById(R.id.relative1);
-//        relative2 = view.findViewById(R.id.relative2);
-//        relative3 = view.findViewById(R.id.relative3);
-//        relative4 = view.findViewById(R.id.relative4);
-//        relative5 = view.findViewById(R.id.relative5);
-//        relative6 = view.findViewById(R.id.relative6);
-
+        list = view.findViewById(R.id.list);
+        new_root = view.findViewById(R.id.new_root);
         answer = view.findViewById(R.id.answer);
     }
 
     private void controllerViews() {
 
-        testQuestion.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked) {
-                if (isChecked) {
-                    answer_layout.setVisibility(View.VISIBLE);
-                    answerLayout.setVisibility(View.GONE);
-                    fab_add.setVisibility(View.GONE);
-                } else {
-                    answer_layout.setVisibility(View.GONE);
-                    answerLayout.setVisibility(View.VISIBLE);
-                    fab_add.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        fab_add.setOnClickListener(new View.OnClickListener() {
+        new_question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (answerCounter < 7) {
-                    answerCounter++;
-                    newAnswer();
-                } else {
-
-                }
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                saveInputed();
-
-                relative3.setVisibility(View.GONE);
-                relative4.setVisibility(View.GONE);
-                relative5.setVisibility(View.GONE);
-                relative6.setVisibility(View.GONE);
-
-                clearField();
-
+                newAnswer();
+                setAdapter();
             }
         });
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveInputed();
+                if (checkValue()) {
+                    answers = newAnswerAdapter.getAnswer();
+                    questionnaire.getQuestions().get(questionNumber - 1).setAnswers(answers);
+                    questionnaire.getQuestions().get(questionNumber - 1).setQuestion(question.getText().toString());
+                    questionnaire.getQuestions().get(questionNumber - 1).setTest(!testQuestion.isChecked());
 
-                NewQuestion_ConfirmFragment newQuestion_confirmFragment = new NewQuestion_ConfirmFragment(questionnaire);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, newQuestion_confirmFragment).commit();
+                    NewQuestion_ConfirmFragment newQuestion_confirmFragment = new NewQuestion_ConfirmFragment(questionnaire);
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, newQuestion_confirmFragment).commit();
+                } else {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.CustomMaterialDialog);
+                    builder.setMessage("تمایل دارین این سوال حذف شود؟");
+
+                    String yes = "بله";
+                    String no = "خیر";
+
+                    builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            questionnaire.getQuestions().remove(questionNumber - 1);
+                            NewQuestion_ConfirmFragment newQuestion_confirmFragment = new NewQuestion_ConfirmFragment(questionnaire);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frameLayout, newQuestion_confirmFragment).commit();
+                        }
+                    });
+
+                    builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Toasty.error(getContext(), "لطفا فیلد های مورد نظر را تکمیل نمایید.", Toasty.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                    builder.show();
+
+                }
 
             }
         });
 
-        answer1_remove.setOnClickListener(new View.OnClickListener() {
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                relative3.setVisibility(View.GONE);
+                if (questionnaire.getQuestions().size() > questionNumber) {
+                    questionNumber++;
+                    questionCounter_txt.setText(questionNumber + "");
+                    question.setText(questionnaire.getQuestions().get(questionNumber - 1).getQuestion().toString());
+                    if (questionnaire.getQuestions().get(questionNumber - 1).isTest()) {
+                        answers = questionnaire.getQuestions().get(questionNumber - 1).getAnswers();
+                        setAdapter();
+                        answer_layout.setVisibility(View.GONE);
+                        new_root.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.VISIBLE);
+                    } else {
+                        answer_layout.setVisibility(View.VISIBLE);
+                        new_root.setVisibility(View.GONE);
+                        list.setVisibility(View.GONE);
+                    }
+                } else {
+                    answers = newAnswerAdapter.getAnswer();
+                    questionnaire.getQuestions().get(questionNumber - 1).setAnswers(answers);
+                    newAnswerAdapter.clearList();
+                    questionnaire.getQuestions().get(questionNumber - 1).setQuestion(question.getText().toString());
+                    questionnaire.getQuestions().get(questionNumber - 1).setTest(!testQuestion.isChecked());
+                    question.setText("");
+                    answers = new ArrayList<>();
+                    questionNumber++;
+                    questionCounter_txt.setText(questionNumber + "");
+                    newQuestion();
+                }
+
             }
         });
 
-        answer1_remove.setOnClickListener(new View.OnClickListener() {
+        prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (questionnaire.getQuestions().size() == questionNumber)
+                    alertDialog_saveQuestion();
+                else preViues();
 
             }
         });
 
-        answer3_remove.setOnClickListener(new View.OnClickListener() {
+        testQuestion.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                relative3.setVisibility(View.GONE);
+            public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked) {
+                if (isChecked) {
+                    answers = null;
+                    answer_layout.setVisibility(View.VISIBLE);
+                    new_root.setVisibility(View.GONE);
+                    list.setVisibility(View.GONE);
+                } else {
+                    answer_layout.setVisibility(View.GONE);
+                    new_root.setVisibility(View.VISIBLE);
+                    list.setVisibility(View.VISIBLE);
+                    answers = new ArrayList<>();
+                    setAnswer();
+                    setAdapter();
+                }
             }
         });
-
-        answer4_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                relative4.setVisibility(View.GONE);
-            }
-        });
-
-        answer5_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                relative5.setVisibility(View.GONE);
-            }
-        });
-
-        answer6_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                relative6.setVisibility(View.GONE);
-            }
-        });
-
     }
 
-    private void clearField() {
-        answerCounter = 2;
-        questionNumber++;
-        questionnaire.getQuestions().add(new Question());
-        questionCounter_txt.setText(questionNumber + "");
-        answer.setText("");
-        question.setText("");
-        answer1_field.setText("");
-        answer2_field.setText("");
-        answer3_field.setText("");
-        answer4_field.setText("");
-        answer5_field.setText("");
-        answer6_field.setText("");
+    private void setAdapter() {
+        newAnswerAdapter = null;
+        newAnswerAdapter = new NewAnswerAdapter(getContext(), answers);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        list.setLayoutManager(linearLayoutManager);
+        list.setAdapter(newAnswerAdapter);
+
+        newAnswerAdapter.setOnClickListener(new NewAnswerAdapter.OnClickListener() {
+            @Override
+            public void onClickListener(int pos) {
+                answers = newAnswerAdapter.getAnswer();
+                if (answers.size() > 2) {
+                    answers.remove(pos);
+                    setAdapter();
+                } else {
+                    Toasty.error(getContext(), "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
+                }
+
+            }
+        });
+    }
+
+    private void setAnswer() {
+        answers.add(new Answer(""));
+        answers.add(new Answer(""));
+
     }
 
     private void newAnswer() {
-        switch (answerCounter) {
-            case 3:
-                relative3.setVisibility(View.VISIBLE);
-                break;
-            case 4:
-                relative4.setVisibility(View.VISIBLE);
-                break;
-            case 5:
-                relative5.setVisibility(View.VISIBLE);
-                break;
-            case 6:
-                fab_add.setVisibility(View.GONE);
-                relative6.setVisibility(View.VISIBLE);
-                break;
+        answers = newAnswerAdapter.getAnswer();
+        answers.add(new Answer(""));
+    }
+
+    private void newQuestion() {
+        questionnaire.getQuestions().add(new Question());
+        newAnswerAdapter.clearList();
+        setAnswer();
+        setAdapter();
+    }
+
+    private void alertDialog_saveQuestion() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext(), R.style.CustomMaterialDialog);
+        builder.setMessage("تمایل دارین این سوال ذخیر شود؟");
+
+        String yes = "بله";
+        String no = "خیر";
+
+        builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                // save the question
+                answers = newAnswerAdapter.getAnswer();
+                questionnaire.getQuestions().get(questionNumber - 1).setAnswers(answers);
+                newAnswerAdapter.clearList();
+                questionnaire.getQuestions().get(questionNumber - 1).setQuestion(question.getText().toString());
+                questionnaire.getQuestions().get(questionNumber - 1).setTest(!testQuestion.isChecked());
+                question.setText("");
+                answers = new ArrayList<>();
+
+                preViues();
+
+            }
+        });
+
+        builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                questionnaire.getQuestions().remove(questionNumber - 1);
+                questionNumber--;
+
+                preViues();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void preViues() {
+        questionNumber--;
+        questionCounter_txt.setText(questionNumber + "");
+        if (questionnaire.getQuestions().get(questionNumber - 1).isTest()) {
+            question.setText(questionnaire.getQuestions().get(questionNumber - 1).getQuestion().toString());
+            answers = questionnaire.getQuestions().get(questionNumber - 1).getAnswers();
+            setAdapter();
+            answer_layout.setVisibility(View.GONE);
+            new_root.setVisibility(View.VISIBLE);
+            list.setVisibility(View.VISIBLE);
+        } else {
+            question.setText(questionnaire.getQuestions().get(questionNumber - 1).getQuestion().toString());
+            answer_layout.setVisibility(View.VISIBLE);
+            new_root.setVisibility(View.GONE);
+            list.setVisibility(View.GONE);
         }
     }
 
-    private void saveInputed() {
-        questionnaire.getQuestions().get(questionNumber - 1).setQuestion(question.getText().toString());
-
-        if (testQuestion.isChecked()) {
-            questionnaire.getQuestions().get(questionNumber - 1).setTest(false);
-
+    private boolean checkValue() {
+        answers = newAnswerAdapter.getAnswer();
+        if (answers.size() >= 2 && answers.get(0).getAnswer().length() > 0 && answers.get(1).getAnswer().length() > 0 && question.getText().length() > 0) {
+            return true;
         } else {
-            questionnaire.getQuestions().get(questionNumber - 1).setTest(true);
-
-            if (relative3.getVisibility() == View.VISIBLE) {
-
-            }
-            if (answerCounter == 2) {
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
-            } else if (answerCounter == 3) {
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer3_field.getText().toString()));
-            } else if (answerCounter == 4) {
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer3_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer4_field.getText().toString()));
-            } else if (answerCounter == 5) {
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer3_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer4_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer5_field.getText().toString()));
-            } else if (answerCounter == 6) {
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer1_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer2_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer3_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer4_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer5_field.getText().toString()));
-                questionnaire.getQuestions().get(questionNumber - 1).getAnswers().add(new Answer(answer6_field.getText().toString()));
-            }
+            return false;
         }
     }
 }
