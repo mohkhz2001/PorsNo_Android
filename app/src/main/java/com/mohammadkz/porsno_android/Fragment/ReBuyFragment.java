@@ -3,6 +3,7 @@ package com.mohammadkz.porsno_android.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Model.PriceResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
+import com.mohammadkz.porsno_android.Model.Response.UpgradeResponse;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -42,6 +45,7 @@ public class ReBuyFragment extends Fragment {
     ProgressDialog progressDialog;
     Button diamondPrice_btn, goldPrice_btn, steelPrice_btn, bronzePrice_btn;
     TextView diamondPrice_txt, goldPrice_txt, steelPrice_txt, bronzePrice_txt, dayLeft, accountLevel;
+    ConstraintLayout root;
 
     public ReBuyFragment(User user) {
         // Required empty public constructor
@@ -59,7 +63,7 @@ public class ReBuyFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("در حال دریافت اطلاعات");
-        progressDialog.show();
+
         initViews();
         controllerViews();
         getPrice();
@@ -78,6 +82,7 @@ public class ReBuyFragment extends Fragment {
         bronzePrice_txt = view.findViewById(R.id.bronzePrice_txt);
         dayLeft = view.findViewById(R.id.dayLeft);
         accountLevel = view.findViewById(R.id.accountLevel);
+        root = view.findViewById(R.id.root);
     }
 
     private void controllerViews() {
@@ -108,7 +113,7 @@ public class ReBuyFragment extends Fragment {
     }
 
     private void getPrice() {
-
+        progressDialog.show();
         Call<List<PriceResponse>> get = request.getPrice();
 
         get.enqueue(new Callback<List<PriceResponse>>() {
@@ -140,20 +145,19 @@ public class ReBuyFragment extends Fragment {
         steelPrice_txt.setText(decimalFormat.format(Integer.parseInt(steel)) + " تومان");
         diamondPrice_txt.setText(decimalFormat.format(Integer.parseInt(diamond)) + " تومان");
         parseDate();
-
+        root.setVisibility(View.VISIBLE);
         progressDialog.dismiss();
     }
 
     private void parseDate() {
         try {
             Timestamp today = new Timestamp(System.currentTimeMillis());
-//            Date today = new Date(ts.getTime());
 
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            Date end = new Date(Long.parseLong(user.getEndTime() ));
+            Date end = new Date(Long.parseLong(user.getEndTime()));
             System.out.println(sf.format(end));
 
-            Interval interval = new Interval(today.getTime(), Long.parseLong(user.getEndTime()+"000"));
+            Interval interval = new Interval(today.getTime(), Long.parseLong(user.getEndTime() + "000"));
             Duration period = interval.toDuration();
 
             dayLeft.setText(period.getStandardDays() + "");
@@ -166,22 +170,31 @@ public class ReBuyFragment extends Fragment {
 
     private void upgradeAccount(String level) {
 
-        Call<NormalResponse> get = request.upgradeAccount(level, user.getID());
+        Call<UpgradeResponse> get = request.upgradeAccount(level, user.getID());
 
-        get.enqueue(new Callback<NormalResponse>() {
+        get.enqueue(new Callback<UpgradeResponse>() {
             @Override
-            public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
-                refresh();
+            public void onResponse(Call<UpgradeResponse> call, Response<UpgradeResponse> response) {
+                refresh(response.body());
             }
 
             @Override
-            public void onFailure(Call<NormalResponse> call, Throwable t) {
+            public void onFailure(Call<UpgradeResponse> call, Throwable t) {
                 StaticFun.alertDialog_connectionFail(getContext());
             }
         });
     }
 
-    public void refresh() {
+    public void refresh(UpgradeResponse response) {
+        user.setEndTime(response.getEnd());
         getPrice();
+        updateUserData();
+    }
+
+    private void updateUserData() {
+        //i will update the user data here
+
+        ((MainPageActivity) getActivity()).updateUser(user);
+
     }
 }

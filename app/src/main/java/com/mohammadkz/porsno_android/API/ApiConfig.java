@@ -10,6 +10,7 @@ import com.mohammadkz.porsno_android.Model.Response.NewQuestionaire;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.Response.SMSResponse;
 import com.mohammadkz.porsno_android.Model.Response.SignUpResponse;
+import com.mohammadkz.porsno_android.Model.Response.UpgradeResponse;
 
 import java.util.List;
 
@@ -92,8 +93,8 @@ public interface ApiConfig {
 
     @FormUrlEncoded
     @POST("User_Upgrade.php")
-    Call<NormalResponse> upgradeAccount(
+    Call<UpgradeResponse> upgradeAccount(
             @Field("Level") String level,
-                                        @Field("uId") String uId
+            @Field("uId") String uId
     );
 }
