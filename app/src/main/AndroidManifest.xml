@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mohammadkz.porsno_android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,8 +14,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.PorsNo_Android">
+        android:supportsRtl="false"
+        android:theme="@style/Theme.PorsNo_Android"
+        tools:replace="android:supportsRtl">
 
         <activity
             android:name=".Activity.AnswerActivity"
