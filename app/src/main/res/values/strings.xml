@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PorsNo_Android</string>
+    <string name="app_name">پرس نو</string>
 
     // nav drawer
     <string name="openDrawerContentRes">open</string>
