@@ -26,7 +26,9 @@ import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
+import com.mohammadkz.porsno_android.Adapter.AnswerAdapter;
 import com.mohammadkz.porsno_android.Adapter.ConfirmNewQuestionaireAdapter;
+import com.mohammadkz.porsno_android.Adapter.NewAnswerAdapter;
 import com.mohammadkz.porsno_android.Model.Answer;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
@@ -53,6 +55,7 @@ public class NewQuestion_ConfirmFragment extends Fragment {
     ApiConfig request;
     ProgressDialog progressDialog;
     BottomSheetDialog bottomSheetDialog;
+    NewAnswerAdapter newAnswerAdapter;
 
     public NewQuestion_ConfirmFragment(Questionnaire questionnaire) {
         // Required empty public constructor
@@ -198,14 +201,16 @@ public class NewQuestion_ConfirmFragment extends Fragment {
         bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
         View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_edit_question_bottom_sheet, (RelativeLayout) view.findViewById(R.id.root));
 
-        TextInputEditText question_, answer, answer1_field, answer2_field, answer3_field, answer4_field, answer5_field, answer6_field;
-        RelativeLayout relative1, relative2, relative3, relative4, relative5, relative6;
+        TextInputEditText question_, answer;
+        TextInputLayout answer_layout;
         AnimatedCheckBox testQuestion, new_question;
         Button confirm;
         LinearLayout layout;
+        RecyclerView editList;
 
 
         answer = bottomSheetView.findViewById(R.id.answer);
+        answer_layout = bottomSheetView.findViewById(R.id.answer_layout);
         new_question = bottomSheetView.findViewById(R.id.new_question);
 
         new_question.setChecked(true);
@@ -213,55 +218,57 @@ public class NewQuestion_ConfirmFragment extends Fragment {
 
         testQuestion = bottomSheetView.findViewById(R.id.testQuestion);
         question_ = bottomSheetView.findViewById(R.id.question);
-
         question_.setText(question.getQuestion().toString());
 
-        answer1_field = bottomSheetView.findViewById(R.id.answer1_field);
-        answer2_field = bottomSheetView.findViewById(R.id.answer2_field);
-        answer3_field = bottomSheetView.findViewById(R.id.answer3_field);
-        answer4_field = bottomSheetView.findViewById(R.id.answer4_field);
-        answer5_field = bottomSheetView.findViewById(R.id.answer5_field);
-        answer6_field = bottomSheetView.findViewById(R.id.answer6_field);
-        relative1 = bottomSheetView.findViewById(R.id.relative1);
-        relative2 = bottomSheetView.findViewById(R.id.relative2);
-        relative3 = bottomSheetView.findViewById(R.id.relative3);
-        relative4 = bottomSheetView.findViewById(R.id.relative4);
-        relative5 = bottomSheetView.findViewById(R.id.relative5);
-        relative6 = bottomSheetView.findViewById(R.id.relative6);
+        editList = bottomSheetView.findViewById(R.id.editList);
+
+
         confirm = bottomSheetView.findViewById(R.id.confirm);
         layout = bottomSheetView.findViewById(R.id.layout);
 
-        // set value
-        if (!question.isTest()) {
+        if (question.isTest()) {
+            testQuestion.setChecked(false);
+
+            setEditAdapter(editList, question);
+
+            layout.setVisibility(View.VISIBLE);
+            answer.setVisibility(View.GONE);
+
+        } else {
+            testQuestion.setChecked(true);
             layout.setVisibility(View.GONE);
             answer.setVisibility(View.VISIBLE);
-            testQuestion.setChecked(true);
-        } else {
+        }
 
-            // set value in question filed
-            if (question.getAnswers().size() >= 2) {
-                answer1_field.setText(question.getAnswers().get(0).getAnswer().toString());
-                answer2_field.setText(question.getAnswers().get(1).getAnswer().toString());
-                if (question.getAnswers().size() >= 3) {
-                    relative3.setVisibility(View.VISIBLE);
-                    answer3_field.setText(question.getAnswers().get(2).getAnswer().toString());
-                    if (question.getAnswers().size() >= 4) {
-                        relative4.setVisibility(View.VISIBLE);
-                        answer4_field.setText(question.getAnswers().get(3).getAnswer().toString());
-                        if (question.getAnswers().size() >= 5) {
-                            relative5.setVisibility(View.VISIBLE);
-                            answer5_field.setText(question.getAnswers().get(4).getAnswer().toString());
-                            if (question.getAnswers().size() >= 6) {
-                                relative6.setVisibility(View.VISIBLE);
-                                answer6_field.setText(question.getAnswers().get(5).getAnswer().toString());
-                            }
-                        }
-                    }
+        testQuestion.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked) {
+                if (isChecked) {
+
+                    layout.setVisibility(View.GONE);
+                    answer_layout.setVisibility(View.VISIBLE);
+
+                } else {
+                    setEditAdapter(editList, question);
+
+                    layout.setVisibility(View.VISIBLE);
+                    answer.setVisibility(View.GONE);
+
                 }
             }
+        });
 
+        new_question.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Answer> answers = newAnswerAdapter.getAnswer();
+                answers.add(new Answer(""));
+                question.setAnswers(answers);
+                setEditAdapter(editList , question);
+            }
+        });
 
-        }
+        NewAnswerAdapter finalNewAnswerAdapter = newAnswerAdapter;
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,62 +276,47 @@ public class NewQuestion_ConfirmFragment extends Fragment {
                 question.setQuestion(question_.getText().toString());
 
                 if (testQuestion.isChecked()) {
-                    question.setTest(false);
-                    question.setAnswers(new ArrayList<>());
+                    question.setAnswers(null);
                 } else {
-                    List<Answer> answers = new ArrayList<>();
-                    if (relative1.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer1_field.getText().toString()));
-                    }
-                    if (relative2.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer2_field.getText().toString()));
-                    }
-                    if (relative3.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer3_field.getText().toString()));
-                    }
-                    if (relative4.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer4_field.getText().toString()));
-                    }
-                    if (relative5.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer5_field.getText().toString()));
-                    }
-                    if (relative6.getVisibility() == View.VISIBLE) {
-                        answers.add(new Answer(answer6_field.getText().toString()));
-                    }
-                    question.setAnswers(answers);
-                }
 
-                if (question.getAnswers().size() >= 2) {
-                    answer1_field.setText(question.getAnswers().get(0).getAnswer().toString());
-                    answer2_field.setText(question.getAnswers().get(1).getAnswer().toString());
-                    if (question.getAnswers().size() >= 3) {
-                        answer3_field.setVisibility(View.VISIBLE);
-                        answer3_field.setText(question.getAnswers().get(2).getAnswer().toString());
-                        if (question.getAnswers().size() >= 4) {
-                            answer4_field.setVisibility(View.VISIBLE);
-                            answer4_field.setText(question.getAnswers().get(3).getAnswer().toString());
-                            if (question.getAnswers().size() >= 5) {
-                                answer5_field.setVisibility(View.VISIBLE);
-                                answer5_field.setText(question.getAnswers().get(4).getAnswer().toString());
-                                if (question.getAnswers().size() >= 6) {
-                                    answer6_field.setVisibility(View.VISIBLE);
-                                    answer6_field.setText(question.getAnswers().get(5).getAnswer().toString());
-                                }
-                            }
-                        }
-                    }
+                    question.setAnswers(finalNewAnswerAdapter.getAnswer());
+
                 }
 
                 // update the list
                 questionnaire.getQuestions().remove(pos);
                 questionnaire.getQuestions().add(pos, question);
                 setAdapter();
+                bottomSheetDialog.dismiss();
             }
         });
 
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+    }
+
+    private void setEditAdapter(RecyclerView editList, Question question) {
+        newAnswerAdapter = new NewAnswerAdapter(getContext(), question.getAnswers());
+        editList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        editList.setAdapter(newAnswerAdapter);
+
+        newAnswerAdapter.setOnClickListener(new NewAnswerAdapter.OnClickListener() {
+            @Override
+            public void onClickListener(int pos) {
+
+                List<Answer> answers = newAnswerAdapter.getAnswer();
+                if (answers.size() > 2) {
+                    answers.remove(pos);
+                    question.setAnswers(answers);
+
+                    setEditAdapter(editList , question);
+
+                } else {
+                    Toasty.error(getContext(), "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
+                }
+            }
+        });
     }
 
 }
