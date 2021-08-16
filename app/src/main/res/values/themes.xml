@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PorsNo_Android" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/mainGreen</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:layoutDirection">ltr</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
@@ -33,15 +34,30 @@
     </style>
 
     <style name="CustomMaterialDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-<!--        &lt;!&ndash; Background Color&ndash;&gt;-->
-<!--        <item name="android:background">#006db3</item>-->
-<!--        &lt;!&ndash; Text Color for title and message &ndash;&gt;-->
-<!--        <item name="colorOnSurface">#000</item>-->
-<!--        &lt;!&ndash; Text Color for buttons &ndash;&gt;-->
-<!--        <item name="colorPrimary">@color/white</item>-->
+        <!--        &lt;!&ndash; Background Color&ndash;&gt;-->
+        <!--        <item name="android:background">#006db3</item>-->
+        <!--        &lt;!&ndash; Text Color for title and message &ndash;&gt;-->
+        <!--        <item name="colorOnSurface">#000</item>-->
+        <!--        &lt;!&ndash; Text Color for buttons &ndash;&gt;-->
+        <!--        <item name="colorPrimary">@color/white</item>-->
 
         <item name="android:theme">@style/Theme.PorsNo_Android</item>
 
+    </style>
+
+    <style name="tabText" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/vazir</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="date_piker" parent="android:Widget.Button">
+        <item name="android:background">@drawable/bg_date_picker</item>
+        <item name="android:theme">@style/Theme.PorsNo_Android</item>
+    </style>
+
+    <style name="btn" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:background">#5aff15</item>
     </style>
 
 </resources>
