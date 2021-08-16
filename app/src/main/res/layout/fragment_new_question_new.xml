@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,157 +7,35 @@
     android:orientation="vertical"
     tools:context=".Fragment.NewQuestion.NewQuestion_NewFragment">
 
-    <TextView
-        android:id="@+id/questionCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:text="1"
-        android:textColor="#F44336"
-        android:textSize="25dp"
-        android:textStyle="italic" />
-
-    <com.animsh.animatedcheckbox.AnimatedCheckBox
-        android:id="@+id/testQuestion"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="20dp"
-        app:border_stroke_width="2dp"
-        app:color_checked="#0CD404"
-        app:color_tick="@color/white"
-        app:color_unchecked="@color/white"
-        app:color_unchecked_stroke="#2ABD24"
-        app:small_tick="true"
-        app:tick_stroke_width="1dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/testQuestion"
-        android:fontFamily="@font/vazir"
-        android:text="سوال تشریحی"
-        android:textColor="#000"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/question_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/testQuestion"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="20dp"
-        android:hint="صورت سوال"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#FF9800"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#FF9800"
-        app:hintEnabled="true"
-        app:hintTextColor="#000">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:maxLines="6"
-            android:minLines="2"
-            android:singleLine="false"
-            android:textSize="18dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/answer_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/question_layout"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:enabled="true"
-        android:hint="جواب"
-        android:visibility="gone"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#FF9800"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#FF9800"
-        app:hintEnabled="true"
-        app:hintTextColor="#000"
-        tools:visibility="visible">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/answer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:focusedByDefault="false"
-            android:gravity="top"
-            android:inputType="textMultiLine"
-            android:maxLines="6"
-            android:minLines="3"
-            android:singleLine="false"
-            android:textSize="18dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/new_root"
-        android:layout_below="@id/answer_layout"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        android:paddingBottom="20dp"
-        android:scrollbars="vertical" />
-
-
     <RelativeLayout
-        android:id="@+id/new_root"
-        android:layout_width="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imgs"
-        android:layout_gravity="right">
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/questionCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="1"
+            android:textColor="#F44336"
+            android:textSize="25dp"
+            android:textStyle="italic" />
 
         <com.animsh.animatedcheckbox.AnimatedCheckBox
-            android:id="@+id/new_question"
+            android:id="@+id/testQuestion"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"
-            android:checked="true"
-            android:clickable="false"
             app:border_stroke_width="2dp"
             app:color_checked="#0CD404"
             app:color_tick="@color/white"
@@ -169,17 +47,152 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/new_question"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/testQuestion"
             android:fontFamily="@font/vazir"
-            android:text="گزینه ی جدید"
-            android:textColor="@color/main_green"
+            android:text="سوال تشریحی"
+            android:textColor="#000"
             android:textSize="20dp"
-            android:textStyle="bold"
-
-            />
-
+            android:textStyle="bold" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/imgs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/question_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="صورت سوال"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="#FF9800"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="#FF9800"
+            app:hintEnabled="true"
+            app:hintTextColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="6"
+                android:minLines="2"
+                android:singleLine="false"
+                android:textSize="18dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/answer_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:enabled="true"
+            android:hint="جواب"
+            android:visibility="gone"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="#FF9800"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="#FF9800"
+            app:hintEnabled="true"
+            app:hintTextColor="#000"
+            tools:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusedByDefault="false"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="6"
+                android:minLines="3"
+                android:singleLine="false"
+                android:textSize="18dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/new_root"
+            android:layout_below="@id/answer_layout"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:paddingBottom="20dp"
+            android:scrollbars="vertical" />
+
+        <RelativeLayout
+            android:id="@+id/new_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/imgs"
+            android:layout_gravity="right">
+
+            <com.animsh.animatedcheckbox.AnimatedCheckBox
+                android:id="@+id/new_question"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:checked="true"
+                android:clickable="false"
+                app:border_stroke_width="2dp"
+                app:color_checked="#0CD404"
+                app:color_tick="@color/white"
+                app:color_unchecked="@color/white"
+                app:color_unchecked_stroke="#2ABD24"
+                app:small_tick="true"
+                app:tick_stroke_width="1dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/new_question"
+                android:fontFamily="@font/vazir"
+                android:text="گزینه ی جدید"
+                android:textColor="@color/main_green"
+                android:textSize="20dp"
+                android:textStyle="bold"
+
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/imgs"
@@ -189,7 +202,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/prev"
@@ -212,8 +228,10 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/confirm_question" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
