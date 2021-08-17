@@ -264,7 +264,7 @@ public class NewQuestion_ConfirmFragment extends Fragment {
                 List<Answer> answers = newAnswerAdapter.getAnswer();
                 answers.add(new Answer(""));
                 question.setAnswers(answers);
-                setEditAdapter(editList , question);
+                setEditAdapter(editList, question);
             }
         });
 
@@ -275,12 +275,11 @@ public class NewQuestion_ConfirmFragment extends Fragment {
             public void onClick(View v) {
                 question.setQuestion(question_.getText().toString());
 
+                question.setTest(!testQuestion.isChecked());
                 if (testQuestion.isChecked()) {
-                    question.setAnswers(null);
+                    question.setAnswers(new ArrayList<>());
                 } else {
-
                     question.setAnswers(finalNewAnswerAdapter.getAnswer());
-
                 }
 
                 // update the list
@@ -310,7 +309,7 @@ public class NewQuestion_ConfirmFragment extends Fragment {
                     answers.remove(pos);
                     question.setAnswers(answers);
 
-                    setEditAdapter(editList , question);
+                    setEditAdapter(editList, question);
 
                 } else {
                     Toasty.error(getContext(), "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
