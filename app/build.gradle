@@ -7,8 +7,8 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.porsno_android"
-        minSdkVersion 21
+        applicationId "com.mohammadKz.porsno_android"
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,7 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0' //  support string to decode
 
     // toast
     implementation 'com.github.GrenderG:Toasty:1.5.0'
@@ -65,4 +66,12 @@ dependencies {
     // joda date
     compile 'joda-time:joda-time:2.10.10'
 
+    // animation
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
+
+    //persian date
+    implementation 'com.github.samanzamani.persiandate:PersianDate:0.8'
+
+    // sweet dialog
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
 }
