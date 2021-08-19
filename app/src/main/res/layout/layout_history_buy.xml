@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/kind_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/vazir"
+            android:gravity="center"
+            android:text="حساب خریداری شده:"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/kind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/kind_txt"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:text="برنز"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/trackingCode_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kind_txt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/vazir"
+            android:gravity="center"
+            android:text="کد پیگیری:"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/trackingCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kind_txt"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/trackingCode_txt"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:text="3698521456"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/trackingCode_txt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/vazir"
+            android:gravity="center"
+            android:text="مبلغ پرداخت شده:"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/trackingCode_txt"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/price_txt"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:text="30.000"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/price_txt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/vazir"
+            android:gravity="center"
+            android:text="تاریخ خرید:"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/price_txt"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/date_txt"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:text="1400/1/31"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            tool:background="#9448bc"
+            android:layout_marginLeft="10dp"
+            tool:src="" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
