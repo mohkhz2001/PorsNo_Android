@@ -27,7 +27,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/edit" />
+                android:src="@drawable/remove_question" />
 
             <ImageView
                 android:id="@+id/edit"
