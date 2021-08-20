@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -26,6 +28,7 @@ import com.mohammadkz.porsno_android.StaticFun;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     ApiConfig request;
     User user;
-    ProgressDialog progressDialog;
     ConstraintLayout root;
 
     @Override
@@ -48,9 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setMessage("منتظر باشید...");
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
         initViews();
         controllerViews();
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         if (autoLogin()) {
             getData_SharedPreferences();
         } else {
-            progressDialog.dismiss();
+//            SweetDialog.stopProgress();
             root.setVisibility(View.VISIBLE);
         }
 
@@ -79,17 +79,18 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
+                SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ورود", "لطفا منتظر باشید...");
+                SweetDialog.startProgress();
                 if (StaticFun.isNetworkAvailable(getApplicationContext())) {
                     if (checkValue()) {
                         login(false);
                     } else {
-                        progressDialog.dismiss();
+                        SweetDialog.startProgress();
+                        SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "تمامی موارد خواسته شده را وارد نمایید!");
                         Toasty.error(getApplicationContext(), "تمامی موارد خواسته شده را وارد نمایید!", Toasty.LENGTH_LONG).show();
                     }
                 } else {
-                    progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(LoginActivity.this);
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "لطفا ارتباط خود با اینترنت را بررسی نمایید.");
                 }
 
             }
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        SweetDialog.getSweetAlertDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 dialog.dismiss();
@@ -132,6 +133,9 @@ public class LoginActivity extends AppCompatActivity {
         String pass;
 
         if (shared) {
+            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ورود", "لطفا منتظر باشید...");
+            SweetDialog.getSweetAlertDialog().setCancelable(false);
+            SweetDialog.startProgress();
             pass = pwd.getText().toString();
         } else {
             pass = StaticFun.md5(pwd.getText().toString());
@@ -148,15 +152,16 @@ public class LoginActivity extends AppCompatActivity {
                         setData_SharedPreferences(pass);
                     }
 
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "خوش آمدید", "ورود با موفقیت انجام شد");
                     setUser(response.body());
                     Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                     transferData(intent);
                     start(intent);
                 } else {
-                    progressDialog.dismiss();
                     if (!shared) {
-                        StaticFun.alertDialog_error_login(LoginActivity.this);
+                        SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در ورود", "نام کاربری یا رمز عبور اشتباه است");
                     } else {
+                        SweetDialog.stopProgress();
                         root.setVisibility(View.VISIBLE);
                     }
 
@@ -165,11 +170,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                if (shared){
+                if (shared) {
                     t.getMessage();
-                    StaticFun.alertDialog_serverConnectFail(LoginActivity.this);
-                }else {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
+                    root.setVisibility(View.VISIBLE);
+                } else {
                     root.setVisibility(View.VISIBLE);
                 }
 
@@ -247,9 +252,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void start(Intent intent) {
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
         startActivity(intent);
         finish();
     }
+
 
 }

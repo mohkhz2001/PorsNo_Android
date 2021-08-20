@@ -19,12 +19,14 @@ import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
 import java.util.Random;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +35,7 @@ import retrofit2.Response;
 public class SignUp extends AppCompatActivity {
     EditText pwd, name, phoneNumber;
     Button sendSMS;
-    ProgressDialog progressDialog;
+    SweetAlertDialog sweetAlertDialog;
     ApiConfig request;
 
     @Override
@@ -43,8 +45,7 @@ public class SignUp extends AppCompatActivity {
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        progressDialog = new ProgressDialog(SignUp.this);
-        progressDialog.setMessage("منتظر باشید...");
+        SweetDialog.setSweetDialog(new SweetAlertDialog(SignUp.this, SweetAlertDialog.PROGRESS_TYPE));
 
         initViews();
         controllerViews();
@@ -62,17 +63,16 @@ public class SignUp extends AppCompatActivity {
         sendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
+                SweetDialog.setSweetDialog(new SweetAlertDialog(SignUp.this, SweetAlertDialog.PROGRESS_TYPE), "لطفا منتظر باشید...", "");
+                SweetDialog.startProgress();
                 if (StaticFun.isNetworkAvailable(getApplicationContext())) {
                     if (checkValue()) {
                         checkPN(phoneNumber.getText().toString());
                     } else {
-                        progressDialog.dismiss();
-                        Toasty.error(getApplicationContext(), "لطفا تمامی موارد را تکمیل نمایید.", Toast.LENGTH_LONG, true).show();
+                        SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "تمامی موارد خواسته شده را وارد نمایید!");
                     }
                 } else {
-                    progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(SignUp.this);
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "لطفا ارتباط خود با اینترنت را بررسی نمایید.");
                 }
 
             }
@@ -88,16 +88,14 @@ public class SignUp extends AppCompatActivity {
                 if (response.body().getStatus_code().equals("200")) {
                     confirmPhoneNumber(new User(name.getText().toString(), finalPhoneNumber, pwd.getText().toString()));
                 } else {
-                    progressDialog.dismiss();
-                    Toasty.error(getApplicationContext(), "این مشخصات موجود است", Toasty.LENGTH_LONG).show();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "کاربری قبلا با این مشخصات ثبت نام کرده است.");
                 }
             }
 
             @Override
             public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
                 t.getMessage();
-                StaticFun.alertDialog_serverConnectFail(SignUp.this);
-                progressDialog.dismiss();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
             }
         });
 
@@ -106,7 +104,7 @@ public class SignUp extends AppCompatActivity {
     private void confirmPhoneNumber(User user) {
         Intent intent = new Intent(this, ConfirmPhoneNumberActivity.class);
         transferData(user, intent);
-        progressDialog.dismiss();
+        SweetDialog.startProgress();
         startActivity(intent);
         finish();
     }

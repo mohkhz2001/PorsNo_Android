@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 public class WebViewActivity extends AppCompatActivity {
@@ -22,7 +25,6 @@ public class WebViewActivity extends AppCompatActivity {
     String backUrl = "http://185.190.39.159/Porseshno_backend/";
     boolean loadingFinished = true;
     boolean redirect = false;
-    ProgressDialog progressDialog;
 
 
     @Override
@@ -30,11 +32,11 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("در حال دریافت اطلاعات...");
-        progressDialog.setCancelable(false);
+        SweetDialog.setSweetDialog(new SweetAlertDialog(WebViewActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+        SweetDialog.getSweetAlertDialog().setCancelable(false);
+        SweetDialog.startProgress();
 
-        progressDialog.show();
+
         Bundle extras = getIntent().getExtras();
         url = extras.getString("url");
         initViews();
@@ -70,9 +72,13 @@ public class WebViewActivity extends AppCompatActivity {
                 if (url.contains(backUrl)) {
                     WebViewActivity.super.finish();
                 }
-                progressDialog.dismiss();
+                SweetDialog.stopProgress();
             }
 
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                Log.e("a" , "Aaa");
+            }
         });
     }
 

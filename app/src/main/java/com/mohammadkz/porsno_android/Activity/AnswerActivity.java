@@ -28,6 +28,7 @@ import com.mohammadkz.porsno_android.Model.QuestionAnswer;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -40,6 +41,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +49,6 @@ import retrofit2.Response;
 
 public class AnswerActivity extends AppCompatActivity {
 
-    ProgressDialog progressDialog;
     ApiConfig request;
     Questionnaire questionnaire;
     RecyclerView list;
@@ -62,10 +63,7 @@ public class AnswerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("منتظر باشید...");
-        progressDialog.setCancelable(false);
-
+        SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
@@ -91,7 +89,6 @@ public class AnswerActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
                 if (adapter != null && user != null) {
                     save();
                 }
@@ -118,28 +115,28 @@ public class AnswerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getApplicationContext(), R.style.CustomMaterialDialog);
-        builder.setTitle("خروج");
-        builder.setMessage("در صورت خروج جواب های شما ذخیره نمی شوند.\nآیا از خروج خود اطمینان دارین؟");
-        String positive = "بستن";
-
-        // have one btn ==> close
-        builder.setPositiveButton(positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-            }
-        });
-
-        builder.show();
-        super.onBackPressed();
-        return;
+        SweetDialog.startProgress();
+        SweetDialog.changeSweet(SweetAlertDialog.WARNING_TYPE, "خروج", "در صورت خروج جواب های شما ذخیره نمی شوند.\nآیا از خروج خود اطمینان دارین؟");
+        SweetDialog.getSweetAlertDialog()
+                .setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .setConfirmButton("خروج", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AnswerActivity.super.onBackPressed();
+                    }
+                });
 
     }
 
     private void getQuestion() {
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
+
         Call<GetQuestionResponse> get = request.getQuestion("qId", getQuestionId());
 
         get.enqueue(new Callback<GetQuestionResponse>() {
@@ -150,30 +147,25 @@ public class AnswerActivity extends AppCompatActivity {
                     parseDate(response.body());
 
                 } else {
-                    progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(AnswerActivity.this);
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            AnswerActivity.super.finish();
+                        }
+                    });
                 }
             }
 
             @Override
             public void onFailure(Call<GetQuestionResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                new MaterialAlertDialogBuilder(AnswerActivity.this, R.style.CustomMaterialDialog)
-                        .setTitle("مشکل در برقراری ارتباط")
-                        .setMessage("مشکل در برقراری ارتباط با سرور\nلطفا بعد از اطمینان از اتصال خود به اینترنت دوباره تلاش نمایید.")
-                        .setCancelable(false)
-                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                AnswerActivity.super.finish();
-                            }
-                        })
-                        .setNegativeButton("بستن", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AnswerActivity.super.finish();
-                            }
-                        }).show();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        AnswerActivity.super.finish();
+                    }
+                });
             }
         });
 
@@ -185,8 +177,6 @@ public class AnswerActivity extends AppCompatActivity {
         questionnaire.setId(data.getQuestionId());
         questionnaire.setUserId(data.getUserId());
 
-//        if (questionnaire.getUserId().equals(user.getID()))
-//            done.setVisibility(View.GONE);
 
         List<Question> questions = new ArrayList<>();
         try {
@@ -232,10 +222,12 @@ public class AnswerActivity extends AppCompatActivity {
 
         list.setAdapter(adapter);
 
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
     }
 
     private void save() {
+        SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ارسال اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
         List<QuestionAnswer> list = adapter.answers();
         Gson gson = new Gson();
         String json = gson.toJson(list);
@@ -246,29 +238,44 @@ public class AnswerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
-                    progressDialog.dismiss();
-                    Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
-                    AnswerActivity.super.finish();
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "جواب های شما با موفقیت ثبت شدند", "");
+                    SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
+                            AnswerActivity.super.finish();
+                        }
+                    });
+
                 } else {
-                    progressDialog.dismiss();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    SweetDialog.getSweetAlertDialog()
+                            .setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                }
+                            })
+                            .setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    save();
+                                }
+                            });
 
                 }
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                new MaterialAlertDialogBuilder(AnswerActivity.this, R.style.CustomMaterialDialog)
-                        .setCancelable(false)
-                        .setPositiveButton("تلاش مجدد", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                save();
-                            }
-                        })
-                        .setTitle("مشکل در برقراری ارتباط")
-                        .setMessage("متاسفانه توانایی برقراری ارتباط با سرور میسر نمی باشد")
-                        .show();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    }
+                });
             }
         });
     }

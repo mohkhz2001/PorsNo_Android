@@ -14,11 +14,13 @@ import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Adapter.BuyHistoryAdapter;
 import com.mohammadkz.porsno_android.Model.Response.HistoryBuyResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +61,8 @@ public class History_BuyFragment extends Fragment {
     }
 
     private void getData() {
+
+        SweetDialog.startProgress();
         Call<List<HistoryBuyResponse>> get = request.getBuyHistory(user.getID());
 
         get.enqueue(new Callback<List<HistoryBuyResponse>>() {
@@ -67,13 +71,13 @@ public class History_BuyFragment extends Fragment {
                 if (response.body().size() > 0) {
                     setAdapter(response.body());
                 } else {
-                    System.out.println();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<HistoryBuyResponse>> call, Throwable t) {
-                System.out.println();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
     }
@@ -84,5 +88,6 @@ public class History_BuyFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list.setLayoutManager(linearLayoutManager);
         list.setAdapter(buyHistoryAdapter);
+        SweetDialog.stopProgress();
     }
 }

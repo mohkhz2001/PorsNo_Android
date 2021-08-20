@@ -24,6 +24,7 @@ import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
 import com.mohammadkz.porsno_android.Model.Response.SMSResponse;
 import com.mohammadkz.porsno_android.Model.Response.SignUpResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -40,6 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,8 +55,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     String codeToConfirm;
     int timer = 120, m = 0;
 
-    ProgressDialog progressDialog;
-
     ApiConfig request;
 
     @Override
@@ -62,8 +62,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_phone_number);
 
-        progressDialog = new ProgressDialog(ConfirmPhoneNumberActivity.this);
-        progressDialog.setMessage("منتظر باشید...");
+        SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
@@ -228,7 +227,8 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
+                SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE), "لطفا منتظر باشید...", "");
+                SweetDialog.startProgress();
                 String code = code1.getText().toString() + code2.getText().toString() + code3.getText().toString() + code4.getText().toString() + "";
 
                 if (StaticFun.isNetworkAvailable(ConfirmPhoneNumberActivity.this)) {
@@ -238,11 +238,10 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                         completeRegister();
 
                     } else {
-                        progressDialog.dismiss();
-                        Toasty.error(getApplicationContext(), "کد وارد شده صحیح نمی باشد.", Toasty.LENGTH_LONG).show();
+                        SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "کد وارد شده صحیح نمی باشد.");
                     }
                 } else {
-                    StaticFun.alertDialog_serverConnectFail(ConfirmPhoneNumberActivity.this);
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "لطفا ارتباط خود با اینترنت را بررسی نمایید.");
                 }
 
             }
@@ -268,7 +267,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     }
 
     private void requestCode() {
-        progressDialog.show();
+        SweetDialog.startProgress();
         Call<SMSResponse> get = request.SendSMS(user.getPn());
 
         get.enqueue(new Callback<SMSResponse>() {
@@ -276,18 +275,16 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onResponse(Call<SMSResponse> call, Response<SMSResponse> response) {
                 if (response.body().getSmsCode().equals("200")) {
                     codeToConfirm = response.body().getSmsCode();
-                    progressDialog.dismiss();
+                    SweetDialog.stopProgress();
                 } else {
-                    StaticFun.alertDialog_connectionFail(getApplicationContext());
-                    progressDialog.dismiss();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<SMSResponse> call, Throwable t) {
                 t.getMessage();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
-                progressDialog.dismiss();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
             }
         });
     }
@@ -305,15 +302,13 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                     setData_SharedPreferences();
                     start();
                 } else {
-                    progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(ConfirmPhoneNumberActivity.this);
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<SignUpResponse> call, Throwable t) {
-                t.getMessage();
-                StaticFun.alertDialog_serverConnectFail(ConfirmPhoneNumberActivity.this);
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
             }
         });
     }
@@ -336,7 +331,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
     private void start() {
         Intent intent = new Intent(this, MainPageActivity.class);
         transferData(intent);
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
         startActivity(intent);
         finish();
     }

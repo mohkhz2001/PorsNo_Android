@@ -14,6 +14,7 @@ public class SweetDialog {
 
     public static void setSweetDialog(SweetAlertDialog sweetDialog) {
         sweetAlertDialog = sweetDialog;
+        sweetAlertDialog.setCancelable(false);
     }
 
     public static SweetAlertDialog getSweetAlertDialog() {

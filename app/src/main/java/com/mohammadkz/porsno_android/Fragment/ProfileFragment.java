@@ -21,13 +21,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Activity.AnswerActivity;
 import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate;
@@ -45,7 +48,6 @@ public class ProfileFragment extends Fragment {
     PersianDatePickerDialog datePickerDialog;
     Button done;
     ApiConfig request;
-    ProgressDialog progressDialog;
     BottomSheetDialog bottomSheetDialog;
 
     public ProfileFragment(User user) {
@@ -61,8 +63,8 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("منتظر باشید...");
+
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
 
         initViews();
         controllerViews();
@@ -98,7 +100,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 ReBuyFragment reBuyFragment = new ReBuyFragment(user);
-                ((MainPageActivity)getActivity()).setDrawerSelect(R.id.reBuy);
+                ((MainPageActivity) getActivity()).setDrawerSelect(R.id.reBuy);
                 fragmentTransaction.replace(R.id.frameLayout, reBuyFragment).commit();
             }
         });
@@ -184,17 +186,17 @@ public class ProfileFragment extends Fragment {
                     user.setName(name.getText().toString());
                     user.setBirthdayDate(birthdayDate.getText().toString());
 
-                    progressDialog.dismiss();
+                    SweetDialog.stopProgress();
 
                     ((MainPageActivity) getActivity()).updateUser(user);
                 } else {
-                    Toasty.error(getContext(), "shiiit", Toasty.LENGTH_SHORT, true).show();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
     }
@@ -208,7 +210,8 @@ public class ProfileFragment extends Fragment {
 
     // bottom choose => camera or file(gallery)
     public void bottomSheetChooser() {
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
 
         bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet_pwd, (LinearLayout) view.findViewById(R.id.layout));
@@ -228,8 +231,7 @@ public class ProfileFragment extends Fragment {
                     checkPrePwd(now_pas.getText().toString(), new_pas.getText().toString());
 
                 } else {
-                    progressDialog.dismiss();
-                    Toasty.error(getContext(), "همه ی موارد باید تکمیل شوند", Toasty.LENGTH_SHORT, true).show();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
 
             }
@@ -251,12 +253,12 @@ public class ProfileFragment extends Fragment {
                 if (response.body().getStatus_code().equals("200")) {
                     update(true, StaticFun.md5(finalPwd));
                 } else
-                    Toasty.error(getContext(), "پسور وارد شده اشتباه است", Toasty.LENGTH_SHORT, true).show();
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
 

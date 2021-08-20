@@ -27,6 +27,7 @@ import com.mohammadkz.porsno_android.Adapter.QuestionAdapter;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -34,6 +35,7 @@ import com.mohammadkz.porsno_android.StaticFun;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate;
@@ -50,7 +52,7 @@ public class MyQuestionFragment extends Fragment {
     FloatingActionButton fab_add;
     User user;
     ApiConfig request;
-    ProgressDialog progressDialog;
+
 
     public MyQuestionFragment(User user) {
         // Required empty public constructor
@@ -65,10 +67,9 @@ public class MyQuestionFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_my_question, container, false);
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("منتظر باشید...");
 
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+
         initViews();
         controllerView();
         getData();
@@ -102,20 +103,25 @@ public class MyQuestionFragment extends Fragment {
     }
 
     private void getData() {
-
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
         Call<List<GetQuestionResponse>> get = request.getQuestions("uId", user.getID());
 
 
         get.enqueue(new Callback<List<GetQuestionResponse>>() {
             @Override
             public void onResponse(Call<List<GetQuestionResponse>> call, Response<List<GetQuestionResponse>> response) {
-                setAdapter(response.body() != null ? response.body() : (new ArrayList<GetQuestionResponse>()));
+                if (response.body().size() >= 0) {
+
+                    setAdapter(response.body() != null ? response.body() : (new ArrayList<GetQuestionResponse>()));
+                } else {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                }
             }
 
             @Override
             public void onFailure(Call<List<GetQuestionResponse>> call, Throwable t) {
-                progressDialog.dismiss();
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
     }
@@ -131,13 +137,12 @@ public class MyQuestionFragment extends Fragment {
 
             questionAdapter = new QuestionAdapter(getContext(), questionnaireList);
             myQuestionList.setAdapter(questionAdapter);
-            progressDialog.dismiss();
+            SweetDialog.stopProgress();
 
             questionAdapter.setOnItemClickListener(new QuestionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int pos, View v) {
                     Log.e("qId", " " + pos);
-                    progressDialog.show();
                     Intent intent = new Intent(getContext(), AnswerActivity.class);
                     intent.putExtra("qId", questionnaireList.get(pos).getQuestionId());
                     transferData(intent);
@@ -145,14 +150,12 @@ public class MyQuestionFragment extends Fragment {
                 }
             });
         }
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
         getData();
     }
 

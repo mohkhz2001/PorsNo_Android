@@ -23,12 +23,14 @@ import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Activity.AnswerActivity;
 import com.mohammadkz.porsno_android.Adapter.QuestionAdapter;
 import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +43,6 @@ public class AllQuestionFragment extends Fragment {
     ApiConfig request;
     FloatingActionButton filter;
     CardView filter_card;
-    ProgressDialog progressDialog;
     User user;
 
     public AllQuestionFragment(User user) {
@@ -57,8 +58,8 @@ public class AllQuestionFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_all_question, container, false);
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("منتظر باشید...");
+
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
 
         initViews();
         controllerViews();
@@ -99,21 +100,24 @@ public class AllQuestionFragment extends Fragment {
     }
 
     private void getData() {
-
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
         Call<List<GetQuestionResponse>> get = request.getQuestions("-", "-");
 
 
         get.enqueue(new Callback<List<GetQuestionResponse>>() {
             @Override
             public void onResponse(Call<List<GetQuestionResponse>> call, Response<List<GetQuestionResponse>> response) {
-                Log.e("size", response.body().size() + " ");
-                setAdapter(response.body());
+                if (response.body().size() >= 0) {
+                    setAdapter(response.body());
+                } else {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                }
             }
 
             @Override
             public void onFailure(Call<List<GetQuestionResponse>> call, Throwable t) {
-                progressDialog.dismiss();
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
     }
@@ -129,13 +133,12 @@ public class AllQuestionFragment extends Fragment {
 
             questionAdapter = new QuestionAdapter(getContext(), questionnaireList);
             list.setAdapter(questionAdapter);
-            progressDialog.dismiss();
+            SweetDialog.stopProgress();
 
             questionAdapter.setOnItemClickListener(new QuestionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int pos, View v) {
                     Log.e("qId", " " + pos);
-                    progressDialog.show();
                     Intent intent = new Intent(getContext(), AnswerActivity.class);
                     intent.putExtra("qId", questionnaireList.get(pos).getQuestionId());
                     transferData(intent);
@@ -156,7 +159,7 @@ public class AllQuestionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
         getData();
     }
 }

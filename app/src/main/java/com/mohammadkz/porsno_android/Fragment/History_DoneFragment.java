@@ -16,12 +16,14 @@ import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Adapter.AnswerHistoryAdapter;
 import com.mohammadkz.porsno_android.Model.Response.AnswerHistoryResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 
 import java.io.IOException;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +50,7 @@ public class History_DoneFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_history_done, container, false);
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
+
         initViews();
         controllerViews();
         getData();
@@ -71,6 +74,7 @@ public class History_DoneFragment extends Fragment {
     }
 
     private void getData() {
+
         Call<List<AnswerHistoryResponse>> get = request.getAnswerHistory(user.getID());
 
         get.enqueue(new Callback<List<AnswerHistoryResponse>>() {
@@ -79,13 +83,13 @@ public class History_DoneFragment extends Fragment {
                 if (response.body().size() > 0) {
                     setAdapter(response.body());
                 } else {
-                    Log.e("test", "1shiit");
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<AnswerHistoryResponse>> call, Throwable t) {
-                Log.e("test", "shiit");
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
     }
@@ -96,5 +100,7 @@ public class History_DoneFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.list.setLayoutManager(linearLayoutManager);
         this.list.setAdapter(answerHistoryAdapter);
+
+        SweetDialog.stopProgress();
     }
 }

@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Activity.AnswerActivity;
 import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Activity.WebViewActivity;
 import com.mohammadkz.porsno_android.Model.PriceResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.Response.UpgradeResponse;
 import com.mohammadkz.porsno_android.Model.Response.UrlResponse;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -35,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +49,6 @@ public class ReBuyFragment extends Fragment {
     View view;
     User user;
     ApiConfig request;
-    ProgressDialog progressDialog;
     Button diamondPrice_btn, goldPrice_btn, steelPrice_btn, bronzePrice_btn;
     TextView diamondPrice_txt, goldPrice_txt, steelPrice_txt, bronzePrice_txt, dayLeft, accountLevel;
     ConstraintLayout root;
@@ -67,8 +69,7 @@ public class ReBuyFragment extends Fragment {
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("در حال دریافت اطلاعات");
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
 
         initViews();
         controllerViews();
@@ -120,7 +121,9 @@ public class ReBuyFragment extends Fragment {
     }
 
     private void getPrice() {
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
+
         Call<List<PriceResponse>> get = request.getPrice();
 
         get.enqueue(new Callback<List<PriceResponse>>() {
@@ -131,15 +134,26 @@ public class ReBuyFragment extends Fragment {
                     setValue(response.body().get(0).getCost(), response.body().get(1).getCost(), response.body().get(2).getCost(), response.body().get(3).getCost());
 
                 } else {
-                    StaticFun.alertDialog_connectionFail(getContext());
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            getPrice();
+                        }
+                    });
                 }
 
             }
 
             @Override
             public void onFailure(Call<List<PriceResponse>> call, Throwable t) {
-                System.out.println();
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        getPrice();
+                    }
+                });
             }
         });
     }
@@ -164,7 +178,7 @@ public class ReBuyFragment extends Fragment {
 
         parseDate();
         root.setVisibility(View.VISIBLE);
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
     }
 
     private void parseDate() {
@@ -188,17 +202,28 @@ public class ReBuyFragment extends Fragment {
 
     private void upgradeAccount(String level) {
 
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
+
         Call<UpgradeResponse> get = request.upgradeAccount(level, user.getID());
 
         get.enqueue(new Callback<UpgradeResponse>() {
             @Override
             public void onResponse(Call<UpgradeResponse> call, Response<UpgradeResponse> response) {
+                // should check the response
                 refresh(response.body());
+                SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "ارتقا یافت", "حساب شما ارتقا یافت.");
             }
 
             @Override
             public void onFailure(Call<UpgradeResponse> call, Throwable t) {
-                StaticFun.alertDialog_connectionFail(getContext());
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                    }
+                });
             }
         });
     }
@@ -217,7 +242,8 @@ public class ReBuyFragment extends Fragment {
     }
 
     private void generatePayUrl(String price) {
-        progressDialog.show();
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.startProgress();
 
         Call<UrlResponse> get = request.getUrl(price, user.getName(), user.getPn());
 
@@ -242,8 +268,7 @@ public class ReBuyFragment extends Fragment {
             intent.putExtra("url", urlResponse.getLink());
             startActivity(intent);
         } else {
-            progressDialog.dismiss();
-            Toasty.error(getContext(), "متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.", Toasty.LENGTH_SHORT).show();
+            SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.");
         }
 
     }
@@ -251,7 +276,7 @@ public class ReBuyFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        progressDialog.dismiss();
+        SweetDialog.stopProgress();
     }
 
     @Override
