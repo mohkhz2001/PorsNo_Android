@@ -165,13 +165,11 @@
                             android:fontFamily="@font/vazir"
                             android:lineSpacingExtra="2dp"
                             android:padding="10dp"
-                            android:text="90 روز  شارژ حساب\n
-20 پرسشنامه جدید\n
-7 روز هدیه\n
-اولویت در پاسخگویی به شماش\n
-دانلود خروجی اکسل از کل پاسخ ها و
-کارنامه های شرکت کننده ه\nا
-ساخت از انواع سوالات تستی و تشریحی"
+                            android:text="20 روز شارژ حساب\n
+2 پرسشنامه جدید\n
+9 روز هدیه\n
+دریافت کارنامه شرکت کنندگان
+ساخت انواع سوالات تستی و تشریحی"
                             android:textColor="#000"
                             android:textSize="15dp"
                             android:textStyle="bold" />
@@ -287,13 +285,12 @@
                             android:fontFamily="@font/vazir"
                             android:lineSpacingExtra="2dp"
                             android:padding="10dp"
-                            android:text="90 روز  شارژ حساب\n
-20 پرسشنامه جدید\n
-7 روز هدیه\n
-اولویت در پاسخگویی به شماش\n
-دانلود خروجی اکسل از کل پاسخ ها و
-کارنامه های شرکت کننده ه\nا
-ساخت از انواع سوالات تستی و تشریحی"
+                            android:text="50 روز شارژ حساب\n
+10 پرسشنامه جدید\n
+10 روز هدیه\n
+دانلود خروجی اکسل از کل پاسخ ها و کارنامه های شرکت کننده ها\n
+ساخت انواع سوالات تستی و تشریحی
+"
                             android:textColor="#000"
                             android:textSize="15dp"
                             android:textStyle="bold" />
@@ -410,13 +407,11 @@
                             android:fontFamily="@font/vazir"
                             android:lineSpacingExtra="2dp"
                             android:padding="10dp"
-                            android:text="90 روز  شارژ حساب\n
+                            android:text=" 70 روز شارژ حساب\n
 20 پرسشنامه جدید\n
-7 روز هدیه\n
-اولویت در پاسخگویی به شماش\n
-دانلود خروجی اکسل از کل پاسخ ها و
-کارنامه های شرکت کننده ه\nا
-ساخت از انواع سوالات تستی و تشریحی"
+10 روز هدیه\n
+دانلود خروجی اکسل از کل پاسخ ها و کارنامه های شرکت کننده ها\n
+ساخت انواع سوالات تستی و تشریحی"
                             android:textColor="#000"
                             android:textSize="15dp"
                             android:textStyle="bold" />
@@ -532,13 +527,12 @@
                             android:fontFamily="@font/vazir"
                             android:lineSpacingExtra="2dp"
                             android:padding="10dp"
-                            android:text="90 روز  شارژ حساب\n
-20 پرسشنامه جدید\n
-7 روز هدیه\n
-اولویت در پاسخگویی به شماش\n
-دانلود خروجی اکسل از کل پاسخ ها و
-کارنامه های شرکت کننده ه\nا
-ساخت از انواع سوالات تستی و تشریحی"
+                            android:text=" 100 روز شارژ حساب\n
+40 پرسشنامه جدید\n
+10 پرسشنامه هدیه\n
+10 روز هدیه\n
+دانلود خروجی اکسل از کل پاسخ ها و کارنامه های شرکت کننده ها\n
+ساخت انواع سوالات تستی و تشریحی"
                             android:textColor="#000"
                             android:textSize="15dp"
                             android:textStyle="bold" />
