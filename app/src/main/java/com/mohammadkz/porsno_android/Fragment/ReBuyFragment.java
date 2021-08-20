@@ -1,10 +1,12 @@
 package com.mohammadkz.porsno_android.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,11 @@ import android.widget.TextView;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Activity.MainPageActivity;
+import com.mohammadkz.porsno_android.Activity.WebViewActivity;
 import com.mohammadkz.porsno_android.Model.PriceResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.Response.UpgradeResponse;
+import com.mohammadkz.porsno_android.Model.Response.UrlResponse;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -46,6 +50,8 @@ public class ReBuyFragment extends Fragment {
     Button diamondPrice_btn, goldPrice_btn, steelPrice_btn, bronzePrice_btn;
     TextView diamondPrice_txt, goldPrice_txt, steelPrice_txt, bronzePrice_txt, dayLeft, accountLevel;
     ConstraintLayout root;
+    boolean webViewOpen = false;
+    List<PriceResponse> priceResponse;
 
     public ReBuyFragment(User user) {
         // Required empty public constructor
@@ -95,7 +101,8 @@ public class ReBuyFragment extends Fragment {
         bronzePrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upgradeAccount("bronze");
+//                upgradeAccount("bronze");
+                generatePayUrl(priceResponse.get(0).getCost());
             }
         });
         goldPrice_btn.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +127,7 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PriceResponse>> call, Response<List<PriceResponse>> response) {
                 if (response.body().size() > 0) {
-
+                    priceResponse = response.body();
                     setValue(response.body().get(0).getCost(), response.body().get(1).getCost(), response.body().get(2).getCost(), response.body().get(3).getCost());
 
                 } else {
@@ -144,6 +151,17 @@ public class ReBuyFragment extends Fragment {
         goldPrice_txt.setText(decimalFormat.format(Integer.parseInt(gold)) + " تومان");
         steelPrice_txt.setText(decimalFormat.format(Integer.parseInt(steel)) + " تومان");
         diamondPrice_txt.setText(decimalFormat.format(Integer.parseInt(diamond)) + " تومان");
+
+        if (user.getAccountLevel() == StaticFun.account.Bronze) {
+            accountLevel.setText("برنز");
+        } else if (user.getAccountLevel() == StaticFun.account.Steel) {
+            accountLevel.setText("نقره ای");
+        } else if (user.getAccountLevel() == StaticFun.account.Diamond) {
+            accountLevel.setText("الماسی");
+        } else if (user.getAccountLevel() == StaticFun.account.Gold) {
+            accountLevel.setText("طلایی");
+        }
+
         parseDate();
         root.setVisibility(View.VISIBLE);
         progressDialog.dismiss();
@@ -196,5 +214,50 @@ public class ReBuyFragment extends Fragment {
 
         ((MainPageActivity) getActivity()).updateUser(user);
 
+    }
+
+    private void generatePayUrl(String price) {
+        progressDialog.show();
+
+        Call<UrlResponse> get = request.getUrl(price, user.getName(), user.getPn());
+
+        get.enqueue(new Callback<UrlResponse>() {
+            @Override
+            public void onResponse(Call<UrlResponse> call, Response<UrlResponse> response) {
+                WebViewStart(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UrlResponse> call, Throwable t) {
+                System.out.println();
+            }
+        });
+    }
+
+    private void WebViewStart(UrlResponse urlResponse) {
+        if (urlResponse.getLink() != null && urlResponse != null && urlResponse.getLink() != null) {
+
+            webViewOpen = true;
+            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+            intent.putExtra("url", urlResponse.getLink());
+            startActivity(intent);
+        } else {
+            progressDialog.dismiss();
+            Toasty.error(getContext(), "متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.", Toasty.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (webViewOpen)
+            getPrice();
     }
 }
