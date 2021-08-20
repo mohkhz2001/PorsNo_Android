@@ -6,12 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -48,6 +51,7 @@ public class AnswerActivity extends AppCompatActivity {
     ApiConfig request;
     Questionnaire questionnaire;
     RecyclerView list;
+    LinearLayoutManager linearLayoutManager;
     MaterialToolbar topAppBar;
     ConfirmNewQuestionaireAdapter adapter;
     Button done;
@@ -60,6 +64,7 @@ public class AnswerActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("منتظر باشید...");
+        progressDialog.setCancelable(false);
 
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
@@ -92,6 +97,18 @@ public class AnswerActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // make the done btn end of the list
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (linearLayoutManager.findFirstVisibleItemPosition() != 0) {
+                    done.setVisibility(View.VISIBLE);
+                } else {
+                    done.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private String getQuestionId() {
@@ -100,7 +117,25 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getApplicationContext(), R.style.CustomMaterialDialog);
+        builder.setTitle("خروج");
+        builder.setMessage("در صورت خروج جواب های شما ذخیره نمی شوند.\nآیا از خروج خود اطمینان دارین؟");
+        String positive = "بستن";
+
+        // have one btn ==> close
+        builder.setPositiveButton(positive, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
         super.onBackPressed();
+        return;
+
     }
 
     private void getQuestion() {
@@ -116,14 +151,29 @@ public class AnswerActivity extends AppCompatActivity {
 
                 } else {
                     progressDialog.dismiss();
-                    StaticFun.alertDialog_connectionFail(getApplicationContext());
+                    StaticFun.alertDialog_connectionFail(AnswerActivity.this);
                 }
             }
 
             @Override
             public void onFailure(Call<GetQuestionResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                StaticFun.alertDialog_connectionFail(getApplicationContext());
+                new MaterialAlertDialogBuilder(AnswerActivity.this, R.style.CustomMaterialDialog)
+                        .setTitle("مشکل در برقراری ارتباط")
+                        .setMessage("مشکل در برقراری ارتباط با سرور\nلطفا بعد از اطمینان از اتصال خود به اینترنت دوباره تلاش نمایید.")
+                        .setCancelable(false)
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                AnswerActivity.super.finish();
+                            }
+                        })
+                        .setNegativeButton("بستن", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AnswerActivity.super.finish();
+                            }
+                        }).show();
             }
         });
 
@@ -176,7 +226,7 @@ public class AnswerActivity extends AppCompatActivity {
 
     private void setAdapter() {
         adapter = new ConfirmNewQuestionaireAdapter(getApplicationContext(), questionnaire.getQuestions(), false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list.setLayoutManager(linearLayoutManager);
 
@@ -197,14 +247,28 @@ public class AnswerActivity extends AppCompatActivity {
             public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
                     progressDialog.dismiss();
+                    Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
+                    AnswerActivity.super.finish();
                 } else {
                     progressDialog.dismiss();
+
                 }
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                new MaterialAlertDialogBuilder(AnswerActivity.this, R.style.CustomMaterialDialog)
+                        .setCancelable(false)
+                        .setPositiveButton("تلاش مجدد", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                save();
+                            }
+                        })
+                        .setTitle("مشکل در برقراری ارتباط")
+                        .setMessage("متاسفانه توانایی برقراری ارتباط با سرور میسر نمی باشد")
+                        .show();
             }
         });
     }

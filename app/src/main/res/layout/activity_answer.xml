@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:screenOrientation="portrait"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:screenOrientation="portrait"
     tools:context=".Activity.AnswerActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -33,15 +34,15 @@
         android:id="@+id/list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingBottom="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintWidth_max="520dp" />
 
     <Button
         android:id="@+id/done"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
@@ -55,8 +56,10 @@
         android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_max="300dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
