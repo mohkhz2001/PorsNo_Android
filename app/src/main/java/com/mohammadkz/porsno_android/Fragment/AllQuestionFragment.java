@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
@@ -35,6 +39,8 @@ public class AllQuestionFragment extends Fragment {
     View view;
     RecyclerView list;
     ApiConfig request;
+    FloatingActionButton filter;
+    CardView filter_card;
     ProgressDialog progressDialog;
     User user;
 
@@ -63,11 +69,33 @@ public class AllQuestionFragment extends Fragment {
 
     private void initViews() {
         list = view.findViewById(R.id.list);
-
+        filter = view.findViewById(R.id.filter);
+        filter_card = view.findViewById(R.id.filter_card);
+        YoYo.with(Techniques.SlideInDown)
+                .duration(300)
+                .repeat(0)
+                .playOn(view.findViewById(R.id.list));
     }
 
     private void controllerViews() {
-
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (filter_card.getVisibility() == View.VISIBLE) {
+                    YoYo.with(Techniques.SlideInUp)
+                            .duration(600)
+                            .repeat(0)
+                            .playOn(view.findViewById(R.id.filter_card));
+                    filter_card.setVisibility(View.GONE);
+                } else {
+                    filter_card.setVisibility(View.VISIBLE);
+                    YoYo.with(Techniques.SlideInDown)
+                            .duration(300)
+                            .repeat(0)
+                            .playOn(view.findViewById(R.id.filter_card));
+                }
+            }
+        });
     }
 
     private void getData() {
