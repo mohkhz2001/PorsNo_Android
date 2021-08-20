@@ -109,7 +109,7 @@ public class MainPageActivity extends AppCompatActivity {
                         break;
                     case R.id.history:
                         nav_view.setCheckedItem(R.id.history);
-                        HistoryFragment historyFragment = new HistoryFragment();
+                        HistoryFragment historyFragment = new HistoryFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout , historyFragment).commit();
                         break;
                     case R.id.about:
