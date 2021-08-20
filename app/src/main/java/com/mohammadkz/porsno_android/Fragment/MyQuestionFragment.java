@@ -31,6 +31,7 @@ import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -108,7 +109,7 @@ public class MyQuestionFragment extends Fragment {
         get.enqueue(new Callback<List<GetQuestionResponse>>() {
             @Override
             public void onResponse(Call<List<GetQuestionResponse>> call, Response<List<GetQuestionResponse>> response) {
-                setAdapter(response.body());
+                setAdapter(response.body() != null ? response.body() : (new ArrayList<GetQuestionResponse>()));
             }
 
             @Override
