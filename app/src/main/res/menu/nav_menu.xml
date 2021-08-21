@@ -26,10 +26,6 @@
             android:icon="@drawable/history"
             android:title="تاریخچه" />
         <item
-            android:id="@+id/about"
-            android:icon="@drawable/information"
-            android:title="درباره ی ما" />
-        <item
             android:id="@+id/contact"
             android:icon="@drawable/contact_us"
             android:title="راه های ارتباطی" />
