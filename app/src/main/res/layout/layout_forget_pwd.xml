@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.MaterialComponents.Light.NoActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/bg_bottom_sheet"
+    android:paddingTop="5dp"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pn_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:enabled="true"
+        android:hint="شماره تلفن"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="visible"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/pn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_edit_text_white"
+        android:hint="کد "
+        android:padding="10dp"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pn_layout"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/get"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="دریافت کد"
+        android:textColor="#2e2e2e"
+        android:textSize="29dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/code" />
+
+    <Button
+        android:id="@+id/confirmCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="تایید کد"
+        android:textColor="#2e2e2e"
+        android:textSize="29dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/get"
+        tools:visibility="visible" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/new_pn_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:enabled="true"
+        android:hint="رمز عبور جدید"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="gone"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmCode"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/new_pn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/new_rePn_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:enabled="true"
+        android:hint="رمز عبور جدید"
+        android:textAlignment="textStart"
+        android:textDirection="rtl"
+        android:visibility="gone"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#05AD00"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#05AD00"
+        app:errorTextColor="#FF0000"
+        app:hintEnabled="true"
+        app:hintTextColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_pn_layout"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/new_rePn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:fontFamily="@font/vazir"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="تایید"
+        android:textColor="#2e2e2e"
+        android:textSize="29dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_rePn_layout"
+        tools:visibility="visible" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

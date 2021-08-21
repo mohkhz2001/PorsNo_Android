@@ -2,9 +2,9 @@ package com.mohammadkz.porsno_android.API;
 
 
 import com.mohammadkz.porsno_android.Model.PriceResponse;
-import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.Response.AnswerHistoryResponse;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
+import com.mohammadkz.porsno_android.Model.Response.ForgetPwdResponse;
 import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
 import com.mohammadkz.porsno_android.Model.Response.HistoryBuyResponse;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
@@ -17,7 +17,6 @@ import com.mohammadkz.porsno_android.Model.Response.UrlResponse;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -115,5 +114,15 @@ public interface ApiConfig {
     Call<UrlResponse> getUrl(@Field("amount") String price
             , @Field("name") String name
             , @Field("phone") String phone
+    );
+
+    @FormUrlEncoded
+    @POST("User_password_forget.php")
+    Call<ForgetPwdResponse> forgetPwd(@Field("phoneNumber") String pn);
+
+    @FormUrlEncoded
+    @POST("User_Update_pwd.php")
+    Call<NormalResponse> updatePwd(@Field("phoneNumber") String pn
+            , @Field("pwd") String pwd
     );
 }

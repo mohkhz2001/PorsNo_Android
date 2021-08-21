@@ -1,25 +1,29 @@
 package com.mohammadkz.porsno_android.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Model.Response.ForgetPwdResponse;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
+import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
@@ -27,6 +31,8 @@ import com.mohammadkz.porsno_android.StaticFun;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
@@ -42,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     ApiConfig request;
     User user;
     ConstraintLayout root;
+    BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPWD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toasty.info(getApplicationContext(), "forgot pwd clicked", Toasty.LENGTH_SHORT).show();
+                bottomSheetChooser();
             }
         });
 
@@ -170,11 +177,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                t.getMessage();
                 if (shared) {
-                    t.getMessage();
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                     root.setVisibility(View.VISIBLE);
                 } else {
+                    SweetDialog.stopProgress();
                     root.setVisibility(View.VISIBLE);
                 }
 
@@ -257,5 +265,156 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    // bottom choose => camera or file(gallery)
+    public void bottomSheetChooser() {
+
+        bottomSheetDialog = new BottomSheetDialog(LoginActivity.this, R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.layout_forget_pwd, (LinearLayout) findViewById(R.id.layout));
+        TextInputLayout pn_layout, new_pn_layout, new_rePn_layout;
+        TextInputEditText pn, new_pn, new_rePn;
+        EditText code;
+        Button get, confirm, confirmCode;
+
+        // init views
+        pn_layout = bottomSheetView.findViewById(R.id.pn_layout);
+        new_pn_layout = bottomSheetView.findViewById(R.id.new_pn_layout);
+        new_rePn_layout = bottomSheetView.findViewById(R.id.new_rePn_layout);
+        pn = bottomSheetView.findViewById(R.id.pn);
+        new_pn = bottomSheetView.findViewById(R.id.new_pn);
+        new_rePn = bottomSheetView.findViewById(R.id.new_rePn);
+        code = bottomSheetView.findViewById(R.id.code);
+        get = bottomSheetView.findViewById(R.id.get);
+        confirm = bottomSheetView.findViewById(R.id.confirm);
+        confirmCode = bottomSheetView.findViewById(R.id.confirmCode);
+
+        final String[] genearatedCode = new String[1];
+
+        get.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // check phoneNumber
+                Call<ForgetPwdResponse> forgetPwdCall = request.forgetPwd(pn.getText().toString());
+
+                forgetPwdCall.enqueue(new Callback<ForgetPwdResponse>() {
+                    @Override
+                    public void onResponse(Call<ForgetPwdResponse> call, Response<ForgetPwdResponse> response) {
+                        if (response.body().getStatus_code().equals("200")) {
+                            Toasty.info(LoginActivity.this, response.body().getCode() + "", Toasty.LENGTH_SHORT, true).show();
+                            genearatedCode[0] = response.body().getCode();
+
+                            get.setVisibility(View.GONE);
+                            pn.setFocusable(false);
+
+                            code.setVisibility(View.VISIBLE);
+                            confirmCode.setVisibility(View.VISIBLE);
+                        } else {
+                            Toasty.warning(LoginActivity.this, "چنین مشخصاتی یافت نشد.", Toasty.LENGTH_SHORT, true).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ForgetPwdResponse> call, Throwable t) {
+                        System.out.println();
+                    }
+                });
+
+            }
+        });
+
+        confirmCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (code.getText().toString().equals(genearatedCode[0] + "")) {
+
+                    pn_layout.setVisibility(View.GONE);
+                    code.setVisibility(View.GONE);
+                    confirmCode.setVisibility(View.GONE);
+
+                    new_pn_layout.setVisibility(View.VISIBLE);
+                    new_rePn_layout.setVisibility(View.VISIBLE);
+                    confirm.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    Toasty.error(LoginActivity.this, "کد وارد شده صحیح نمی باشد.", Toasty.LENGTH_SHORT, true).show();
+                }
+            }
+        });
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new_pn.getText().toString().equals(new_rePn.getText().toString())) {
+
+                    String pwd = StaticFun.md5(new_pn.getText().toString());
+
+                    Call<NormalResponse> updatePwdCall = request.updatePwd(pn.getText().toString(), pwd);
+
+                    updatePwdCall.enqueue(new Callback<NormalResponse>() {
+                        @Override
+                        public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+                            if (response.body().getStatus_code().equals("200")) {
+                                Toasty.success(LoginActivity.this, "رمز عبور شما به درستی تغییر کرد.", Toasty.LENGTH_SHORT, true).show();
+                                bottomSheetDialog.dismiss();
+                            } else {
+                                System.out.println();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<NormalResponse> call, Throwable t) {
+                            System.out.println();
+                        }
+                    });
+
+
+                } else {
+                    Toasty.error(LoginActivity.this, "رمز های وارد شده یکسان نمی باشد.", Toasty.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+//        bottomSheetView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TextInputEditText now_pas, new_pas, new_pas_re;
+//
+//                now_pas = bottomSheetView.findViewById(R.id.now_pas);
+//                new_pas = bottomSheetView.findViewById(R.id.new_pas);
+//                new_pas_re = bottomSheetView.findViewById(R.id.new_pas_re);
+//
+//                if (now_pas.getText().length() > 0 && new_pas.getText().length() > 0 && new_pas_re.getText().length() > 0
+//                        && (new_pas.getText().toString().equals(new_pas_re.getText().toString()))) {
+//
+////                    checkPrePwd(now_pas.getText().toString(), new_pas.getText().toString());
+//
+//                } else {
+//                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+//                }
+//
+//            }
+//        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
+
+    // generate the code for send sms to confirm phone number
+    public int getRandomNumberString() {
+        // It will generate 4 digit random Number.
+        // from 0 to 9999
+        String number = "";
+        while (number.length() != 4) {
+            Random rnd = new Random();
+            number = Integer.toString(rnd.nextInt(9999));
+        }
+        Toast.makeText(getApplicationContext(), number, Toast.LENGTH_LONG).show();
+        // this will convert any number sequence into 6 character.
+
+        return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
+    }
 
 }
