@@ -211,8 +211,8 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onResponse(Call<UpgradeResponse> call, Response<UpgradeResponse> response) {
                 // should check the response
-                refresh(response.body());
-                SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "ارتقا یافت", "حساب شما ارتقا یافت.");
+                refresh(response.body(), level);
+
             }
 
             @Override
@@ -228,8 +228,23 @@ public class ReBuyFragment extends Fragment {
         });
     }
 
-    public void refresh(UpgradeResponse response) {
+    public void refresh(UpgradeResponse response, String level) {
+        SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "ارتقا یافت", "حساب شما ارتقا یافت.");
         user.setEndTime(response.getEnd());
+        if (level.equals("bronze")) {
+            user.setAccountLevel(StaticFun.account.Bronze);
+            accountLevel.setText("برنز");
+        } else if (level.equals("steel")) {
+            user.setAccountLevel(StaticFun.account.Steel);
+            accountLevel.setText("نقره ای");
+        } else if (level.equals("gold")) {
+            user.setAccountLevel(StaticFun.account.Gold);
+            accountLevel.setText("طلایی");
+        } else if (level.equals("diamond")) {
+            accountLevel.setText("الماسی");
+            user.setAccountLevel(StaticFun.account.Diamond);
+        }
+
         getPrice();
         updateUserData();
     }
