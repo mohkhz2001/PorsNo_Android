@@ -247,6 +247,10 @@ public class LoginActivity extends AppCompatActivity {
         user.setEndTime(loginResponse.getEnd());
         user.setID(loginResponse.getId());
 
+        if (loginResponse.getBirthday() != null) {
+            user.setBirthdayDate(loginResponse.getBirthday());
+        }
+
         if (loginResponse.getAccountLevel().equals("bronze")) {
             user.setAccountLevel(StaticFun.account.Bronze);
         } else if (loginResponse.getAccountLevel().equals("steel")) {

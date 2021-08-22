@@ -38,6 +38,8 @@ import ir.hamsaa.persiandatepicker.api.PersianPickerListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import saman.zamani.persiandate.PersianDate;
+import saman.zamani.persiandate.PersianDateFormat;
 
 public class ProfileFragment extends Fragment {
 
@@ -153,7 +155,13 @@ public class ProfileFragment extends Fragment {
             name.setText(user.getName().toString());
             pass.setText(user.getName().toString());
             phoneNumber.setText(user.getPn().toString());
-            birthdayDate.setText(user.getBirthdayDate() == null ? " " : user.getBirthdayDate());
+
+            if (user.getBirthdayDate().length() > 1) {
+                PersianDate pdate = new PersianDate(Long.valueOf(user.getBirthdayDate()));
+                PersianDateFormat pdformater1 = new PersianDateFormat("Y/m/d");
+                birthdayDate.setText("" + pdformater1.format(pdate));
+            }
+
 
             if (user.getAccountLevel().toString().equals("Bronze")) {
                 accountLevel.setText("برنز");
@@ -171,9 +179,9 @@ public class ProfileFragment extends Fragment {
     private void update(boolean pwd, String pass) {
         Call<NormalResponse> get = null;
         if (pwd)
-            get = request.updateProfile(name.getText().toString(), pass, birthdayDate.getText().toString(), user.getID().toString());
+            get = request.updateProfile(name.getText().toString(), pass, user.getBirthdayDate(), user.getID().toString());
         else
-            get = request.updateProfile(name.getText().toString(), pass, birthdayDate.getText().toString(), user.getID().toString());
+            get = request.updateProfile(name.getText().toString(), pass, user.getBirthdayDate(), user.getID().toString());
 
         get.enqueue(new Callback<NormalResponse>() {
             @Override
@@ -184,7 +192,6 @@ public class ProfileFragment extends Fragment {
                     }
                     Toasty.success(getContext(), "تغییرات با موفقیت اعمال شد.", Toasty.LENGTH_SHORT, true).show();
                     user.setName(name.getText().toString());
-                    user.setBirthdayDate(birthdayDate.getText().toString());
 
                     SweetDialog.stopProgress();
 
