@@ -21,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.mohammadkz.porsno_android.Fragment.ContactUsFragment;
 import com.mohammadkz.porsno_android.Fragment.HistoryFragment;
 import com.mohammadkz.porsno_android.Fragment.MainFragment;
 import com.mohammadkz.porsno_android.Fragment.MyQuestionFragment;
@@ -105,18 +106,17 @@ public class MainPageActivity extends AppCompatActivity {
                     case R.id.reBuy:
                         nav_view.setCheckedItem(R.id.reBuy);
                         ReBuyFragment reBuyFragment = new ReBuyFragment(user);
-                        fragmentTransaction.replace(R.id.frameLayout , reBuyFragment).commit();
+                        fragmentTransaction.replace(R.id.frameLayout, reBuyFragment).commit();
                         break;
                     case R.id.history:
                         nav_view.setCheckedItem(R.id.history);
                         HistoryFragment historyFragment = new HistoryFragment(user);
-                        fragmentTransaction.replace(R.id.frameLayout , historyFragment).commit();
-                        break;
-                    case R.id.about:
-
+                        fragmentTransaction.replace(R.id.frameLayout, historyFragment).commit();
                         break;
                     case R.id.contact:
-
+                        nav_view.setCheckedItem(R.id.contact);
+                        ContactUsFragment contactUsFragment = new ContactUsFragment();
+                        fragmentTransaction.replace(R.id.frameLayout, contactUsFragment).commit();
                         break;
                     case R.id.exit:
                         removeSharedPreferences();
@@ -151,6 +151,10 @@ public class MainPageActivity extends AppCompatActivity {
                 user.setCreatedTime(jsonObject.getString("createdTime"));
                 user.setEndTime(jsonObject.getString("endTime"));
 
+                if (jsonObject.getString("birthdayDate") != null) {
+                    user.setBirthdayDate(jsonObject.getString("birthdayDate"));
+                }
+
                 if (jsonObject.getString("accountLevel").equals("Bronze")) {
                     user.setAccountLevel(StaticFun.account.Bronze);
                 } else if (jsonObject.getString("accountLevel").equals("Steel")) {
@@ -168,17 +172,17 @@ public class MainPageActivity extends AppCompatActivity {
             }
     }
 
-    private void setHeaderValue(){
+    private void setHeaderValue() {
         name.setText(user.getName().toString());
         phoneNumber.setText(user.getPn().toString());
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         name.setText(user.getName().toString());
         this.user = user;
     }
 
-    public void setDrawerSelect(int id){
+    public void setDrawerSelect(int id) {
         nav_view.setCheckedItem(id);
     }
 
