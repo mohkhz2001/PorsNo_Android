@@ -6,7 +6,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class AppConfig {
     private static Retrofit retrofit;
-    public static final String url = "http://185.190.39.159/Porseshno_backend/API/";
+    public static final String url = "http://www.porsno.ir/Porseshno_backend/API/";
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
