@@ -7,6 +7,12 @@
         android:title="پرسشنامه ی های من" />
 
     <item
+        android:id="@+id/placeholder"
+        android:enabled="false"
+        android:checkable="false"
+        android:title="" />
+
+    <item
         android:id="@+id/allQuestion"
         android:icon="@drawable/ic_all_question"
         android:title="پرسشنامه ها" />
