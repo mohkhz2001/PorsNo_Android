@@ -15,31 +15,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="#09FF00"
-        android:scaleType="fitCenter"
-        android:src="@drawable/plus"
-        app:borderWidth="0dp" />
-
     <TextView
         android:id="@+id/emptyList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="شما هیچ پرسشنامه ای ندارید."
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:textSize="20dp"
-        android:maxLines="1"
-        android:textColor="#8B8B8B"
+        android:layout_centerInParent="true"
         android:fontFamily="@font/vazir"
-        android:layout_centerInParent="true"/>
+        android:maxLines="1"
+        android:text="شما هیچ پرسشنامه ای ندارید."
+        android:textColor="#8B8B8B"
+        android:textSize="20dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 
 </RelativeLayout>

@@ -50,7 +50,6 @@ public class MyQuestionFragment extends Fragment {
 
     View view;
     RecyclerView myQuestionList;
-    FloatingActionButton fab_add;
     User user;
     TextView emptyList;
     ApiConfig request;
@@ -82,27 +81,11 @@ public class MyQuestionFragment extends Fragment {
     private void initViews() {
         myQuestionList = view.findViewById(R.id.myQuestionList);
         myQuestionList.setHasFixedSize(true);
-        fab_add = view.findViewById(R.id.fab_add);
         emptyList = view.findViewById(R.id.emptyList);
     }
 
     private void controllerView() {
-        fab_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newQuestion();
-            }
-        });
 
-
-    }
-
-    private void newQuestion() {
-        Intent intent = new Intent(getContext(), NewQuestionActivity.class);
-        Gson gson = new Gson();
-        String a = gson.toJson(user);
-        intent.putExtra("userInfo", a);//user.getID()
-        startActivity(intent);
     }
 
     private void getData() {
