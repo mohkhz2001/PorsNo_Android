@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -43,6 +44,7 @@ public class AllQuestionFragment extends Fragment {
     ApiConfig request;
     FloatingActionButton filter;
     CardView filter_card;
+    TextView emptyList;
     User user;
 
     public AllQuestionFragment(User user) {
@@ -71,6 +73,7 @@ public class AllQuestionFragment extends Fragment {
     private void initViews() {
         list = view.findViewById(R.id.list);
         filter = view.findViewById(R.id.filter);
+        emptyList = view.findViewById(R.id.emptyList);
         filter_card = view.findViewById(R.id.filter_card);
         YoYo.with(Techniques.SlideInDown)
                 .duration(300)
@@ -145,6 +148,9 @@ public class AllQuestionFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+        }else {
+            SweetDialog.stopProgress();
+            emptyList.setVisibility(View.VISIBLE);
         }
 
     }

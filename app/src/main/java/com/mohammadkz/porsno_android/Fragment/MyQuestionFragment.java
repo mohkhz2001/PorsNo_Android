@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,6 +52,7 @@ public class MyQuestionFragment extends Fragment {
     RecyclerView myQuestionList;
     FloatingActionButton fab_add;
     User user;
+    TextView emptyList;
     ApiConfig request;
 
 
@@ -81,6 +83,7 @@ public class MyQuestionFragment extends Fragment {
         myQuestionList = view.findViewById(R.id.myQuestionList);
         myQuestionList.setHasFixedSize(true);
         fab_add = view.findViewById(R.id.fab_add);
+        emptyList = view.findViewById(R.id.emptyList);
     }
 
     private void controllerView() {
@@ -149,6 +152,9 @@ public class MyQuestionFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+        }else {
+            SweetDialog.stopProgress();
+            emptyList.setVisibility(View.VISIBLE);
         }
     }
 
