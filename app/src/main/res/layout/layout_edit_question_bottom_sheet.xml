@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
         app:border_stroke_width="2dp"
         app:color_checked="#0CD404"
@@ -29,7 +29,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@id/testQuestion"
         android:fontFamily="@font/vazir"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/testQuestion"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:enabled="true"
         android:hint="صورت سوال"
@@ -67,7 +67,7 @@
             android:gravity="top"
             android:inputType="textMultiLine"
             android:maxLines="6"
-            android:minLines="3"
+            android:minLines="1"
             android:singleLine="false"
             android:textSize="18dp" />
 
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/question_layout"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:enabled="true"
         android:hint="جواب"
@@ -186,9 +186,9 @@
         android:layout_below="@+id/layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="35dp"
+        android:layout_marginRight="50dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/bg_confirm_btn"
         android:fontFamily="@font/vazir"
@@ -196,7 +196,7 @@
         android:paddingRight="35dp"
         android:text="تایید"
         android:textColor="#353535"
-        android:textSize="29dp"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
 </RelativeLayout>
