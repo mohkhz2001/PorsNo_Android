@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -34,11 +37,12 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.+'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
@@ -50,7 +54,7 @@ dependencies {
     // toast
     implementation 'com.github.GrenderG:Toasty:1.5.0'
 
-    implementation 'com.google.android.material:material:1.5.0-alpha01'
+    implementation 'com.google.android.material:material:1.5.0-alpha02'
 
     //seek bar
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
@@ -64,7 +68,7 @@ dependencies {
     implementation "androidx.drawerlayout:drawerlayout:1.1.1"
 
     // joda date
-    compile 'joda-time:joda-time:2.10.10'
+    implementation 'joda-time:joda-time:2.10.10'
 
     // animation
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
@@ -74,4 +78,8 @@ dependencies {
 
     // sweet dialog
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+
+    // fire base
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }
