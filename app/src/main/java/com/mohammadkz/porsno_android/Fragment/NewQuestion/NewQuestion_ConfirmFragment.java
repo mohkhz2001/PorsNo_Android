@@ -73,7 +73,7 @@ public class NewQuestion_ConfirmFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("منتظر باشید...");
 
-        ((NewQuestionActivity) getActivity()).setSeekBar(2);
+        ((NewQuestionActivity) getActivity()).setSeekBar(3);
 
         initViews();
         controllerViews();
