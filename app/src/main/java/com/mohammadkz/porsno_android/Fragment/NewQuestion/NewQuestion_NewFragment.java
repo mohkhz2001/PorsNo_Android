@@ -46,7 +46,6 @@ public class NewQuestion_NewFragment extends Fragment {
     Questionnaire questionnaire;
     AnimatedCheckBox testQuestion, new_question;
     TextInputEditText question, answer;
-    FloatingActionButton fab_add;
     ImageView confirm, next, prev;
     TextInputLayout answer_layout;
     TextView questionCounter_txt;
@@ -67,7 +66,7 @@ public class NewQuestion_NewFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_new_question_new, container, false);
 
-        ((NewQuestionActivity) getActivity()).setSeekBar(1);
+        ((NewQuestionActivity) getActivity()).setSeekBar(2);
 
         initViews();
         controllerViews();
@@ -90,7 +89,6 @@ public class NewQuestion_NewFragment extends Fragment {
         question = view.findViewById(R.id.question);
         new_question = view.findViewById(R.id.new_question);
         new_question.setChecked(true);
-        fab_add = view.findViewById(R.id.fab_add);
         confirm = view.findViewById(R.id.confirm);
         next = view.findViewById(R.id.next);
         prev = view.findViewById(R.id.prev);
@@ -115,7 +113,7 @@ public class NewQuestion_NewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkValue()) {
-                    answers = newAnswerAdapter.getAnswer();
+                    answers = removeEmptyField(newAnswerAdapter.getAnswer());
                     questionnaire.getQuestions().get(questionNumber - 1).setAnswers(answers);
                     questionnaire.getQuestions().get(questionNumber - 1).setQuestion(question.getText().toString());
                     questionnaire.getQuestions().get(questionNumber - 1).setTest(!testQuestion.isChecked());
@@ -222,6 +220,15 @@ public class NewQuestion_NewFragment extends Fragment {
         });
     }
 
+    private List<Answer> removeEmptyField(List<Answer> answers) {
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getAnswer().length() == 0) {
+                answers.remove(i);
+            }
+        }
+        return answers;
+    }
+
     private void setAdapter() {
         newAnswerAdapter = null;
         newAnswerAdapter = new NewAnswerAdapter(getContext(), answers);
@@ -323,10 +330,18 @@ public class NewQuestion_NewFragment extends Fragment {
 
     private boolean checkValue() {
         answers = newAnswerAdapter.getAnswer();
-        if (answers.size() >= 2 && answers.get(0).getAnswer().length() > 0 && answers.get(1).getAnswer().length() > 0 && question.getText().length() > 0) {
-            return true;
+        if (testQuestion.isChecked()) {
+            if (question.getText().length() > 0)
+                return true;
+            else
+                return false;
         } else {
-            return false;
+            if (answers.size() >= 2 && answers.get(0).getAnswer().length() > 0 && answers.get(1).getAnswer().length() > 0 && question.getText().length() > 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
     }
 }

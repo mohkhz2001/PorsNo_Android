@@ -29,9 +29,8 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendarUtils;
 
 public class NewQuestion_InfoFragment extends Fragment {
 
-    Button date_start, date_end, next;
+    Button next;
     View view;
-    PersianDatePickerDialog datePickerDialog;
     TextInputEditText name, description;
     AutoCompleteTextView category;
     Questionnaire questionnaire = new Questionnaire();
@@ -58,41 +57,22 @@ public class NewQuestion_InfoFragment extends Fragment {
 
     private void initViews() {
         next = view.findViewById(R.id.next);
-        date_start = view.findViewById(R.id.date_start);
-        date_end = view.findViewById(R.id.date_end);
         name = view.findViewById(R.id.questionName);
         category = view.findViewById(R.id.category);
         description = view.findViewById(R.id.description);
     }
 
     private void controllerViews() {
-        date_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePicker(true);
-            }
-        });
-
-        date_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePicker(false);
-            }
-        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkValue() && questionnaire != null) {
-                    if (checkEndTime(user.getEndTime())) {
-                        questionnaire.setName(name.getText().toString());
-                        questionnaire.setDescription(description.getText().toString());
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        NewQuestion_NewFragment newQuestion_newFragment = new NewQuestion_NewFragment(questionnaire);
-                        fragmentTransaction.replace(R.id.frameLayout, newQuestion_newFragment).commit();
-                    } else {
-                        Toasty.error(getContext(), "زمان اتمام پرسشنامه نمی تواند بیشتر از زمان اتمام حساب کاربری شما باشد", Toasty.LENGTH_LONG).show();
-                    }
+                    questionnaire.setName(name.getText().toString());
+                    questionnaire.setDescription(description.getText().toString());
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    NewQuestion_DateFragment newQuestion_dateFragment = new NewQuestion_DateFragment(questionnaire, user);
+                    fragmentTransaction.replace(R.id.frameLayout, newQuestion_dateFragment).commit();
                 } else {
                     errorField();
                 }
@@ -102,58 +82,10 @@ public class NewQuestion_InfoFragment extends Fragment {
     }
 
     private boolean checkValue() {
-        if (name.getText().length() > 0 && description.getText().length() > 0 && questionnaire.getEndDate() != null && questionnaire.getStartDate() != null) {
+        if (name.getText().length() > 0 && description.getText().length() > 0) {
             return true;
         } else {
             return false;
-        }
-    }
-
-    private String datePicker(boolean start) {
-        String TAG = "";
-
-        datePickerDialog = new PersianDatePickerDialog(getContext())
-                .setPositiveButtonString("باشه")
-                .setNegativeButton("بیخیال")
-                .setTodayButton("امروز")
-                .setTodayButtonVisible(true)
-                .setMinYear(1399)
-                .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
-                .setActionTextColor(Color.GRAY)
-                .setTitleType(PersianDatePickerDialog.WEEKDAY_DAY_MONTH_YEAR)
-                .setShowInBottomSheet(true)
-                .setListener(new PersianPickerListener() {
-                    @Override
-                    public void onDateSelected(PersianPickerDate persianPickerDate) {
-                        if (start) {
-                            questionnaire.setStartDate_stamp(String.valueOf(persianPickerDate.getTimestamp() / 1000));
-                            questionnaire.setStartDate(persianPickerDate.getPersianLongDate());
-
-                            // set text for btn
-                            date_start.setText("شروع: \n" + persianPickerDate.getPersianLongDate());
-
-                        } else {
-                            questionnaire.setEndDate_stamp(String.valueOf(persianPickerDate.getTimestamp() / 1000));
-                            questionnaire.setEndDate(persianPickerDate.getPersianLongDate());
-
-                            // set text for btn
-                            date_end.setText("اتمام: \n" + persianPickerDate.getPersianLongDate());
-                        }
-                        Toast.makeText(getContext(), persianPickerDate.getPersianYear() + "/" + persianPickerDate.getPersianMonth() + "/" + persianPickerDate.getPersianDay(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onDismissed() {
-
-                    }
-                });
-
-        datePickerDialog.show();
-
-        if (start) {
-            return questionnaire.getStartDate();
-        } else {
-            return questionnaire.getEndDate();
         }
     }
 
@@ -169,15 +101,6 @@ public class NewQuestion_InfoFragment extends Fragment {
         } else if (questionnaire.getEndDate() == null) {
             Toasty.error(getContext(), "زمان پایان نمی تواند خالی باشد", Toasty.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean checkEndTime(String endTime) {
-        if (Long.parseLong(endTime) >= Long.parseLong(questionnaire.getEndDate_stamp()))
-            return true;
-        else if (Long.parseLong(endTime) <= Long.parseLong(questionnaire.getEndDate_stamp()) || endTime == null) {
-            return false;
-        } else
-            return false;
     }
 
 }
