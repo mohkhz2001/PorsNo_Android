@@ -38,6 +38,7 @@ public class NewQuestionActivity extends AppCompatActivity {
 
     private void initViews() {
         seekBar = findViewById(R.id.seekBar);
+        seekBar.setClickable(false);
         materialToolbar = findViewById(R.id.topAppBar);
     }
 
@@ -53,10 +54,12 @@ public class NewQuestionActivity extends AppCompatActivity {
     public void setSeekBar(int pos) {
         switch (pos) {
             case 1:
-                seekBar.setProgress(46);
+                seekBar.setProgress(28);
                 break;
-
             case 2:
+                seekBar.setProgress(60);
+                break;
+            case 3:
                 seekBar.setProgress(100);
                 break;
         }
