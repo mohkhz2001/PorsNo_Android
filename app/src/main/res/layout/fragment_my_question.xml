@@ -6,14 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.MyQuestionFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myQuestionList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myQuestionList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:overScrollMode="never" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <TextView
         android:id="@+id/emptyList"

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +54,7 @@ public class MyQuestionFragment extends Fragment {
     User user;
     TextView emptyList;
     ApiConfig request;
+    SwipeRefreshLayout swipeRefresh;
 
 
     public MyQuestionFragment(User user) {
@@ -82,10 +84,17 @@ public class MyQuestionFragment extends Fragment {
         myQuestionList = view.findViewById(R.id.myQuestionList);
         myQuestionList.setHasFixedSize(true);
         emptyList = view.findViewById(R.id.emptyList);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
     }
 
     private void controllerView() {
-
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private void getData() {
@@ -135,7 +144,7 @@ public class MyQuestionFragment extends Fragment {
                     startActivity(intent);
                 }
             });
-        }else {
+        } else {
             SweetDialog.stopProgress();
             emptyList.setVisibility(View.VISIBLE);
         }
