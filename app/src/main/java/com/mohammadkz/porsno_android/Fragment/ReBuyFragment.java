@@ -96,9 +96,11 @@ public class ReBuyFragment extends Fragment {
         diamondPrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upgradeAccount("diamond");
+//                upgradeAccount("diamond");
+                generatePayUrl(priceResponse.get(3).getCost());
             }
         });
+
         bronzePrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,16 +108,20 @@ public class ReBuyFragment extends Fragment {
                 generatePayUrl(priceResponse.get(0).getCost());
             }
         });
+
         goldPrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upgradeAccount("gold");
+//                upgradeAccount("gold");
+                generatePayUrl(priceResponse.get(2).getCost());
             }
         });
+
         steelPrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upgradeAccount("steel");
+//                upgradeAccount("steel");
+                generatePayUrl(priceResponse.get(1).getCost());
             }
         });
     }
@@ -260,7 +266,7 @@ public class ReBuyFragment extends Fragment {
         SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
 
-        Call<UrlResponse> get = request.getUrl(price, user.getName(), user.getPn());
+        Call<UrlResponse> get = request.getUrl(price + "0", user.getName(), user.getPn(), user.getID());
 
         get.enqueue(new Callback<UrlResponse>() {
             @Override
