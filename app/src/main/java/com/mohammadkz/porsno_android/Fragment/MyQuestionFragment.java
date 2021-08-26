@@ -25,6 +25,7 @@ import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Activity.AnswerActivity;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
+import com.mohammadkz.porsno_android.Activity.QuestionnaireManagerActivity;
 import com.mohammadkz.porsno_android.Adapter.QuestionAdapter;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
@@ -138,7 +139,7 @@ public class MyQuestionFragment extends Fragment {
                 @Override
                 public void onItemClick(int pos, View v) {
                     Log.e("qId", " " + pos);
-                    Intent intent = new Intent(getContext(), AnswerActivity.class);
+                    Intent intent = new Intent(getContext(), QuestionnaireManagerActivity.class);
                     intent.putExtra("qId", questionnaireList.get(pos).getQuestionId());
                     transferData(intent);
                     startActivity(intent);
