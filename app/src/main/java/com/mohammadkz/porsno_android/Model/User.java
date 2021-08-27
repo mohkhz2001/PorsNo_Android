@@ -3,7 +3,7 @@ package com.mohammadkz.porsno_android.Model;
 import com.mohammadkz.porsno_android.StaticFun;
 
 public class User {
-    private String ID, name, pn, pwd, createdTime, endTime , birthdayDate;
+    private String ID, name, pn, pwd, createdTime, endTime , birthdayDate , questionRemaining;
     private StaticFun.account accountLevel;
 
     public User(String name, String pn, String pwd) {
@@ -77,5 +77,13 @@ public class User {
 
     public void setAccountLevel(StaticFun.account accountLevel) {
         this.accountLevel = accountLevel;
+    }
+
+    public String getQuestionRemaining() {
+        return questionRemaining;
+    }
+
+    public void setQuestionRemaining(String questionRemaining) {
+        this.questionRemaining = questionRemaining;
     }
 }

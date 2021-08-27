@@ -1,7 +1,7 @@
 package com.mohammadkz.porsno_android.Model.Response;
 
 public class LoginResponse {
-    private String message, status_code, userName, phoneNumber, birthday, accountLevel, created, end , Id;
+    private String message, status_code, userName, phoneNumber, birthday, accountLevel, created, end , Id , questionRemaining;
 
     public String getMessage() {
         return message;
@@ -73,5 +73,13 @@ public class LoginResponse {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getQuestionRemaining() {
+        return questionRemaining;
+    }
+
+    public void setQuestionRemaining(String questionRemaining) {
+        this.questionRemaining = questionRemaining;
     }
 }
