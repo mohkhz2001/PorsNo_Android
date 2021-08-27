@@ -150,6 +150,7 @@ public class MainPageActivity extends AppCompatActivity {
                 user.setName(jsonObject.getString("name"));
                 user.setCreatedTime(jsonObject.getString("createdTime"));
                 user.setEndTime(jsonObject.getString("endTime"));
+                user.setQuestionRemaining(jsonObject.getString("questionRemaining"));
 
                 if (jsonObject.getString("birthdayDate") != null) {
                     user.setBirthdayDate(jsonObject.getString("birthdayDate"));
