@@ -31,7 +31,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/test_pic"
+                android:src="@drawable/user"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
