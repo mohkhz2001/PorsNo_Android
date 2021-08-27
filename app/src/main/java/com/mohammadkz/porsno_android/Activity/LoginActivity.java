@@ -1,12 +1,15 @@
 package com.mohammadkz.porsno_android.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
@@ -26,6 +34,7 @@ import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
+import com.mohammadkz.porsno_android.Notification.PushNotificationService;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
@@ -246,6 +255,7 @@ public class LoginActivity extends AppCompatActivity {
         user.setCreatedTime(loginResponse.getCreated());
         user.setEndTime(loginResponse.getEnd());
         user.setID(loginResponse.getId());
+        user.setQuestionRemaining(loginResponse.getQuestionRemaining());
 
         if (loginResponse.getBirthday() != null) {
             user.setBirthdayDate(loginResponse.getBirthday());
@@ -379,46 +389,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-//        bottomSheetView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TextInputEditText now_pas, new_pas, new_pas_re;
-//
-//                now_pas = bottomSheetView.findViewById(R.id.now_pas);
-//                new_pas = bottomSheetView.findViewById(R.id.new_pas);
-//                new_pas_re = bottomSheetView.findViewById(R.id.new_pas_re);
-//
-//                if (now_pas.getText().length() > 0 && new_pas.getText().length() > 0 && new_pas_re.getText().length() > 0
-//                        && (new_pas.getText().toString().equals(new_pas_re.getText().toString()))) {
-//
-////                    checkPrePwd(now_pas.getText().toString(), new_pas.getText().toString());
-//
-//                } else {
-//                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-//                }
-//
-//            }
-//        });
-
-
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
-    }
-
-    // generate the code for send sms to confirm phone number
-    public int getRandomNumberString() {
-        // It will generate 4 digit random Number.
-        // from 0 to 9999
-        String number = "";
-        while (number.length() != 4) {
-            Random rnd = new Random();
-            number = Integer.toString(rnd.nextInt(9999));
-        }
-        Toast.makeText(getApplicationContext(), number, Toast.LENGTH_LONG).show();
-        // this will convert any number sequence into 6 character.
-
-        return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
     }
 
 }
