@@ -1,6 +1,7 @@
 package com.mohammadkz.porsno_android.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +32,18 @@ import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
+import org.joda.time.JodaTimePermission;
+import org.joda.time.LocalDate;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
@@ -45,8 +59,8 @@ public class ProfileFragment extends Fragment {
 
     View view;
     User user;
-    TextInputEditText name, pass, phoneNumber, birthdayDate;
-    TextView upgrade, accountLevel;
+    EditText pass, phoneNumber, birthdayDate;
+    TextView upgrade, accountLevel, name, questionLeft, daysLeft;
     PersianDatePickerDialog datePickerDialog;
     Button done;
     ApiConfig request;
@@ -77,7 +91,9 @@ public class ProfileFragment extends Fragment {
 
     private void initViews() {
         name = view.findViewById(R.id.name);
-        pass = view.findViewById(R.id.password);
+        daysLeft = view.findViewById(R.id.daysLeft);
+        questionLeft = view.findViewById(R.id.questionLeft);
+        pass = view.findViewById(R.id.pwd);
         phoneNumber = view.findViewById(R.id.phoneNumber);
         birthdayDate = view.findViewById(R.id.birthday);
         upgrade = view.findViewById(R.id.upgrade);
@@ -155,6 +171,8 @@ public class ProfileFragment extends Fragment {
             name.setText(user.getName().toString());
             pass.setText(user.getName().toString());
             phoneNumber.setText(user.getPn().toString());
+            questionLeft.setText(user.getQuestionRemaining());
+            calculateDaysLeft();
 
             if (user.getBirthdayDate().length() > 1) {
                 PersianDate pdate = new PersianDate(Long.valueOf(user.getBirthdayDate()));
@@ -215,7 +233,7 @@ public class ProfileFragment extends Fragment {
             return false;
     }
 
-    // bottom choose => camera or file(gallery)
+    // bottom choose => for change the pwd
     public void bottomSheetChooser() {
         SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
@@ -241,6 +259,14 @@ public class ProfileFragment extends Fragment {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
 
+            }
+        });
+
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialog.dismiss();
+                SweetDialog.stopProgress();
             }
         });
 
@@ -271,4 +297,22 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void calculateDaysLeft() {
+        try {
+            Timestamp today = new Timestamp(System.currentTimeMillis());
+
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date end = new java.util.Date(Long.parseLong(user.getEndTime()));
+            System.out.println(sf.format(end));
+
+            Interval interval = new Interval(today.getTime(), Long.parseLong(user.getEndTime() + "000"));
+            Duration period = interval.toDuration();
+
+            daysLeft.setText(period.getStandardDays() + "");
+        } catch (Exception e) {
+            daysLeft.setText("N/A");
+        }
+
+
+    }
 }

@@ -4,205 +4,246 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     app:layout_constraintWidth_max="100dp"
     tools:context=".Fragment.ProfileFragment">
 
 
-    <ImageView
-        android:id="@+id/imageView"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_person"
+        android:background="@color/main_green"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".06" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".94" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/userImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/test_pic"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/userImage"
+                android:autoSizeMaxTextSize="30dp"
+                android:autoSizeMinTextSize="17dp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/vazir"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:text="محمد مهدی خواجه زاده"
+                android:textColor="#000"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView8"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:enabled="true"
-        android:hint="نام"
-        android:textAlignment="textStart"
-        android:textDirection="rtl"
-        android:visibility="visible"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#05AD00"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#05AD00"
-        app:errorTextColor="#FF0000"
-        app:hintEnabled="true"
-        app:hintTextColor="#000"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
         app:layout_constraintTop_toTopOf="@+id/guideline9"
         app:layout_constraintWidth_max="500dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusedByDefault="false"
-            android:fontFamily="@font/vazir"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:textSize="16dp" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="5dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_phoneNumber"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="29dp"
+                    android:autoSizeMinTextSize="14dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/vazir"
+                    android:gravity="center"
+                    android:text="روز\nباقی مانده"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/daysLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:autoSizeMaxTextSize="35dp"
+                    android:autoSizeMinTextSize="20dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/mitra"
+                    android:gravity="center"
+                    android:text="21"
+                    android:textColor="@color/main_green"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="29dp"
+                    android:autoSizeMinTextSize="14dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/vazir"
+                    android:gravity="center"
+                    android:text="پرسشنامه\nباقی مانده"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/questionLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:autoSizeMaxTextSize="35dp"
+                    android:autoSizeMinTextSize="20dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/mitra"
+                    android:gravity="center"
+                    android:text="10"
+                    android:textColor="@color/main_green"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:enabled="true"
-        android:hint="تلفن همراه"
-        android:textAlignment="textStart"
-        android:textDirection="rtl"
-        android:visibility="visible"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#05AD00"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#05AD00"
-        app:errorTextColor="#FF0000"
-        app:hintEnabled="true"
-        app:hintTextColor="#000"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/layout_name"
-        app:layout_constraintWidth_max="500dp">
+        app:layout_constraintTop_toBottomOf="@+id/cardView8"
+        app:layout_constraintWidth_max="400dp">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/phoneNumber"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:background="@drawable/bg_edit_text_white"
+            android:clickable="false"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FF9800"
+            android:elevation="2dp"
             android:focusable="false"
             android:focusedByDefault="false"
-            android:fontFamily="@font/vazir"
-            android:inputType="text"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:maxLength="20"
             android:maxLines="1"
-            android:singleLine="true"
+            android:minLines="1"
+            android:padding="10dp"
+            android:text="09166158834"
             android:textAlignment="center"
-            android:textSize="16dp" />
+            android:textSize="20dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_birthday"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:enabled="true"
-        android:hint="تاریخ تولد"
-        android:textAlignment="textStart"
-        android:textDirection="rtl"
-        android:visibility="visible"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#05AD00"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#05AD00"
-        app:errorTextColor="#FF0000"
-        app:hintEnabled="true"
-        app:hintTextColor="#000"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/layout_phoneNumber"
-        app:layout_constraintWidth_max="500dp">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/birthday"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit_text_white"
+            android:drawableLeft="@drawable/ic_date"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FF9800"
+            android:elevation="2dp"
             android:focusable="false"
             android:focusedByDefault="false"
-            android:fontFamily="@font/vazir"
-            android:inputType="text"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
+            android:maxLength="20"
             android:maxLines="1"
-            android:singleLine="true"
+            android:minLines="1"
+            android:padding="10dp"
+            android:text="1400/10/01"
             android:textAlignment="center"
-            android:textSize="16dp" />
+            android:textSize="20dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_pas"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:enabled="true"
-        android:hint="رمز عبور"
-        android:textAlignment="textStart"
-        android:textDirection="rtl"
-        android:visibility="visible"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#05AD00"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:endIconTint="#05AD00"
-        app:errorTextColor="#FF0000"
-        app:hintEnabled="true"
-        app:hintTextColor="#000"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/layout_birthday"
-        app:layout_constraintWidth_max="500dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/pwd"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_edit_text_white"
+            android:drawableLeft="@drawable/ic_pwd"
+            android:drawablePadding="5dp"
+            android:drawableTint="#FF9800"
+            android:elevation="2dp"
             android:focusable="false"
             android:focusedByDefault="false"
-            android:fontFamily="@font/vazir"
+            android:fontFamily="@font/mitra"
+            android:gravity="center"
             android:inputType="textPassword"
+            android:maxLength="20"
             android:maxLines="1"
-            android:singleLine="true"
+            android:minLines="1"
+            android:padding="10dp"
+            android:text="mohammad200001"
             android:textAlignment="center"
-            android:textSize="16dp" />
+            android:textSize="20dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="45dp"
+            android:background="@drawable/bg_confirm_btn"
+            android:elevation="5dp"
+            android:fontFamily="@font/mitra"
+            android:text="تایید"
+            android:textColor="#2e2e2e"
+            android:textSize="31dp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+            app:layout_constraintWidth_max="500dp" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -210,10 +251,12 @@
         android:layout_height="65dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_account_level"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/layout_pas"
-        app:layout_constraintWidth_max="500dp">
+        app:layout_constraintTop_toBottomOf="@+id/pwd"
+        app:layout_constraintWidth_max="500dp"
+        tools:ignore="NotSibling">
 
         <RelativeLayout
             android:id="@+id/a"
@@ -253,31 +296,40 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/done"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_confirm_btn"
-        android:elevation="5dp"
-        android:fontFamily="@font/mitra"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="تایید"
-        android:textColor="#2e2e2e"
-        android:textSize="31dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintWidth_max="500dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".21" />
+        app:layout_constraintGuide_percent=".35" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".06" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".94" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
