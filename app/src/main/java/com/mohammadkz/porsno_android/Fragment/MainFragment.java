@@ -18,6 +18,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
@@ -67,6 +68,7 @@ public class MainFragment extends Fragment {
                     case R.id.allQuestion:
                         location = R.id.allQuestion;
                         setFabIcon(R.id.allQuestion);
+                        ((MainPageActivity) getActivity()).setTopAppBar("تمام پرسشنامه ها");
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         AllQuestionFragment allQuestionFragment = new AllQuestionFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout_main, allQuestionFragment).commit();
@@ -90,6 +92,7 @@ public class MainFragment extends Fragment {
     }
 
     private void startFragment() {
+        ((MainPageActivity) getActivity()).setTopAppBar("پرسشنامه های من");
         location = R.id.myQuestion;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         MyQuestionFragment myQuestionFragment = new MyQuestionFragment(user);

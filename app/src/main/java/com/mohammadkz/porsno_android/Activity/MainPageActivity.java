@@ -193,4 +193,8 @@ public class MainPageActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
     }
+
+    public void setTopAppBar(String name) {
+        topAppBar.setTitle(name);
+    }
 }
