@@ -4,15 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -29,6 +35,7 @@ import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -42,10 +49,13 @@ public class AllQuestionFragment extends Fragment {
     View view;
     RecyclerView list;
     ApiConfig request;
-    FloatingActionButton filter;
     CardView filter_card;
     TextView emptyList;
     User user;
+    SwipeRefreshLayout swipeRefresh;
+    EditText searchEdt;
+    List<GetQuestionResponse> allList;
+    List<GetQuestionResponse> toDisplay = new ArrayList<>();
 
     public AllQuestionFragment(User user) {
         // Required empty public constructor
@@ -61,7 +71,7 @@ public class AllQuestionFragment extends Fragment {
 
         request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.setSweetDialog(new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
 
         initViews();
         controllerViews();
@@ -72,8 +82,9 @@ public class AllQuestionFragment extends Fragment {
 
     private void initViews() {
         list = view.findViewById(R.id.list);
-        filter = view.findViewById(R.id.filter);
         emptyList = view.findViewById(R.id.emptyList);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        searchEdt = view.findViewById(R.id.searchEdt);
         filter_card = view.findViewById(R.id.filter_card);
         YoYo.with(Techniques.SlideInDown)
                 .duration(300)
@@ -82,28 +93,58 @@ public class AllQuestionFragment extends Fragment {
     }
 
     private void controllerViews() {
-        filter.setOnClickListener(new View.OnClickListener() {
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                if (filter_card.getVisibility() == View.VISIBLE) {
-                    YoYo.with(Techniques.SlideInUp)
-                            .duration(600)
-                            .repeat(0)
-                            .playOn(view.findViewById(R.id.filter_card));
-                    filter_card.setVisibility(View.GONE);
-                } else {
+            public void onRefresh() {
+                getData();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        getParentFragmentManager().setFragmentResultListener("visibility_data", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                Log.e("test data ", result.getString("visibility").toString());
+                boolean visibility = result.getString("visibility") == "true";
+
+                if (visibility) {
                     filter_card.setVisibility(View.VISIBLE);
                     YoYo.with(Techniques.SlideInDown)
                             .duration(300)
                             .repeat(0)
                             .playOn(view.findViewById(R.id.filter_card));
+                } else {
+                    YoYo.with(Techniques.SlideInUp)
+                            .duration(600)
+                            .repeat(0)
+                            .playOn(view.findViewById(R.id.filter_card));
+                    filter_card.setVisibility(View.GONE);
                 }
             }
         });
+
+        searchEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 0)
+                    searchName(editable.toString());
+            }
+        });
+
     }
 
     private void getData() {
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+        SweetDialog.setSweetDialog(new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
         Call<List<GetQuestionResponse>> get = request.getQuestions("-", "-");
 
@@ -112,7 +153,9 @@ public class AllQuestionFragment extends Fragment {
             @Override
             public void onResponse(Call<List<GetQuestionResponse>> call, Response<List<GetQuestionResponse>> response) {
                 if (response.body().size() >= 0) {
-                    setAdapter(response.body());
+                    allList = response.body();
+                    toDisplay = allList;
+                    setAdapter();
                 } else {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
@@ -125,16 +168,16 @@ public class AllQuestionFragment extends Fragment {
         });
     }
 
-    private void setAdapter(List<GetQuestionResponse> questionnaireList) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+    private void setAdapter() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list.setLayoutManager(linearLayoutManager);
 
         QuestionAdapter questionAdapter;
 
-        if (questionnaireList.size() > 0) {
+        if (allList.size() > 0) {
 
-            questionAdapter = new QuestionAdapter(getContext(), questionnaireList);
+            questionAdapter = new QuestionAdapter(view.getContext(), toDisplay);
             list.setAdapter(questionAdapter);
             SweetDialog.stopProgress();
 
@@ -142,13 +185,13 @@ public class AllQuestionFragment extends Fragment {
                 @Override
                 public void onItemClick(int pos, View v) {
                     Log.e("qId", " " + pos);
-                    Intent intent = new Intent(getContext(), AnswerActivity.class);
-                    intent.putExtra("qId", questionnaireList.get(pos).getQuestionId());
+                    Intent intent = new Intent(view.getContext(), AnswerActivity.class);
+                    intent.putExtra("qId", toDisplay.get(pos).getQuestionId());
                     transferData(intent);
                     startActivity(intent);
                 }
             });
-        }else {
+        } else {
             SweetDialog.stopProgress();
             emptyList.setVisibility(View.VISIBLE);
         }
@@ -167,5 +210,15 @@ public class AllQuestionFragment extends Fragment {
         super.onResume();
         SweetDialog.stopProgress();
         getData();
+    }
+
+    private void searchName(String name) {
+        toDisplay = new ArrayList<>();
+        for (int i = 0; i < allList.size(); i++) {
+            if (allList.get(i).getQuestionName().contains(name)) {
+                toDisplay.add(allList.get(i));
+            }
+        }
+        setAdapter();
     }
 }

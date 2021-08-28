@@ -31,6 +31,7 @@ public class MainFragment extends Fragment {
     FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     int location;
+    boolean visibility = false;
 
     public MainFragment(User user) {
         // Required empty public constructor
@@ -85,7 +86,11 @@ public class MainFragment extends Fragment {
                 if (location == R.id.myQuestion) {
                     newQuestion();
                 } else {
-
+                    // fragment communication
+                    Bundle bundle = new Bundle();
+                    bundle.putString("visibility", visibility ? "false" : "true");
+                    visibility = !visibility;
+                    getParentFragmentManager().setFragmentResult("visibility_data", bundle);
                 }
             }
         });
