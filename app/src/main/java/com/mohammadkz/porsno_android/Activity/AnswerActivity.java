@@ -237,7 +237,7 @@ public class AnswerActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(list);
 
-        Call<NormalResponse> get = request.saveAnswers(user.getID(), user.getName(), setCreatedTime(), json, questionnaire.getId(), comment);
+        Call<NormalResponse> get = request.saveAnswers(user.getID(), user.getName(), setCreatedTime(), json, questionnaire.getId(), comment.length() == 0 ? "-" : comment.toString());
 
         get.enqueue(new Callback<NormalResponse>() {
             @Override
