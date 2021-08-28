@@ -9,12 +9,16 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -57,6 +61,7 @@ public class AnswerActivity extends AppCompatActivity {
     ConfirmNewQuestionaireAdapter adapter;
     Button done;
     User user;
+    BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +95,7 @@ public class AnswerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (adapter != null && user != null) {
-                    save();
+                    bottomSheetAdvice();
                 }
             }
         });
@@ -225,14 +230,14 @@ public class AnswerActivity extends AppCompatActivity {
         SweetDialog.stopProgress();
     }
 
-    private void save() {
+    private void save(String comment) {
         SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ارسال اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
         List<QuestionAnswer> list = adapter.answers();
         Gson gson = new Gson();
         String json = gson.toJson(list);
 
-        Call<NormalResponse> get = request.saveAnswers(user.getID(), user.getName(), setCreatedTime(), json, questionnaire.getId());
+        Call<NormalResponse> get = request.saveAnswers(user.getID(), user.getName(), setCreatedTime(), json, questionnaire.getId(), comment);
 
         get.enqueue(new Callback<NormalResponse>() {
             @Override
@@ -260,7 +265,7 @@ public class AnswerActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                     sweetAlertDialog.dismiss();
-                                    save();
+                                    save(comment);
                                 }
                             });
 
@@ -313,6 +318,31 @@ public class AnswerActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    }
+
+    private void bottomSheetAdvice() {
+        bottomSheetDialog = new BottomSheetDialog(AnswerActivity.this, R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(AnswerActivity.this).inflate(R.layout.layout_bottom_sheet_advice, (LinearLayout) findViewById(R.id.layout));
+
+        bottomSheetView.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextInputEditText advice = bottomSheetView.findViewById(R.id.advice);
+                save(advice.getText().toString());
+
+            }
+        });
+
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 
 }

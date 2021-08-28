@@ -88,7 +88,8 @@ public interface ApiConfig {
                                      @Field("userName") String userName,
                                      @Field("date") String date,
                                      @Field("answer") String answer,
-                                     @Field("questionId") String questionId
+                                     @Field("questionId") String questionId,
+                                     @Field("comment") String comment
     );
 
     @GET("shop_getprice.php")
