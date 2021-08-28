@@ -6,13 +6,13 @@ plugins {
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.mohammadKz.porsno_android"
         minSdkVersion 22
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -85,4 +85,10 @@ dependencies {
 
     // circle image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // lottie
+    implementation "com.airbnb.android:lottie:3.4.0"
+
+    // fragment
+    implementation "androidx.fragment:fragment:1.4.0-alpha07"
 }
