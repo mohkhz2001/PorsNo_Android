@@ -22,17 +22,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:elevation="20dp"
         app:cardCornerRadius="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
             android:orientation="vertical">
@@ -75,6 +77,7 @@
                         android:fontFamily="@font/vazir"
                         android:gravity="center"
                         android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="25dp" />
 
                 </androidx.cardview.widget.CardView>
@@ -95,6 +98,7 @@
                         android:fontFamily="@font/vazir"
                         android:gravity="center"
                         android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="25dp" />
 
                 </androidx.cardview.widget.CardView>
@@ -115,6 +119,7 @@
                         android:fontFamily="@font/vazir"
                         android:gravity="center"
                         android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="25dp" />
 
                 </androidx.cardview.widget.CardView>
@@ -134,6 +139,7 @@
                         android:fontFamily="@font/vazir"
                         android:gravity="center"
                         android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="25dp" />
 
                 </androidx.cardview.widget.CardView>
@@ -209,11 +215,8 @@
 
     <Button
         android:id="@+id/complete"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="100dp"
         android:background="@drawable/bg_confirm_btn"
         android:elevation="5dp"
         android:fontFamily="@font/mitra"
@@ -223,22 +226,43 @@
         android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".30" />
+        app:layout_constraintGuide_percent=".20" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".63" />
+        app:layout_constraintGuide_percent=".53" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".87" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".13" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".86" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

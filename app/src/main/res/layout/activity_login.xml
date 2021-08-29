@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:screenOrientation="portrait"
-    android:visibility="gone"
     android:id="@+id/root"
-    tools:visibility="visible"
     style="@style/Theme.AppCompat.Light.NoActionBar"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
-    tools:context=".Activity.LoginActivity">
+    android:screenOrientation="portrait"
+    android:visibility="gone"
+    tools:context=".Activity.LoginActivity"
+    tools:visibility="visible">
 
     <TextView
         android:id="@+id/textView"
@@ -28,12 +28,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="317dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="30dp"
         app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <LinearLayout
@@ -74,16 +75,22 @@
                         android:id="@+id/phoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:autoSizeMaxTextSize="50dp"
+                        android:autoSizeMinTextSize="15dp"
+                        android:autoSizeStepGranularity="2dp"
                         android:background="@drawable/bg_enter_field"
                         android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:hint="تلفن همراه"
                         android:inputType="phone"
+                        android:maxLength="12"
                         android:padding="10dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="#7c7c7c"
-                        android:textSize="23dp" />
+                        android:textSize="23dp"
+                        app:autoSizeTextType="uniform"
+                        tools:targetApi="o" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -100,6 +107,9 @@
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:autoSizeMaxTextSize="50dp"
+                        android:autoSizeMinTextSize="15dp"
+                        android:autoSizeStepGranularity="2dp"
                         android:background="@drawable/bg_enter_field"
                         android:fontFamily="@font/mitra"
                         android:gravity="right"
@@ -108,7 +118,9 @@
                         android:padding="10dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:textSize="23dp" />
+                        android:textSize="23dp"
+                        app:autoSizeTextType="uniform"
+                        tools:targetApi="o" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -124,12 +136,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginRight="10dp"
+                        android:autoSizeMaxTextSize="50dp"
+                        android:autoSizeMinTextSize="15dp"
+                        android:autoSizeStepGranularity="2dp"
                         android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:text="رمز عبور را فراموش کرده ام!"
                         android:textColor="#0063e7"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform"
+                        tools:targetApi="o" />
 
                     <TextView
                         android:id="@+id/signUp"
@@ -138,12 +155,17 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="3dp"
                         android:layout_marginRight="10dp"
+                        android:autoSizeMaxTextSize="50dp"
+                        android:autoSizeMinTextSize="15dp"
+                        android:autoSizeStepGranularity="2dp"
                         android:fontFamily="@font/mitra"
                         android:gravity="right"
                         android:text="ساخت حساب کاربری"
                         android:textColor="#0063e7"
                         android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform"
+                        tools:targetApi="o" />
 
 
                 </LinearLayout>
@@ -155,10 +177,8 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
         android:background="@drawable/bg_confirm_btn"
         android:elevation="5dp"
         android:fontFamily="@font/mitra"
@@ -168,11 +188,9 @@
         android:textColor="#2e2e2e"
         android:textSize="29dp"
         android:textStyle="bold"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -188,5 +206,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".60" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".87" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".13" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".86" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
