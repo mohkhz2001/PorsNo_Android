@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/vazir"
+        android:gravity="center"
+        android:text="نظر شما"
+        android:textColor="#000"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView7"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:visibility="gone"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/advice_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:enabled="true"
+        android:hint="نظر شما"
+        android:visibility="visible"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#FF9800"
+        app:boxStrokeWidth="2dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="200"
+        app:endIconMode="clear_text"
+        app:endIconTint="#FF9800"
+        app:hintEnabled="true"
+        app:hintTextColor="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView7"
+        app:layout_constraintWidth_max="400dp"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/advice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusedByDefault="false"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxLines="6"
+            android:minLines="3"
+            android:maxLength="200"
+            android:singleLine="false"
+            android:textSize="18dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_confirm_btn"
+        android:elevation="5dp"
+        android:fontFamily="@font/mitra"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="اتمام پرسشنامه"
+        android:textColor="#2e2e2e"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_max="400dp" />
+
+
+</LinearLayout>

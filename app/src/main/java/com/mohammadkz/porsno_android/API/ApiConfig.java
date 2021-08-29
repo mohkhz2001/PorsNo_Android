@@ -1,6 +1,7 @@
 package com.mohammadkz.porsno_android.API;
 
 
+import com.mohammadkz.porsno_android.Model.Advice;
 import com.mohammadkz.porsno_android.Model.PriceResponse;
 import com.mohammadkz.porsno_android.Model.Response.AnswerHistoryResponse;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
@@ -126,5 +127,10 @@ public interface ApiConfig {
     @POST("User_Update_pwd.php")
     Call<NormalResponse> updatePwd(@Field("phoneNumber") String pn
             , @Field("pwd") String pwd
+    );
+
+    @FormUrlEncoded
+    @POST("Comment_get.php")
+    Call<List<Advice>> getComment(@Field("questionId") String questionId
     );
 }

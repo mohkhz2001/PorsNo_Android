@@ -252,6 +252,15 @@ public class AnswerActivity extends AppCompatActivity {
                         }
                     });
 
+                } else if (response.body().getMessage().equals("User is spaming")) {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "کاربر گرامی", "شما فقط یکبار قادر به انجام دادن این پرسشنامه هستید.");
+                    SweetDialog.getSweetAlertDialog()
+                            .setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                }
+                            });
                 } else {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog()
