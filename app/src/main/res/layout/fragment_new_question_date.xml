@@ -70,7 +70,7 @@
             android:layout_marginRight="25dp"
             android:layout_weight="1"
             android:enabled="true"
-            android:hint="تاریخ شروع"
+            android:hint="تاریخ پایان"
             android:textAlignment="textStart"
             android:textDirection="rtl"
             android:visibility="visible"
