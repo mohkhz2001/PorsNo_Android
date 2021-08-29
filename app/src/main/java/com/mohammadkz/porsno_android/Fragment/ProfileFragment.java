@@ -152,8 +152,12 @@ public class ProfileFragment extends Fragment {
                 .setListener(new PersianPickerListener() {
                     @Override
                     public void onDateSelected(PersianPickerDate persianPickerDate) {
-                        birthdayDate.setText(persianPickerDate.getPersianYear() + "/" + persianPickerDate.getPersianMonth() + "/" + persianPickerDate.getPersianDay());
-                        user.setBirthdayDate(String.valueOf(persianPickerDate.getTimestamp()));
+                        if (!user.getBirthdayDate().equals(String.valueOf(persianPickerDate.getTimestamp()))) {
+                            birthdayDate.setText(persianPickerDate.getPersianYear() + "/" + persianPickerDate.getPersianMonth() + "/" + persianPickerDate.getPersianDay());
+                            user.setBirthdayDate(String.valueOf(persianPickerDate.getTimestamp()));
+                            done.setVisibility(View.VISIBLE);
+                        }
+
                         Toast.makeText(getContext(), persianPickerDate.getPersianYear() + "/" + persianPickerDate.getPersianMonth() + "/" + persianPickerDate.getPersianDay(), Toast.LENGTH_SHORT).show();
                     }
 

@@ -175,7 +175,7 @@
             android:maxLines="1"
             android:minLines="1"
             android:padding="10dp"
-            android:text="09166158834"
+            android:text=""
             android:textAlignment="center"
             android:textSize="20dp" />
 
@@ -197,7 +197,7 @@
             android:maxLines="1"
             android:minLines="1"
             android:padding="10dp"
-            android:text="1400/10/01"
+            android:text=""
             android:textAlignment="center"
             android:textSize="20dp" />
 
@@ -220,7 +220,7 @@
             android:maxLines="1"
             android:minLines="1"
             android:padding="10dp"
-            android:text="mohammad200001"
+            android:text=""
             android:textAlignment="center"
             android:textSize="20dp" />
 
@@ -238,11 +238,12 @@
             android:textColor="#2e2e2e"
             android:textSize="31dp"
             android:textStyle="bold"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-            app:layout_constraintWidth_max="500dp" />
+            app:layout_constraintWidth_max="500dp"
+            tools:visibility="visible" />
     </LinearLayout>
 
     <RelativeLayout
