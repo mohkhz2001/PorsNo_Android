@@ -99,21 +99,25 @@ public class MainPageActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.account:
+                        setTopAppBar("حساب کاربری");
                         nav_view.setCheckedItem(R.id.account);
                         ProfileFragment profileFragment = new ProfileFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout, profileFragment).commit();
                         break;
                     case R.id.reBuy:
+                        setTopAppBar("تمدید حساب");
                         nav_view.setCheckedItem(R.id.reBuy);
                         ReBuyFragment reBuyFragment = new ReBuyFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout, reBuyFragment).commit();
                         break;
                     case R.id.history:
+                        setTopAppBar("تاریخچه");
                         nav_view.setCheckedItem(R.id.history);
                         HistoryFragment historyFragment = new HistoryFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout, historyFragment).commit();
                         break;
                     case R.id.contact:
+                        setTopAppBar("راه ارتباطی");
                         nav_view.setCheckedItem(R.id.contact);
                         ContactUsFragment contactUsFragment = new ContactUsFragment();
                         fragmentTransaction.replace(R.id.frameLayout, contactUsFragment).commit();
