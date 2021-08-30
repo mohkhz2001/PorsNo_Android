@@ -6,6 +6,7 @@ import com.mohammadkz.porsno_android.Model.PriceResponse;
 import com.mohammadkz.porsno_android.Model.Response.AnswerHistoryResponse;
 import com.mohammadkz.porsno_android.Model.Response.CheckPhoneResponse;
 import com.mohammadkz.porsno_android.Model.Response.ForgetPwdResponse;
+import com.mohammadkz.porsno_android.Model.Response.GetAnswer24;
 import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
 import com.mohammadkz.porsno_android.Model.Response.HistoryBuyResponse;
 import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
@@ -47,7 +48,7 @@ public interface ApiConfig {
 
     @FormUrlEncoded
     @POST("User_confirm_code.php")
-    Call<SMSResponse> SendSMS(@Field("phone") String phoneNumber
+    Call<SMSResponse> SendSMS(@Field("phoneNumber") String phoneNumber
     );
 
     @FormUrlEncoded
@@ -132,5 +133,10 @@ public interface ApiConfig {
     @FormUrlEncoded
     @POST("Comment_get.php")
     Call<List<Advice>> getComment(@Field("questionId") String questionId
+    );
+
+    @FormUrlEncoded
+    @POST("Answer_24_Ago.php")
+    Call<GetAnswer24> getDone24(@Field("questionId") String questionId
     );
 }
