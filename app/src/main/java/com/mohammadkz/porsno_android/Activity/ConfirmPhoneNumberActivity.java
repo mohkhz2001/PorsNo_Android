@@ -70,9 +70,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         controllerViews();
         flipTimer();
         getDate();
-        if (user != null && StaticFun.isNetworkAvailable(getApplicationContext()))
-            codeToConfirm = String.valueOf(getRandomNumberString());
-//            requestCode();
 
     }
 
@@ -220,7 +217,10 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         reSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+                SweetDialog.startProgress();
                 flipTimer();
+                requestCode();
             }
         });
 
@@ -261,6 +261,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                 user.setPn(jsonObject.getString("pn"));
                 user.setName(jsonObject.getString("name"));
 
+                requestCode();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -273,9 +274,9 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         get.enqueue(new Callback<SMSResponse>() {
             @Override
             public void onResponse(Call<SMSResponse> call, Response<SMSResponse> response) {
-                if (response.body().getSmsCode().equals("200")) {
-                    codeToConfirm = response.body().getSmsCode();
-                    SweetDialog.stopProgress();
+                if (response.body().getStatus_code().equals("200")) {
+                    codeToConfirm = response.body().getCode();
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "پیامک حاوی کد تایید با موفقیت ارسال شد.", "");
                 } else {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                 }
@@ -341,21 +342,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         String json = gson.toJson(user);
         intent.putExtra("userInfo", json);
 
-    }
-
-    // generate the code for send sms to confirm phone number
-    public int getRandomNumberString() {
-        // It will generate 4 digit random Number.
-        // from 0 to 9999
-        String number = "";
-        while (number.length() != 4) {
-            Random rnd = new Random();
-            number = Integer.toString(rnd.nextInt(9999));
-        }
-        Toast.makeText(getApplicationContext(), number, Toast.LENGTH_LONG).show();
-        // this will convert any number sequence into 6 character.
-
-        return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
     }
 
     private void setData_SharedPreferences() {

@@ -1,7 +1,7 @@
 package com.mohammadkz.porsno_android.Model.Response;
 
 public class SMSResponse {
-    String message, status_code, smsCode;
+    private String message, status_code, code;
 
     public String getMessage() {
         return message;
@@ -19,11 +19,11 @@ public class SMSResponse {
         this.status_code = status_code;
     }
 
-    public String getSmsCode() {
-        return smsCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setSmsCode(String smsCode) {
-        this.smsCode = smsCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 }
