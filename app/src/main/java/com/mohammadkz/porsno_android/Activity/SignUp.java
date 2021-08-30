@@ -117,21 +117,6 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    // generate the code for send sms to confirm phone number
-    public int getRandomNumberString() {
-        // It will generate 4 digit random Number.
-        // from 0 to 9999
-        String number = "";
-        while (number.length() != 4) {
-            Random rnd = new Random();
-            number = Integer.toString(rnd.nextInt(9999));
-        }
-        Toast.makeText(getApplicationContext(), number, Toast.LENGTH_LONG).show();
-        // this will convert any number sequence into 6 character.
-
-        return Integer.valueOf(String.format("%04d", Integer.parseInt(number)));
-    }
-
     private boolean checkValue() {
         if ((name.getText().length() > 0 && pwd.getText().length() > 0 && phoneNumber.getText().length() > 0)) {
             return true;
