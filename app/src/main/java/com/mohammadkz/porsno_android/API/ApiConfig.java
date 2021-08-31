@@ -139,4 +139,14 @@ public interface ApiConfig {
     @POST("Answer_24_Ago.php")
     Call<GetAnswer24> getDone24(@Field("questionId") String questionId
     );
+
+    @FormUrlEncoded
+    @POST("Question_Edit.php")
+    Call<NormalResponse> editQuestion(@Field("userId") String userId
+            , @Field("questionId") String questionId
+            , @Field("title") String title
+            , @Field("desc") String desc
+            , @Field("start") String start
+            , @Field("end") String end
+    );
 }
