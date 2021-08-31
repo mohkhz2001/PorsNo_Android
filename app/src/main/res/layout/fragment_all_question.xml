@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.AllQuestionFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:overScrollMode="never"
+            android:paddingTop="5dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/filter_card"
         android:layout_width="match_parent"
@@ -20,9 +37,13 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/searchEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_edit_text"
                 android:fontFamily="@font/mitra"
                 android:gravity="center"
@@ -36,29 +57,6 @@
 
     </androidx.cardview.widget.CardView>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:paddingTop="5dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#09FF00"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_filter"
-        app:borderWidth="0dp" />
 
     <TextView
         android:id="@+id/emptyList"
