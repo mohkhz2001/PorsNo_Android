@@ -195,6 +195,8 @@ public class LoginActivity extends AppCompatActivity {
                     root.setVisibility(View.VISIBLE);
                 }
 
+                StaticFun.setLog(phoneNumber.getText().toString(), t.getMessage().toString(), "Login");
+
             }
         });
 
@@ -391,6 +393,36 @@ public class LoginActivity extends AppCompatActivity {
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+    }
+
+    // get the firebase token
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("test token", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+                        Log.d("test token", token);
+                    }
+                });
+    }
+
+    // create the topic in app
+    private void topic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("offer")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
     }
 
 }
