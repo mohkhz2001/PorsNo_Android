@@ -1,15 +1,19 @@
 package com.mohammadkz.porsno_android.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -116,6 +120,20 @@ public class AnswerActivity extends AppCompatActivity {
                     done.setVisibility(View.VISIBLE);
                 } else {
                     done.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.share:
+                        shareIntent();
+                        return true;
+
+                    default:
+                        return false;
                 }
             }
         });
@@ -382,4 +400,12 @@ public class AnswerActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
+    private void shareIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String body = user.getName() + "\nشما را به انجام پرسشنامه ی زیر دعوت کرده است.\n" + "http://www.porsno.ir/questions/question.php?id=" + questionnaire.getId() +
+                "\n * این پیام صرفا جهت تست توسط برنامه ارسال می شود *\n";
+        intent.putExtra(intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(intent, "choose app"));
+    }
 }

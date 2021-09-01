@@ -3,13 +3,16 @@ package com.mohammadkz.porsno_android.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
@@ -259,6 +262,8 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
         if (questionnaire != null)
             adapter.addFragment(new Manager_questionsFragment(questionnaire), "پرسشنامه");
 
+        setAppbarMenu();
+
         SweetDialog.stopProgress();
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -301,6 +306,36 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private String getUserName() {
+        return getIntent().getStringExtra("user-name");
+    }
+
+    private void setAppbarMenu() {
+        topAppBar.inflateMenu(R.menu.app_bar_menu_share);
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.share:
+                        shareIntent();
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    private void shareIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String body = getUserName() + "\nشما را به انجام پرسشنامه ی زیر دعوت کرده است.\n" + "http://www.porsno.ir/questions/question.php?id=" + questionnaire.getId() +
+                "\n * این پیام صرفا جهت تست توسط برنامه ارسال می شود *\n";
+        intent.putExtra(intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(intent, "choose app"));
     }
 
     private class MainAdapter extends FragmentPagerAdapter {
