@@ -4,10 +4,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.mohammadkz.porsno_android.API.ApiConfig;
+import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 
 import java.security.MessageDigest;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StaticFun {
     // account level enum  ==> there is 4 level
@@ -61,7 +69,7 @@ public class StaticFun {
 
     // error handler for input wrong phone number or pass
     public static void alertDialog_error_login(Context context) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context , R.style.CustomMaterialDialog);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.CustomMaterialDialog);
         builder.setTitle("مشکل در ورود");
         builder.setMessage("نام کاربری یا رمز عبور اشتباه است");
         String positive = "بستن";
@@ -130,5 +138,22 @@ public class StaticFun {
             return null;
         }
 
+    }
+
+    public static void setLog(String pn, String error, String location) {
+        ApiConfig request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+        Call<NormalResponse> get = request.appLog(pn, error, location);
+        get.enqueue(new Callback<NormalResponse>() {
+            @Override
+            public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+                Log.e("", "");
+            }
+
+            @Override
+            public void onFailure(Call<NormalResponse> call, Throwable t) {
+                Log.e("", "");
+            }
+        });
     }
 }

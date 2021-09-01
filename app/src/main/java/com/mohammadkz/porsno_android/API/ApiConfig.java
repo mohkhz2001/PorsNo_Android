@@ -149,4 +149,11 @@ public interface ApiConfig {
             , @Field("start") String start
             , @Field("end") String end
     );
+
+    @FormUrlEncoded
+    @POST("AppLog_send.php")
+    Call<NormalResponse> appLog(@Field("phoneNumber") String userPn
+            , @Field("log") String log
+            , @Field("Location") String location
+    );
 }
