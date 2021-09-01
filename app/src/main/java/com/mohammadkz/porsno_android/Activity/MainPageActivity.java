@@ -33,6 +33,8 @@ import com.mohammadkz.porsno_android.StaticFun;
 
 import org.json.JSONObject;
 
+import es.dmoral.toasty.Toasty;
+
 public class MainPageActivity extends AppCompatActivity {
 
     DrawerLayout drawer_layout;
@@ -45,17 +47,25 @@ public class MainPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
 
-        initViews();
-        getDate();
-        controllerViews();
-        startFragment();
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main_page);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, R.string.openDrawerContentRes, R.string.closeDrawerContentRes);
-        drawer_layout.addDrawerListener(toggle);
-        toggle.syncState();
+            initViews();
+            getDate();
+            controllerViews();
+            startFragment();
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, R.string.openDrawerContentRes, R.string.closeDrawerContentRes);
+            drawer_layout.addDrawerListener(toggle);
+            toggle.syncState();
+        } catch (Exception e) {
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "main page Activity - create");
+            onCreate(savedInstanceState);
+        }
 
     }
 
@@ -174,6 +184,9 @@ public class MainPageActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "main page Activity - get data");
             }
     }
 

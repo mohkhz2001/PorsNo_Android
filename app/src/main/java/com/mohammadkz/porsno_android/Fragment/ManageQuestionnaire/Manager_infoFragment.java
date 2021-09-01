@@ -30,12 +30,14 @@ import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
 import ir.hamsaa.persiandatepicker.api.PersianPickerDate;
 import ir.hamsaa.persiandatepicker.api.PersianPickerListener;
@@ -71,16 +73,24 @@ public class Manager_infoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_manager_info, container, false);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_manager_info, container, false);
 
-        initViews();
-        controllerViews();
-        setValue();
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        return view;
+            initViews();
+            controllerViews();
+            setValue();
+
+            return view;
+        } catch (Exception e) {
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog("-", e.getMessage().toString(), "manager info fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {
@@ -285,6 +295,8 @@ public class Manager_infoFragment extends Fragment {
                     System.out.println();
                     SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "اطلاع پرسشنامه با موفقیت تغییر کرد.", "");
                 } else {
+                    StaticFun.setLog("-", response.body() != null ? response.body().getMessage().toString() : "-"
+                            , "manager info fragment - update question / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "خطایی در ویراش بوجود آمده است.", "");
                     SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -304,6 +316,11 @@ public class Manager_infoFragment extends Fragment {
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
+
+                StaticFun.setLog("-",
+                        t.getMessage().toString()
+                        , "manager info fragment - update question / failure");
+
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override

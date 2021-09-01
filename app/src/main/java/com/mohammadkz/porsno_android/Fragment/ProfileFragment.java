@@ -75,18 +75,26 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
+            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
 
-        initViews();
-        controllerViews();
-        setValue();
+            initViews();
+            controllerViews();
+            setValue();
 
-        return view;
+            return view;
+        } catch (Exception e) {
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "profile fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {
@@ -219,12 +227,16 @@ public class ProfileFragment extends Fragment {
 
                     ((MainPageActivity) getActivity()).updateUser(user);
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                            : (user.getPn().length() > 0 ? user.getPn() : "-"), "-", "profile fragment - update / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString(), "profile fragment - update / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });
@@ -289,12 +301,17 @@ public class ProfileFragment extends Fragment {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
                     update(true, StaticFun.md5(finalPwd));
-                } else
+                } else {
+                    StaticFun.setLog((user == null) ? "-"
+                            : (user.getPn().length() > 0 ? user.getPn() : "-"), "-", "profile fragment - check pwd / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString(), "profile fragment - check pwd / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });

@@ -59,17 +59,24 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirm_phone_number);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_confirm_phone_number);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
-        initViews();
-        controllerViews();
-        flipTimer();
-        getDate();
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+            initViews();
+            controllerViews();
+            flipTimer();
+            getDate();
+        } catch (Exception e) {
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - create");
+        }
 
     }
 
@@ -264,6 +271,9 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                 requestCode();
             } catch (Exception e) {
                 e.printStackTrace();
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "confirm phone Activity - get data");
             }
     }
 
@@ -303,6 +313,10 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                     setData_SharedPreferences();
                     start();
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                            response.body().getMessage().length() > 0 ? response.body().getMessage() + " - " + response.body().getStatus_code() : " - "
+                            , "confirm phone Activity - complete reg / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                 }
             }
@@ -310,6 +324,9 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<SignUpResponse> call, Throwable t) {
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString(), "confirm phone Activity - complete reg / failure");
             }
         });
     }

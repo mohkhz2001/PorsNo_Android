@@ -65,17 +65,25 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_answer);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_answer);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
-        initViews();
-        controllerViews();
-        getQuestion();
-        getDate();
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+            initViews();
+            controllerViews();
+            getQuestion();
+            getDate();
+        } catch (Exception e) {
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - create");
+            onCreate(savedInstanceState);
+        }
 
     }
 
@@ -152,6 +160,9 @@ public class AnswerActivity extends AppCompatActivity {
                     parseDate(response.body());
 
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"), "-"
+                            , "answer Activity - get question / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -164,6 +175,10 @@ public class AnswerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetQuestionResponse> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                        t.getMessage().toString()
+                        , "answer Activity - get question / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -215,6 +230,9 @@ public class AnswerActivity extends AppCompatActivity {
             e.printStackTrace();
             super.finish();
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - parse date");
+            finish();
         }
 
     }
@@ -278,11 +296,19 @@ public class AnswerActivity extends AppCompatActivity {
                                 }
                             });
 
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                            response.body().getMessage().length() > 0 ? response.body().getMessage() + " - " + response.body().getStatus_code() : "-"
+                            , "answer Activity - save / response");
+
                 }
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString(), "answer Activity - save / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -325,7 +351,9 @@ public class AnswerActivity extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - get date");
+                getDate();
             }
     }
 

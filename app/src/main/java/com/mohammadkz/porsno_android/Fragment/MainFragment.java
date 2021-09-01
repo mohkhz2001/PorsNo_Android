@@ -22,6 +22,7 @@ import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 
 public class MainFragment extends Fragment {
@@ -41,14 +42,21 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_main, container, false);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        initViews();
-        controllerViews();
-        startFragment();
+            initViews();
+            controllerViews();
+            startFragment();
 
-        return view;
+            return view;
+        } catch (Exception e) {
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "main fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {

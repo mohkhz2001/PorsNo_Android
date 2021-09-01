@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
+import com.mohammadkz.porsno_android.Activity.AnswerActivity;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
 import com.mohammadkz.porsno_android.Adapter.AnswerAdapter;
 import com.mohammadkz.porsno_android.Adapter.ConfirmNewQuestionaireAdapter;
@@ -33,12 +34,14 @@ import com.mohammadkz.porsno_android.Model.Answer;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.Response.NewQuestionaire;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +56,6 @@ public class NewQuestion_ConfirmFragment extends Fragment {
     Button confirm;
     ConfirmNewQuestionaireAdapter confirmNewQuestionaireAdapter;
     ApiConfig request;
-    ProgressDialog progressDialog;
     BottomSheetDialog bottomSheetDialog;
     NewAnswerAdapter newAnswerAdapter;
 
@@ -65,21 +67,27 @@ public class NewQuestion_ConfirmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_new_question_confirm, container, false);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+        try {
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("منتظر باشید...");
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_new_question_confirm, container, false);
 
-        ((NewQuestionActivity) getActivity()).setSeekBar(3);
+            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
 
-        initViews();
-        controllerViews();
-        setAdapter();
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        return view;
+            ((NewQuestionActivity) getActivity()).setSeekBar(3);
+
+            initViews();
+            controllerViews();
+            setAdapter();
+
+            return view;
+        } catch (Exception e) {
+            StaticFun.setLog("id:" + questionnaire.getUserId(), e.getMessage().toString(), "new question confirm fragment - create");
+            return view;
+        }
     }
 
     private void initViews() {
@@ -91,7 +99,6 @@ public class NewQuestion_ConfirmFragment extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
                 Api();
             }
         });
@@ -118,6 +125,9 @@ public class NewQuestion_ConfirmFragment extends Fragment {
     }
 
     private void Api() {
+        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال ارسال اطلاعات", "لطفا منتظر باشید.");
+        SweetDialog.startProgress();
+
         String json = convertToJson();
 
         Call<NewQuestionaire> get = request.newQuestnaire(" - ", questionnaire.getName(), questionnaire.getStartDate_stamp(), questionnaire.getEndDate_stamp(), " - ",
@@ -127,19 +137,39 @@ public class NewQuestion_ConfirmFragment extends Fragment {
             @Override
             public void onResponse(Call<NewQuestionaire> call, Response<NewQuestionaire> response) {
                 if (response.body().getStatus_code().equals("200")) {
-                    progressDialog.dismiss();
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "پرسشنامه ی شما با موفقت اضافه شد.", "");
                     getActivity().finish();
+                } else if (response.body().getStatus_code().equals("404")) {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "پرسشنامه ی شما اضافه نشد.", "زمان حساب شما به اتمام رسیده است.");
+                } else if (response.body().getStatus_code().equals("403")) {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "پرسشنامه ی شما اضافه نشد.", "تعداد پرسشنامه های مجاز شما به اتمام رسیده استو");
                 } else {
-                    progressDialog.dismiss();
-
+                    StaticFun.setLog("id:" + questionnaire.getUserId(),
+                            response.body() != null ? (response.body().getMessage() + " - " + response.body().getStatus_code()) : "-"
+                            , "new question confirm fragment - api / response");
                 }
             }
 
             @Override
             public void onFailure(Call<NewQuestionaire> call, Throwable t) {
-                t.getMessage();
+                StaticFun.setLog("id:" + questionnaire.getUserId(),
+                        t.getMessage().toString()
+                        , "new question confirm fragment - api / failure");
                 StaticFun.alertDialog_connectionFail(getContext());
-                progressDialog.dismiss();
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        Api();
+                        SweetDialog.stopProgress();
+                    }
+                });
+                SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    }
+                });
             }
         });
     }

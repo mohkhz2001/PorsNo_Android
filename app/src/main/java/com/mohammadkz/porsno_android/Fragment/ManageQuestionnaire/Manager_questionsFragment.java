@@ -14,6 +14,9 @@ import com.mohammadkz.porsno_android.Adapter.ConfirmNewQuestionaireAdapter;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
+
+import es.dmoral.toasty.Toasty;
 
 public class Manager_questionsFragment extends Fragment {
 
@@ -31,14 +34,21 @@ public class Manager_questionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_manager_questions, container, false);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_manager_questions, container, false);
 
-        initViews();
-        controllerViews();
-        setAdapter();
+            initViews();
+            controllerViews();
+            setAdapter();
+            return view;
+        }catch (Exception e){
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog("-", e.getMessage().toString(), "manager question fragment - create");
+            return view;
+        }
 
-        return view;
+
     }
 
     private void initViews() {

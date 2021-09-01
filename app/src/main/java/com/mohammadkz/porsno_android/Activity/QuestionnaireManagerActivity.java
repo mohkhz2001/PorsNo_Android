@@ -30,6 +30,7 @@ import com.mohammadkz.porsno_android.Model.Response.GetQuestionResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,17 +57,24 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_questionnaire_manager);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_questionnaire_manager);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(QuestionnaireManagerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        initViews();
-        controllerViews();
-        calculateInfo();
-        getQuestion();
+            SweetDialog.setSweetDialog(new SweetAlertDialog(QuestionnaireManagerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+
+            initViews();
+            controllerViews();
+            calculateInfo();
+            getQuestion();
+        } catch (Exception e) {
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog("-", e.getMessage().toString(), "question manager Activity - create");
+            onCreate(savedInstanceState);
+        }
 
     }
 
@@ -125,6 +133,7 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
                     parseDate(response.body());
 
                 } else {
+                    StaticFun.setLog("+", "+", "question manager Activity - get question / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -137,6 +146,8 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetQuestionResponse> call, Throwable t) {
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog("-", t.getMessage().toString(), "question manager Activity - get question / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -190,9 +201,8 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
 
             getComment();
         } catch (JSONException e) {
-            e.printStackTrace();
-            super.finish();
-            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog("-", e.getMessage().toString(), "Answer Activity - parse date");
+            finish();
             SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
@@ -216,6 +226,7 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
                     adviceList = response.body();
                     setDone24();
                 } else {
+                    StaticFun.setLog("-", "-", "question manager Activity - get comment / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -228,6 +239,7 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Advice>> call, Throwable t) {
+                StaticFun.setLog("-", "-", "question manager Activity - get comment / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -264,6 +276,9 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
                     done24 = Integer.parseInt(response.body().getCount());
                     setAdapter();
                 } else {
+                    StaticFun.setLog("-"
+                            , response.body().getMessage().length() > 0 ? response.body().getMessage() + " - " + response.body().getStatus_code() : "-"
+                            , "question manager Activity - get 24  / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -276,6 +291,7 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetAnswer24> call, Throwable t) {
+                StaticFun.setLog("-", t.getMessage().toString(), "question manager Activity - get 24 / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override

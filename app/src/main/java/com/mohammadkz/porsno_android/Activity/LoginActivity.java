@@ -61,21 +61,29 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_login);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
+            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+            getToken();
+            topic();
+            initViews();
+            controllerViews();
 
-        initViews();
-        controllerViews();
-
-        if (autoLogin()) {
-            getData_SharedPreferences();
-        } else {
+            if (autoLogin()) {
+                getData_SharedPreferences();
+            } else {
 //            SweetDialog.stopProgress();
-            root.setVisibility(View.VISIBLE);
+                root.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            StaticFun.setLog((user == null) ? (phoneNumber != null && phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")
+                    : (user.getPn().length() > 0 ? user.getPn() : (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")), e.getMessage().toString(), "login - create");
+            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this , SweetAlertDialog.ERROR_TYPE) , "کاربر گرامی مشکلی در حال حاضر بر روی سیستم ما وجود دادم لطفا دقایقی دیگر تلاش کنید." , "");
+            SweetDialog.startProgress();
         }
 
     }
@@ -168,10 +176,10 @@ public class LoginActivity extends AppCompatActivity {
                         setData_SharedPreferences(pass);
                     }
 
-                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "خوش آمدید", "ورود با موفقیت انجام شد");
                     setUser(response.body());
                     Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                     transferData(intent);
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "خوش آمدید", "ورود با موفقیت انجام شد");
                     start(intent);
                 } else {
                     if (!shared) {
@@ -188,14 +196,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.getMessage();
                 if (shared) {
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی تماس حاصل فرمایید.");
                     root.setVisibility(View.VISIBLE);
                 } else {
                     SweetDialog.stopProgress();
                     root.setVisibility(View.VISIBLE);
                 }
 
-                StaticFun.setLog(phoneNumber.getText().toString(), t.getMessage().toString(), "Login");
+                StaticFun.setLog(phoneNumber.getText().toString(), t.getMessage().toString(), "Login - api");
 
             }
         });
@@ -225,6 +233,8 @@ public class LoginActivity extends AppCompatActivity {
                 login(true);
             } catch (JSONException e) {
                 e.printStackTrace();
+                StaticFun.setLog((user == null) ? (phoneNumber != null && phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")
+                        : (user.getPn().length() > 0 ? user.getPn() : (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")), e.getMessage().toString(), "login");
             }
         }
     }

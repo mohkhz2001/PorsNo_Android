@@ -19,10 +19,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 public class HistoryFragment extends Fragment {
 
@@ -31,6 +33,7 @@ public class HistoryFragment extends Fragment {
     TabLayout tabLayout;
     MainAdapter adapter;
     User user;
+
     public HistoryFragment(User user) {
         // Required empty public constructor
         this.user = user;
@@ -39,17 +42,26 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-        SweetDialog.startProgress();
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        initViews();
-        controllerViews();
-        setAdapter();
+            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+            SweetDialog.startProgress();
 
-        return view;
+            initViews();
+            controllerViews();
+            setAdapter();
+
+            return view;
+        } catch (Exception e) {
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "history fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {
@@ -66,9 +78,9 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1){
+                if (position == 1) {
                     tabLayout.setSelectedTabIndicator(R.drawable.bg_tab_select_l);
-                }else {
+                } else {
                     tabLayout.setSelectedTabIndicator(R.drawable.bg_tab_select_r);
                 }
             }
@@ -80,11 +92,11 @@ public class HistoryFragment extends Fragment {
         });
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         adapter = new MainAdapter(getFragmentManager());
 
-        adapter.addFragment(new History_BuyFragment(user) , "خرید ها");
-        adapter.addFragment(new History_DoneFragment(user) , "انجام شده");
+        adapter.addFragment(new History_BuyFragment(user), "خرید ها");
+        adapter.addFragment(new History_DoneFragment(user), "انجام شده");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -95,7 +107,7 @@ public class HistoryFragment extends Fragment {
         ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
         ArrayList<String> stringArrayList = new ArrayList<>();
 
-        public void addFragment(Fragment fragment , String string){
+        public void addFragment(Fragment fragment, String string) {
             fragmentArrayList.add(fragment);
             stringArrayList.add(string);
         }

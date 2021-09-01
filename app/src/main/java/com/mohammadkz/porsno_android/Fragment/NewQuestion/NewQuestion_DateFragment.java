@@ -17,6 +17,7 @@ import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 import es.dmoral.toasty.Toasty;
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
@@ -43,15 +44,23 @@ public class NewQuestion_DateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_new_question_date, container, false);
 
-        ((NewQuestionActivity) getActivity()).setSeekBar(1);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_new_question_date, container, false);
 
-        initViews();
-        controllerViews();
+            ((NewQuestionActivity) getActivity()).setSeekBar(1);
 
-        return view;
+            initViews();
+            controllerViews();
+
+            return view;
+        } catch (Exception e) {
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "new question date - create");
+            return view;
+        }
+
     }
 
     private void initViews() {

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,18 +67,27 @@ public class AllQuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_all_question, container, false);
+        try {
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_all_question, container, false);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        initViews();
-        controllerViews();
-        getData();
+            SweetDialog.setSweetDialog(new SweetAlertDialog(view.getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
 
-        return view;
+            initViews();
+            controllerViews();
+            getData();
+
+            return view;
+        } catch (Exception e) {
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-" : (user.getPn().length() > 0 ? user.getPn() : "-")
+                    , e.getMessage().toString()
+                    , "all question fragment - create");
+            return view;
+        }
     }
 
     private void initViews() {
@@ -157,12 +167,20 @@ public class AllQuestionFragment extends Fragment {
                     toDisplay = allList;
                     setAdapter();
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                            response.body() != null ? "-" : "response null"
+                            , "all question fragment - get data / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<GetQuestionResponse>> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                        t.getMessage().toString()
+                        , "all question fragment - get data / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });

@@ -67,18 +67,25 @@ public class MyQuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_my_question, container, false);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_my_question, container, false);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
 
-        initViews();
-        controllerView();
-        getData();
+            initViews();
+            controllerView();
+            getData();
 
-        return view;
+            return view;
+        } catch (Exception e) {
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "my question fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {
@@ -107,16 +114,24 @@ public class MyQuestionFragment extends Fragment {
         get.enqueue(new Callback<List<GetQuestionResponse>>() {
             @Override
             public void onResponse(Call<List<GetQuestionResponse>> call, Response<List<GetQuestionResponse>> response) {
-                if (response.body().size() >= 0) {
+                if (response.body() != null) {
 
-                    setAdapter(response.body() != null ? response.body() : (new ArrayList<GetQuestionResponse>()));
+                    setAdapter(response.body().size() >= 0 ? response.body() : (new ArrayList<GetQuestionResponse>()));
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                            ""
+                            , "my question fragment - get date / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<GetQuestionResponse>> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                        t.getMessage().toString()
+                        , "my question fragment - get date / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
             }
         });

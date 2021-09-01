@@ -33,6 +33,7 @@ import com.mohammadkz.porsno_android.Model.Answer;
 import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,16 +64,23 @@ public class NewQuestion_NewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_new_question_new, container, false);
 
-        ((NewQuestionActivity) getActivity()).setSeekBar(2);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_new_question_new, container, false);
 
-        initViews();
-        controllerViews();
-        start();
+            ((NewQuestionActivity) getActivity()).setSeekBar(2);
 
-        return view;
+            initViews();
+            controllerViews();
+            start();
+
+            return view;
+        } catch (Exception e) {
+            StaticFun.setLog("id :" + questionnaire.getUserId() , e.getMessage().toString(), "new question new - create");
+            return view;
+        }
+
     }
 
     private void start() {

@@ -11,9 +11,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.mohammadkz.porsno_android.Fragment.NewQuestion.NewQuestion_InfoFragment;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
+import com.mohammadkz.porsno_android.StaticFun;
 import com.warkiz.widget.IndicatorSeekBar;
 
 import org.json.JSONObject;
+
+import es.dmoral.toasty.Toasty;
 
 public class NewQuestionActivity extends AppCompatActivity {
 
@@ -24,15 +27,23 @@ public class NewQuestionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_question);
 
-        Id = getIntent().getStringExtra("id");
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_new_question);
 
-        initViews();
-        controllerViews();
-        getDate();
-        startFragment();
+            Id = getIntent().getStringExtra("id");
+
+            initViews();
+            controllerViews();
+            getDate();
+            startFragment();
+        }catch (Exception e){
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "new question Activity - create");
+            onCreate(savedInstanceState);
+        }
 
     }
 
@@ -91,6 +102,9 @@ public class NewQuestionActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "new questionnair Activity - get date");
+                getDate();
             }
     }
 

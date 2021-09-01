@@ -64,18 +64,26 @@ public class ReBuyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_re_buy, container, false);
+        try {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_re_buy, container, false);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
+            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE));
 
-        initViews();
-        controllerViews();
-        getPrice();
+            initViews();
+            controllerViews();
+            getPrice();
 
-        return view;
+            return view;
+        } catch (Exception e) {
+            Toasty.error(getContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog((user == null) ? "-"
+                    : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "re but fragment - create");
+            return view;
+        }
+
     }
 
     private void initViews() {
@@ -140,6 +148,9 @@ public class ReBuyFragment extends Fragment {
                     setValue(response.body().get(0).getCost(), response.body().get(1).getCost(), response.body().get(2).getCost(), response.body().get(3).getCost());
 
                 } else {
+                    StaticFun.setLog((user == null) ? "-"
+                                    : (user.getPn().length() > 0 ? user.getPn() : "-"), "-"
+                            , "re buy fragment - get price / response");
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                     SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -153,6 +164,10 @@ public class ReBuyFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<PriceResponse>> call, Throwable t) {
+                StaticFun.setLog((user == null) ? "-"
+                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                        t.getMessage().toString()
+                        , "re buy fragment - get price / failure");
                 SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
                 SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -200,6 +215,10 @@ public class ReBuyFragment extends Fragment {
 
             dayLeft.setText(period.getStandardDays() + "");
         } catch (Exception e) {
+            StaticFun.setLog((user == null) ? "-"
+                            : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                    e.getMessage().toString()
+                    , "re buy fragment - parse date ");
             dayLeft.setText("با واحد پشتیبانی تماس حاصل فرمایید");
         }
 
@@ -276,7 +295,10 @@ public class ReBuyFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UrlResponse> call, Throwable t) {
-                System.out.println();
+                StaticFun.setLog((user == null) ? "-"
+                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                        t.getMessage().toString()
+                        , "re buy fragment - generate Pay Url / failure");
             }
         });
     }
@@ -289,6 +311,10 @@ public class ReBuyFragment extends Fragment {
             intent.putExtra("url", urlResponse.getLink());
             startActivity(intent);
         } else {
+            StaticFun.setLog((user == null) ? "-"
+                            : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                    "there is problem in get or handle link"
+                    , "re buy fragment - WebViewStart");
             SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.");
         }
 

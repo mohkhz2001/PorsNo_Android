@@ -40,15 +40,24 @@ public class SignUp extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
 
-        request = AppConfig.getRetrofit().create(ApiConfig.class);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_sign_up);
 
-        SweetDialog.setSweetDialog(new SweetAlertDialog(SignUp.this, SweetAlertDialog.PROGRESS_TYPE));
+            request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-        initViews();
-        controllerViews();
+            SweetDialog.setSweetDialog(new SweetAlertDialog(SignUp.this, SweetAlertDialog.PROGRESS_TYPE));
+
+            initViews();
+            controllerViews();
+        } catch (Exception e) {
+            Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+            StaticFun.setLog(phoneNumber.getText() != null ? (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-") : "-"
+                    , e.getMessage().toString()
+                    , "signup Activity - create");
+            onCreate(savedInstanceState);
+        }
 
     }
 
