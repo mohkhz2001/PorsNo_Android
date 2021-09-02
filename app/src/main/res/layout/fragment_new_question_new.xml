@@ -57,13 +57,13 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginBottom="10dp"
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/imgs"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,6 +146,7 @@
             android:layout_below="@id/answer_layout"
             android:layout_marginTop="10dp"
             android:clickable="true"
+            android:overScrollMode="never"
             android:paddingBottom="20dp"
             android:scrollbars="vertical" />
 
@@ -202,9 +203,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
