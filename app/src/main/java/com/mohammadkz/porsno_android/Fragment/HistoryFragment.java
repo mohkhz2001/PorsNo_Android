@@ -106,7 +106,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void setAdapter() {
-        adapter = new MainAdapter(getFragmentManager());
+        adapter = new MainAdapter(getChildFragmentManager());
         SweetDialog.stopProgress();
 
         if (buyList != null)
