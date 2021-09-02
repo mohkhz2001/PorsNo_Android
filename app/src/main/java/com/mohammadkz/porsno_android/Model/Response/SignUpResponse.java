@@ -2,7 +2,7 @@ package com.mohammadkz.porsno_android.Model.Response;
 
 public class SignUpResponse {
 
-    private String userId, userName, phoneNumber, created, accountLevel, end, birthday, message, status_code;
+    private String userId, userName, phoneNumber, created, accountLevel, end, birthday, message, status_code, questionRemaining;
 
     public String getUserId() {
         return userId;
@@ -74,5 +74,13 @@ public class SignUpResponse {
 
     public void setStatus_code(String status_code) {
         this.status_code = status_code;
+    }
+
+    public String getQuestionRemaining() {
+        return questionRemaining;
+    }
+
+    public void setQuestionRemaining(String questionRemaining) {
+        this.questionRemaining = questionRemaining;
     }
 }
