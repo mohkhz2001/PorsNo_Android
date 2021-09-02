@@ -77,7 +77,7 @@ public class NewQuestion_NewFragment extends Fragment {
 
             return view;
         } catch (Exception e) {
-            StaticFun.setLog("id :" + questionnaire.getUserId() , e.getMessage().toString(), "new question new - create");
+            StaticFun.setLog("id :" + questionnaire.getUserId(), e.getMessage().toString(), "new question new - create");
             return view;
         }
 
@@ -252,6 +252,8 @@ public class NewQuestion_NewFragment extends Fragment {
                 if (answers.size() > 2) {
                     answers.remove(pos);
                     setAdapter();
+                    if (new_root.getVisibility() == View.GONE)
+                        new_root.setVisibility(View.VISIBLE);
                 } else {
                     Toasty.error(getContext(), "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
                 }
@@ -269,11 +271,15 @@ public class NewQuestion_NewFragment extends Fragment {
     private void newAnswer() {
         answers = newAnswerAdapter.getAnswer();
         answers.add(new Answer(""));
+        if (answers.size() == 4) {
+            new_root.setVisibility(View.GONE);
+        }
     }
 
     private void newQuestion() {
         questionnaire.getQuestions().add(new Question());
         newAnswerAdapter.clearList();
+        new_root.setVisibility(View.VISIBLE);
         setAnswer();
         setAdapter();
     }
