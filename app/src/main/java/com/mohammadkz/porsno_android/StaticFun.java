@@ -147,12 +147,12 @@ public class StaticFun {
         get.enqueue(new Callback<NormalResponse>() {
             @Override
             public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
-                Log.e("", "");
+                Log.e("appLog", "Error" + response.body().getMessage());
             }
 
             @Override
             public void onFailure(Call<NormalResponse> call, Throwable t) {
-                Log.e("", "");
+                Log.e("appLog", "Error" + t.getMessage());
             }
         });
     }
