@@ -46,9 +46,9 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:padding="2dp"
-                android:text="محمد مهدی خواجه زاده"
                 android:textColor="#000"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="محمد مهدی خواجه زاده" />
         </LinearLayout>
 
 
@@ -102,7 +102,7 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/mitra"
                     android:gravity="center"
-                    android:text="21"
+                    tools:text="21"
                     android:textColor="@color/main_green"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -135,7 +135,7 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/mitra"
                     android:gravity="center"
-                    android:text="10"
+                    tools:text="10"
                     android:textColor="@color/main_green"
                     android:textStyle="bold" />
             </LinearLayout>
