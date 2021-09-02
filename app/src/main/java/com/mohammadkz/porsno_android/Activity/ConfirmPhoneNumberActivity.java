@@ -336,6 +336,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
         user.setAccountLevel(StaticFun.account.Bronze);
         user.setEndTime(response.getEnd());
         user.setBirthdayDate("");
+        user.setQuestionRemaining(response.getQuestionRemaining());
 
     }
 
