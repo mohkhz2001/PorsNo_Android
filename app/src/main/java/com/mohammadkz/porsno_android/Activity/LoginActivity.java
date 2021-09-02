@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText pwd, phoneNumber;
     TextView signUp, forgotPWD;
-    Button login;
+    Button login, signUpBtn;
     ApiConfig request;
     User user;
     ConstraintLayout root;
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             StaticFun.setLog((user == null) ? (phoneNumber != null && phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")
                     : (user.getPn().length() > 0 ? user.getPn() : (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")), e.getMessage().toString(), "login - create");
-            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this , SweetAlertDialog.ERROR_TYPE) , "کاربر گرامی مشکلی در حال حاضر بر روی سیستم ما وجود دادم لطفا دقایقی دیگر تلاش کنید." , "");
+            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE), "کاربر گرامی مشکلی در حال حاضر بر روی سیستم ما وجود دادم لطفا دقایقی دیگر تلاش کنید.", "");
             SweetDialog.startProgress();
         }
 
@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPWD = findViewById(R.id.forgotPWD);
         login = findViewById(R.id.login);
         root = findViewById(R.id.root);
+        signUpBtn = findViewById(R.id.signUpBtn);
     }
 
     private void controllerViews() {
@@ -141,6 +142,14 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
                 root.setVisibility(View.VISIBLE);
 
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SignUp.class);
+                startActivity(intent);
             }
         });
     }
