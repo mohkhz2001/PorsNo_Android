@@ -50,8 +50,8 @@ public class BuyHistoryAdapter extends RecyclerView.Adapter<BuyHistoryAdapter.Vi
     private String dateConvertor(String timeStamp) {
 
         try {
-            PersianDate pdate = new PersianDate(Long.valueOf(timeStamp));
-            PersianDateFormat pdformater1 = new PersianDateFormat("yyyy/mm/dd");
+            PersianDate pdate = new PersianDate(Long.valueOf(timeStamp) * 1000);
+            PersianDateFormat pdformater1 = new PersianDateFormat("Y/m/d");
 
             return pdformater1.format(pdate);//1396/05/20
         } catch (Exception e) {
