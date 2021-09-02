@@ -101,7 +101,6 @@ public class MainPageActivity extends AppCompatActivity {
                         startFragment();
                         break;
                     case R.id.newQuestion:
-                        nav_view.setCheckedItem(R.id.newQuestion);
                         Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
                         Gson gson = new Gson();
                         String a = gson.toJson(user);
