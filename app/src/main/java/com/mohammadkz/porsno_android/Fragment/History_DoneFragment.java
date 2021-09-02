@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
@@ -37,11 +38,13 @@ public class History_DoneFragment extends Fragment {
     ApiConfig request;
     User user;
     RecyclerView list;
-    SwipeRefreshLayout swipeRefresh;
+    List<AnswerHistoryResponse> doneList;
+    TextView txt;
 
-    public History_DoneFragment(User user) {
+    public History_DoneFragment(User user, List<AnswerHistoryResponse> doneList) {
         // Required empty public constructor
         this.user = user;
+        this.doneList = doneList;
     }
 
 
@@ -56,7 +59,10 @@ public class History_DoneFragment extends Fragment {
 
             initViews();
             controllerViews();
-            getData();
+            if (doneList.size() == 0) {
+                txt.setVisibility(View.VISIBLE);
+            } else
+                setAdapter();
 
             return view;
         } catch (Exception e) {
@@ -69,50 +75,15 @@ public class History_DoneFragment extends Fragment {
 
     private void initViews() {
         list = view.findViewById(R.id.list);
-        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        txt = view.findViewById(R.id.txt);
     }
 
     private void controllerViews() {
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-                swipeRefresh.setRefreshing(false);
-            }
-        });
+
     }
 
-    private void getData() {
-
-        Call<List<AnswerHistoryResponse>> get = request.getAnswerHistory(user.getID());
-
-        get.enqueue(new Callback<List<AnswerHistoryResponse>>() {
-            @Override
-            public void onResponse(Call<List<AnswerHistoryResponse>> call, Response<List<AnswerHistoryResponse>> response) {
-                if (response.body().size() > 0) {
-                    setAdapter(response.body());
-                } else {
-                    StaticFun.setLog((user == null) ? "-"
-                                    : (user.getPn().length() > 0 ? user.getPn() : "-"),
-                            "-"
-                            , "history done fragment - get data / response");
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<AnswerHistoryResponse>> call, Throwable t) {
-                StaticFun.setLog((user == null) ? "-"
-                                : (user.getPn().length() > 0 ? user.getPn() : "-"),
-                        t.getMessage().toString()
-                        , "history done fragment - get data / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-            }
-        });
-    }
-
-    private void setAdapter(List<AnswerHistoryResponse> list) {
-        AnswerHistoryAdapter answerHistoryAdapter = new AnswerHistoryAdapter(getContext(), list);
+    private void setAdapter() {
+        AnswerHistoryAdapter answerHistoryAdapter = new AnswerHistoryAdapter(getContext(), doneList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.list.setLayoutManager(linearLayoutManager);

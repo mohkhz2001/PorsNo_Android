@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
@@ -33,10 +34,13 @@ public class History_BuyFragment extends Fragment {
     RecyclerView list;
     ApiConfig request;
     User user;
+    List<HistoryBuyResponse> buyList;
+    TextView txt;
 
-    public History_BuyFragment(User user) {
+    public History_BuyFragment(User user, List<HistoryBuyResponse> buyList) {
         // Required empty public constructor
         this.user = user;
+        this.buyList = buyList;
     }
 
 
@@ -50,7 +54,10 @@ public class History_BuyFragment extends Fragment {
 
             initViews();
             controllerViews();
-            getData();
+            if (buyList.size() == 0) {
+                txt.setVisibility(View.VISIBLE);
+            } else
+                setAdapter();
 
 
             return view;
@@ -64,42 +71,15 @@ public class History_BuyFragment extends Fragment {
 
     private void initViews() {
         list = view.findViewById(R.id.list);
+        txt = view.findViewById(R.id.txt);
     }
 
     private void controllerViews() {
 
     }
 
-    private void getData() {
-
-        SweetDialog.startProgress();
-        Call<List<HistoryBuyResponse>> get = request.getBuyHistory(user.getID());
-
-        get.enqueue(new Callback<List<HistoryBuyResponse>>() {
-            @Override
-            public void onResponse(Call<List<HistoryBuyResponse>> call, Response<List<HistoryBuyResponse>> response) {
-                if (response.body().size() > 0) {
-                    setAdapter(response.body());
-                } else {
-                    StaticFun.setLog((user == null) ? "-"
-                                    : (user.getPn().length() > 0 ? user.getPn() : "-"), "-"
-                            , "history buy fragment - get data / response");
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<HistoryBuyResponse>> call, Throwable t) {
-                StaticFun.setLog((user == null) ? "-"
-                                : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString()
-                        , "history buy fragment - get data / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-            }
-        });
-    }
-
-    private void setAdapter(List<HistoryBuyResponse> historyBuyList) {
-        BuyHistoryAdapter buyHistoryAdapter = new BuyHistoryAdapter(getContext(), historyBuyList);
+    private void setAdapter() {
+        BuyHistoryAdapter buyHistoryAdapter = new BuyHistoryAdapter(getContext(), buyList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         list.setLayoutManager(linearLayoutManager);
