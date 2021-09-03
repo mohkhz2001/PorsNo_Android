@@ -1,11 +1,16 @@
 package com.mohammadkz.porsno_android.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +21,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
@@ -56,6 +63,7 @@ public class MyQuestionFragment extends Fragment {
     TextView emptyList;
     ApiConfig request;
     SwipeRefreshLayout swipeRefresh;
+    boolean showQueue = false;
 
 
     public MyQuestionFragment(User user) {
@@ -83,7 +91,7 @@ public class MyQuestionFragment extends Fragment {
         } catch (Exception e) {
             StaticFun.setLog((user == null) ? "-"
                     : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "my question fragment - create");
-            return view;
+            return null;
         }
 
     }
@@ -156,6 +164,7 @@ public class MyQuestionFragment extends Fragment {
                     Log.e("qId", " " + pos);
                     Intent intent = new Intent(getContext(), QuestionnaireManagerActivity.class);
                     intent.putExtra("qId", questionnaireList.get(pos).getQuestionId());
+                    intent.putExtra("user-name", user.getName());
                     transferData(intent);
                     startActivity(intent);
                 }
@@ -163,6 +172,12 @@ public class MyQuestionFragment extends Fragment {
         } else {
             SweetDialog.stopProgress();
             emptyList.setVisibility(View.VISIBLE);
+        }
+
+        if (!showQueue){
+            Log.e("te" , "");
+            checkQueue();
+            showQueue = true;
         }
     }
 
@@ -177,6 +192,57 @@ public class MyQuestionFragment extends Fragment {
         Gson gson = new Gson();
         String json = gson.toJson(user);
         intent.putExtra("userInfo", json);
+
+    }
+
+    private void checkQueue() {
+        SharedPreferences sh = getContext().getSharedPreferences("question-queue", MODE_PRIVATE);
+        String qId = sh.getString("queue", "");
+
+        if (!qId.equals("")) {
+            bottomSheetQueue(qId);
+        }
+
+    }
+
+    private void bottomSheetQueue(String qId) {
+        Log.e("aaa" , "aaa");
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet_queue, (ConstraintLayout) view.findViewById(R.id.layout));
+
+        // later
+        bottomSheetView.findViewById(R.id.later).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        // affirm to done
+        bottomSheetView.findViewById(R.id.affirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AnswerActivity.class);
+                intent.putExtra("qId", qId);
+                intent.putExtra("queue", "true");
+                intent.putExtra("user-name", user.getName());
+                transferData(intent);
+                startActivity(intent);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialog.dismiss();
+                SweetDialog.stopProgress();
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
 
     }
 }
