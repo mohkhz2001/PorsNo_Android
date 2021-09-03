@@ -157,7 +157,7 @@ public class MyQuestionFragment extends Fragment {
             questionAdapter = new QuestionAdapter(getContext(), questionnaireList);
             myQuestionList.setAdapter(questionAdapter);
             SweetDialog.stopProgress();
-
+            emptyList.setVisibility(View.GONE);
             questionAdapter.setOnItemClickListener(new QuestionAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int pos, View v) {
