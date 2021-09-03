@@ -69,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
             request = AppConfig.getRetrofit().create(ApiConfig.class);
             SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE));
             getToken();
-            topic();
             initViews();
             controllerViews();
 
@@ -430,16 +429,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Log and toast
                         Log.d("test token", token);
-                    }
-                });
-    }
-
-    // create the topic in app
-    private void topic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("offer")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
                     }
                 });
     }
