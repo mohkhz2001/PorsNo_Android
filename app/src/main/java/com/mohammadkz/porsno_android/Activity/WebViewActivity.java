@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -22,7 +23,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     WebView webView;
     String url;
-    String backUrl = "http://185.190.39.159/Porseshno_backend/";
+    String backUrl = "http://www.porsno.ir/Porseshno_backend/";
     boolean loadingFinished = true;
     boolean redirect = false;
 
@@ -70,14 +71,15 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if (url.contains(backUrl)) {
-                    WebViewActivity.super.finish();
+                    Toasty.info(WebViewActivity.this , "شما به صورت خودکار به برنامه باز خواهید گشت." , Toasty.LENGTH_LONG , true).show();
+                    flipTimer();
                 }
                 SweetDialog.stopProgress();
             }
 
             @Override
             public void onLoadResource(WebView view, String url) {
-                Log.e("a" , "Aaa");
+                Log.e("a", "Aaa");
             }
         });
     }
@@ -85,5 +87,19 @@ public class WebViewActivity extends AppCompatActivity {
     private void controllerViews() {
 
 
+    }
+
+    private void flipTimer() {
+        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                finish();
+            }
+        }.start();
     }
 }
