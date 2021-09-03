@@ -329,7 +329,5 @@ public class ReBuyFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (webViewOpen)
-            getPrice();
     }
 }
