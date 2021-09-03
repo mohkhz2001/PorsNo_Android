@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ public class AnswerActivity extends AppCompatActivity {
     Button done;
     User user;
     BottomSheetDialog bottomSheetDialog;
+    boolean onQueue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,14 @@ public class AnswerActivity extends AppCompatActivity {
             SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE));
 
             request = AppConfig.getRetrofit().create(ApiConfig.class);
+
+            if (getIntent().getStringExtra("user-name") != null && getIntent().getStringExtra("user-id") != null) {
+                user = new User();
+                user.setID(getIntent().getStringExtra("user-id"));
+                user.setName(getIntent().getStringExtra("user-name"));
+            } else if (getIntent().getStringExtra("queue") != null) {
+                onQueue = true;
+            }
 
             initViews();
             controllerViews();
@@ -288,6 +298,10 @@ public class AnswerActivity extends AppCompatActivity {
                         }
                     });
 
+                    // remove the question from the share prefrences
+                    if (onQueue)
+                        removeQueue();
+
                 } else if (response.body().getMessage().equals("User is spaming")) {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "کاربر گرامی", "شما فقط یکبار قادر به انجام دادن این پرسشنامه هستید.");
                     SweetDialog.getSweetAlertDialog()
@@ -407,5 +421,17 @@ public class AnswerActivity extends AppCompatActivity {
                 "\n * این پیام صرفا جهت تست توسط برنامه ارسال می شود *\n";
         intent.putExtra(intent.EXTRA_TEXT, body);
         startActivity(Intent.createChooser(intent, "choose app"));
+    }
+
+    private void removeQueue() {
+        SharedPreferences sh = getSharedPreferences("question-queue", MODE_PRIVATE);
+        String a = sh.getString("queue", "");
+
+        if (!a.equals("")) {
+
+            SharedPreferences.Editor editor = sh.edit();
+            editor.clear();
+            editor.commit();
+        }
     }
 }
