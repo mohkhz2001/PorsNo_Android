@@ -232,6 +232,23 @@ public class MyQuestionFragment extends Fragment {
             }
         });
 
+        // never btn
+        bottomSheetView.findViewById(R.id.never).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sh = getContext().getSharedPreferences("question-queue", MODE_PRIVATE);
+                String a = sh.getString("queue", "");
+
+                if (!a.equals("")) {
+
+                    SharedPreferences.Editor editor = sh.edit();
+                    editor.clear();
+                    editor.commit();
+                }
+                bottomSheetDialog.dismiss();
+            }
+        });
+
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
