@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "156039251647",
+    "project_id": "porsno",
+    "storage_bucket": "porsno.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156039251647:android:9dd31b438ec65fcd1ca80a",
+        "android_client_info": {
+          "package_name": "com.mohammadKz.porsno_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156039251647-bo7ivpt0smafhjqu89mt0cnlad2bcndm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5ES5pDII6iTxgJv6M9m79qqSwg75o4Wg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156039251647-bo7ivpt0smafhjqu89mt0cnlad2bcndm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
