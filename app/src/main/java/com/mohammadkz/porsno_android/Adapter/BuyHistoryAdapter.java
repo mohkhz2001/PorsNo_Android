@@ -41,10 +41,25 @@ public class BuyHistoryAdapter extends RecyclerView.Adapter<BuyHistoryAdapter.Vi
     public void onBindViewHolder(@NonNull BuyHistoryAdapter.ViewHolder holder, int position) {
         holder.trackingCode.setText(historyBuyList.get(position).getPorsnoTrackId());
         holder.price.setText(historyBuyList.get(position).getAmount());
-        holder.trackingCode.setText(historyBuyList.get(position).getPorsnoTrackId());
         holder.date.setText(dateConvertor(historyBuyList.get(position).getDate()));
 
-
+        switch (historyBuyList.get(position).getBuyedAccount()) {
+            case "diamond":
+                holder.kind.setText("الماسی");
+                break;
+            case "bronze":
+                holder.kind.setText("برنز");
+                break;
+            case "gold":
+                holder.kind.setText("طلایی");
+                break;
+            case "steel":
+                holder.kind.setText("نقره ای");
+                break;
+            default:
+                holder.kind.setText("--");
+                break;
+        }
     }
 
     private String dateConvertor(String timeStamp) {
