@@ -105,7 +105,7 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                upgradeAccount("diamond");
-                generatePayUrl(priceResponse.get(3).getCost());
+                generatePayUrl(priceResponse.get(3).getCost() , "diamond");
             }
         });
 
@@ -113,7 +113,7 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                upgradeAccount("bronze");
-                generatePayUrl(priceResponse.get(0).getCost());
+                generatePayUrl(priceResponse.get(0).getCost() , "bronze");
             }
         });
 
@@ -121,7 +121,7 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                upgradeAccount("gold");
-                generatePayUrl(priceResponse.get(2).getCost());
+                generatePayUrl(priceResponse.get(2).getCost() , "gold");
             }
         });
 
@@ -129,7 +129,7 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                upgradeAccount("steel");
-                generatePayUrl(priceResponse.get(1).getCost());
+                generatePayUrl(priceResponse.get(1).getCost() , "steel");
             }
         });
     }
@@ -281,11 +281,11 @@ public class ReBuyFragment extends Fragment {
 
     }
 
-    private void generatePayUrl(String price) {
+    private void generatePayUrl(String price , String accountName) {
         SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
 
-        Call<UrlResponse> get = request.getUrl(price + "0", user.getName(), user.getPn(), user.getID());
+        Call<UrlResponse> get = request.getUrl(price + "0", user.getName(), user.getPn(), user.getID() , accountName);
 
         get.enqueue(new Callback<UrlResponse>() {
             @Override

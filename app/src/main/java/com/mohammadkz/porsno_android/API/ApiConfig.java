@@ -118,6 +118,7 @@ public interface ApiConfig {
             , @Field("name") String name
             , @Field("phone") String phone
             , @Field("userId") String userId
+            , @Field("buyedAccount") String accountName
     );
 
     @FormUrlEncoded
