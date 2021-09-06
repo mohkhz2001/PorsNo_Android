@@ -91,4 +91,7 @@ dependencies {
 
     // fragment
     implementation "androidx.fragment:fragment:1.4.0-alpha07"
+
+    //switch btn
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
 }
