@@ -221,6 +221,23 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             return false;
         });
 
+        code4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                complete.setEnabled(true);
+            }
+        });
+
         reSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -406,6 +423,15 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                 minute.setText(String.valueOf(00));
                 second.setText(String.valueOf(00));
                 reSend.setEnabled(true);
+
+                SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.NORMAL_TYPE), "اتمام وقت", "در صورت عدم دریافت کد تایید ارسال مجدد را انتخاب نمایید.");
+                SweetDialog.getSweetAlertDialog().show();
+                SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                });
             }
         }.start();
 

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:fontFamily="@font/mitra"
-        android:text="پرسش نو"
+        android:text="پرس نو"
         android:textColor="#000"
         android:textSize="40dp"
         android:textStyle="bold"
@@ -159,13 +159,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:enabled="false"
                     android:fontFamily="@font/mitra"
                     android:gravity="center"
                     android:text="ارسال مجدد"
-                    android:enabled="false"
+                    android:textColor="@drawable/re_send_enable"
                     android:textSize="17dp"
                     android:textStyle="bold"
-                    android:textColor="@drawable/re_send_enable"
                     app:itemTextColor="@drawable/re_send_enable" />
 
                 <LinearLayout
@@ -220,6 +220,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_confirm_btn"
         android:elevation="5dp"
+        android:enabled="false"
         android:fontFamily="@font/mitra"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
