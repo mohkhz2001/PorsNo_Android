@@ -125,9 +125,9 @@ public class MainPageActivity extends AppCompatActivity {
                         HistoryFragment historyFragment = new HistoryFragment(user);
                         fragmentTransaction.replace(R.id.frameLayout, historyFragment).commit();
                         break;
-                    case R.id.contact:
+                    case R.id.about_us:
                         setTopAppBar("راه ارتباطی");
-                        nav_view.setCheckedItem(R.id.contact);
+                        nav_view.setCheckedItem(R.id.about_us);
                         ContactUsFragment contactUsFragment = new ContactUsFragment();
                         fragmentTransaction.replace(R.id.frameLayout, contactUsFragment).commit();
                         break;
