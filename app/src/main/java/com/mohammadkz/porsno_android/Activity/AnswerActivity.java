@@ -122,18 +122,6 @@ public class AnswerActivity extends AppCompatActivity {
             }
         });
 
-        // make the done btn end of the list
-        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (linearLayoutManager.findFirstVisibleItemPosition() != 0) {
-                    done.setVisibility(View.VISIBLE);
-                } else {
-                    done.setVisibility(View.GONE);
-                }
-            }
-        });
-
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -272,6 +260,7 @@ public class AnswerActivity extends AppCompatActivity {
         list.setLayoutManager(linearLayoutManager);
 
         list.setAdapter(adapter);
+        done.setVisibility(View.VISIBLE);
 
         SweetDialog.stopProgress();
     }
