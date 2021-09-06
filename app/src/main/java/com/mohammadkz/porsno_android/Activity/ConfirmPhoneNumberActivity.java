@@ -70,7 +70,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
 
             initViews();
             controllerViews();
-            flipTimer();
             getDate();
         } catch (Exception e) {
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
@@ -243,7 +242,6 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SweetDialog.setSweetDialog(new SweetAlertDialog(ConfirmPhoneNumberActivity.this, SweetAlertDialog.PROGRESS_TYPE));
                 SweetDialog.startProgress();
-                flipTimer();
                 requestCode();
             }
         });
@@ -304,6 +302,7 @@ public class ConfirmPhoneNumberActivity extends AppCompatActivity {
                 if (response.body().getStatus_code().equals("200")) {
                     codeToConfirm = response.body().getCode();
                     SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "پیامک حاوی کد تایید با موفقیت ارسال شد.", "");
+                    flipTimer();
                 } else {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی نماس حاصل فرمایید.");
                 }
