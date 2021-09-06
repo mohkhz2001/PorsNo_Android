@@ -1,12 +1,14 @@
 package com.mohammadkz.porsno_android.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -110,7 +112,20 @@ public class AnswerActivity extends AppCompatActivity {
 
     private void controllerViews() {
         topAppBar.setNavigationOnClickListener(v -> {
-            finish();
+            SweetDialog.getSweetAlertDialog().show();
+            SweetDialog.changeSweet(SweetAlertDialog.WARNING_TYPE, "آیا از خروج خود اطمینان دارید؟", "جواب های شما ذخیره نخواهند شد.");
+            SweetDialog.getSweetAlertDialog().setConfirmButton("خروج", new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    finish();
+                }
+            });
+            SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    SweetDialog.stopProgress();
+                }
+            });
         });
 
         done.setOnClickListener(new View.OnClickListener() {

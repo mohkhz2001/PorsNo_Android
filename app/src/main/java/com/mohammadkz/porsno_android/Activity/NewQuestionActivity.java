@@ -5,10 +5,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.mohammadkz.porsno_android.Fragment.NewQuestion.NewQuestion_InfoFragment;
+import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -16,6 +18,7 @@ import com.warkiz.widget.IndicatorSeekBar;
 
 import org.json.JSONObject;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 public class NewQuestionActivity extends AppCompatActivity {
@@ -32,13 +35,15 @@ public class NewQuestionActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_new_question);
 
+            SweetDialog.setSweetDialog(new SweetAlertDialog(NewQuestionActivity.this, SweetAlertDialog.PROGRESS_TYPE));
+
             Id = getIntent().getStringExtra("id");
 
             initViews();
             controllerViews();
             getDate();
             startFragment();
-        }catch (Exception e){
+        } catch (Exception e) {
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
             StaticFun.setLog((user == null) ? "-"
                     : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "new question Activity - create");
@@ -57,7 +62,27 @@ public class NewQuestionActivity extends AppCompatActivity {
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                SweetDialog.getSweetAlertDialog().show();
+                SweetDialog.changeSweet(SweetAlertDialog.WARNING_TYPE, "آیا از خروج خود اطمینان دارید؟", "اطلاعات وارد شده شما ذخیره نخواهند شد.");
+                SweetDialog.getSweetAlertDialog().setConfirmButton("خروج", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                    }
+                });
+                SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        SweetDialog.stopProgress();
+                    }
+                });
+            }
+        });
+
+        seekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
         });
     }
@@ -108,4 +133,24 @@ public class NewQuestionActivity extends AppCompatActivity {
             }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        SweetDialog.startProgress();
+        SweetDialog.changeSweet(SweetAlertDialog.WARNING_TYPE, "خروج", "در صورت خروج جواب های شما ذخیره نمی شوند.\nآیا از خروج خود اطمینان دارین؟");
+        SweetDialog.getSweetAlertDialog()
+                .setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                })
+                .setConfirmButton("خروج", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                    }
+                });
+
+    }
 }
