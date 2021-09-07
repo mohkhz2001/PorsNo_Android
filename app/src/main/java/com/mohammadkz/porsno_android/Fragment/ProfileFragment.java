@@ -144,6 +144,13 @@ public class ProfileFragment extends Fragment {
                 bottomSheetChooser();
             }
         });
+
+        phoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toasty.warning(getContext() , "شما قادر به تغییر شماره خود نیستید." , Toasty.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showDatePicker() {
