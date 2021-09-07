@@ -35,16 +35,17 @@
                     app:navigationIconTint="#000"
                     app:title="پرسش نو"
                     app:titleCentered="true"
+                    app:titleTextAppearance="@style/appBar"
                     app:titleTextColor="#000" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
             <FrameLayout
-                android:visibility="visible"
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/toolbar" />
+                android:layout_below="@id/toolbar"
+                android:visibility="visible" />
 
 
         </RelativeLayout>
