@@ -37,6 +37,7 @@ import com.mohammadkz.porsno_android.Model.Response.NewQuestionaire;
 import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
+import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,7 +234,8 @@ public class NewQuestion_ConfirmFragment extends Fragment {
 
         TextInputEditText question_, answer;
         TextInputLayout answer_layout;
-        AnimatedCheckBox testQuestion, new_question;
+        SwitchButton testQuestion;
+        AnimatedCheckBox new_question;
         Button confirm;
         LinearLayout layout;
         RecyclerView editList;
@@ -270,9 +272,9 @@ public class NewQuestion_ConfirmFragment extends Fragment {
             answer.setVisibility(View.VISIBLE);
         }
 
-        testQuestion.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener() {
+        testQuestion.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
 
                     layout.setVisibility(View.GONE);
