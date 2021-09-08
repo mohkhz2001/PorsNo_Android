@@ -17,14 +17,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.mohammadkz.porsno_android.Fragment.ContactUsFragment;
+import com.mohammadkz.porsno_android.Fragment.AboutUsFragment;
 import com.mohammadkz.porsno_android.Fragment.HistoryFragment;
 import com.mohammadkz.porsno_android.Fragment.MainFragment;
-import com.mohammadkz.porsno_android.Fragment.MyQuestionFragment;
 import com.mohammadkz.porsno_android.Fragment.ProfileFragment;
 import com.mohammadkz.porsno_android.Fragment.ReBuyFragment;
 import com.mohammadkz.porsno_android.Model.User;
@@ -128,7 +125,7 @@ public class MainPageActivity extends AppCompatActivity {
                     case R.id.about_us:
                         setTopAppBar("راه ارتباطی");
                         nav_view.setCheckedItem(R.id.about_us);
-                        ContactUsFragment contactUsFragment = new ContactUsFragment();
+                        AboutUsFragment contactUsFragment = new AboutUsFragment();
                         fragmentTransaction.replace(R.id.frameLayout, contactUsFragment).commit();
                         break;
                     case R.id.exit:
