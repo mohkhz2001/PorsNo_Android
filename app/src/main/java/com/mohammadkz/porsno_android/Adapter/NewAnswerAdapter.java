@@ -21,6 +21,8 @@ import com.mohammadkz.porsno_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class NewAnswerAdapter extends RecyclerView.Adapter<NewAnswerAdapter.viewHolder> {
 
     Context context;
@@ -67,7 +69,26 @@ public class NewAnswerAdapter extends RecyclerView.Adapter<NewAnswerAdapter.view
         return answers;
     }
 
-    public void clearList(){
+    public int newAnswer() {
+        if (answers.size() <= 4) {
+            answers.add(new Answer(""));
+            notifyItemInserted(answers.size());
+        }
+        return answers.size();
+    }
+
+    public int removeAnswer(int i) {
+        if (answers.size() != 2) {
+            answers.remove(i);
+            notifyItemRemoved(i);
+            return answers.size();
+        } else {
+            Toasty.error(context, "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
+            return answers.size();
+        }
+    }
+
+    public void clearList() {
         answers = new ArrayList<>();
     }
 

@@ -34,6 +34,7 @@ import com.mohammadkz.porsno_android.Model.Question;
 import com.mohammadkz.porsno_android.Model.Questionnaire;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
+import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +46,12 @@ public class NewQuestion_NewFragment extends Fragment {
 
     View view;
     Questionnaire questionnaire;
-    AnimatedCheckBox testQuestion, new_question;
+    SwitchButton testQuestion;
+    AnimatedCheckBox new_question;
     TextInputEditText question, answer;
     ImageView confirm, next, prev;
     TextInputLayout answer_layout;
-    TextView questionCounter_txt;
+    TextView questionCounter_txt, new_question_txt;
     RelativeLayout new_root;
     RecyclerView list;
     NewAnswerAdapter newAnswerAdapter;
@@ -105,6 +107,7 @@ public class NewQuestion_NewFragment extends Fragment {
         list = view.findViewById(R.id.list);
         new_root = view.findViewById(R.id.new_root);
         answer = view.findViewById(R.id.answer);
+        new_question_txt = view.findViewById(R.id.new_question_txt);
     }
 
     private void controllerViews() {
@@ -112,8 +115,21 @@ public class NewQuestion_NewFragment extends Fragment {
         new_question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newAnswer();
-                setAdapter();
+                int answers = newAnswerAdapter.newAnswer();
+                if (answers == 4) {
+                    new_root.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        new_question_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int answers = newAnswerAdapter.newAnswer();
+
+                if (answers == 4) {
+                    new_root.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -208,9 +224,9 @@ public class NewQuestion_NewFragment extends Fragment {
             }
         });
 
-        testQuestion.setOnCheckedChangeListener(new AnimatedCheckBox.OnCheckedChangeListener() {
+        testQuestion.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(AnimatedCheckBox checkBox, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
                     answers = null;
                     answer_layout.setVisibility(View.VISIBLE);
@@ -248,14 +264,9 @@ public class NewQuestion_NewFragment extends Fragment {
         newAnswerAdapter.setOnClickListener(new NewAnswerAdapter.OnClickListener() {
             @Override
             public void onClickListener(int pos) {
-                answers = newAnswerAdapter.getAnswer();
-                if (answers.size() > 2) {
-                    answers.remove(pos);
-                    setAdapter();
-                    if (new_root.getVisibility() == View.GONE)
-                        new_root.setVisibility(View.VISIBLE);
-                } else {
-                    Toasty.error(getContext(), "نمی توانید کمتر از دو گزینه داشته باشید", Toasty.LENGTH_LONG, true).show();
+                int size = newAnswerAdapter.removeAnswer(pos);
+                if (size < 4 && new_root.getVisibility() == View.GONE) {
+                    new_root.setVisibility(View.VISIBLE);
                 }
 
             }
