@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -100,6 +101,15 @@ public class MainFragment extends Fragment {
                     visibility = !visibility;
                     getParentFragmentManager().setFragmentResult("visibility_data", bundle);
                 }
+            }
+        });
+
+        getParentFragmentManager().setFragmentResultListener("visibility_t", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                Log.e("test data _", result.getString("visibility").toString());
+                boolean visibility_ = result.getString("visibility") == "false";
+                visibility = false;
             }
         });
     }
