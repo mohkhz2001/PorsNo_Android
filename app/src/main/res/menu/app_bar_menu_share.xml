@@ -8,4 +8,9 @@
         android:icon="@drawable/ic_share"
         android:title="share" />
 
+    <item
+        android:id="@+id/report"
+        android:title="گزارش تخلف"
+        />
+
 </menu>

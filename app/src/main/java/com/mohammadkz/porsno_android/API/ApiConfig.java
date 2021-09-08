@@ -157,4 +157,11 @@ public interface ApiConfig {
             , @Field("log") String log
             , @Field("Location") String location
     );
+
+    @FormUrlEncoded
+    @POST("Add_report.php")
+    Call<NormalResponse> addReport(@Field("qId") String qId
+            , @Field("uId") String uId
+            , @Field("description") String description
+    );
 }

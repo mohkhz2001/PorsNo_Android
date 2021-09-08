@@ -144,6 +144,9 @@ public class AnswerActivity extends AppCompatActivity {
                     case R.id.share:
                         shareIntent();
                         return true;
+                    case R.id.report:
+                        bottomSheetReport();
+                        return true;
 
                     default:
                         return false;
@@ -394,13 +397,14 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     private void bottomSheetAdvice() {
-        bottomSheetDialog = new BottomSheetDialog(AnswerActivity.this, R.style.BottomSheetDialogTheme);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AnswerActivity.this, R.style.BottomSheetDialogTheme);
         View bottomSheetView = LayoutInflater.from(AnswerActivity.this).inflate(R.layout.layout_bottom_sheet_advice, (LinearLayout) findViewById(R.id.layout));
 
         bottomSheetView.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextInputEditText advice = bottomSheetView.findViewById(R.id.advice);
+                bottomSheetDialog.dismiss();
                 save(advice.getText().toString());
 
             }
@@ -425,6 +429,90 @@ public class AnswerActivity extends AppCompatActivity {
                 "\n * این پیام صرفا جهت تست توسط برنامه ارسال می شود *\n";
         intent.putExtra(intent.EXTRA_TEXT, body);
         startActivity(Intent.createChooser(intent, "choose app"));
+    }
+
+    private void reportApi(String txt) {
+        SweetDialog.startProgress();
+
+        Call<NormalResponse> get = request.addReport(questionnaire.getId(), user.getID(), txt);
+        get.enqueue(new Callback<NormalResponse>() {
+            @Override
+            public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+                if (response.body().getStatus_code().equals("200")) {
+                    SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "گزارش شما با موفقیت ثبت شد", "با تشکر از شما");
+                    SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
+                            AnswerActivity.super.finish();
+                        }
+                    });
+                } else if (response.body().getStatus_code().equals("401")) {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "کاربر گرامی", "شما فقط یک بار قادر به گزارش یک پرسشنامه هستید.");
+                    SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
+                            AnswerActivity.super.finish();
+                        }
+                    });
+                } else {
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            reportApi(txt);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NormalResponse> call, Throwable t) {
+                Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
+                StaticFun.setLog((user == null) ? "-"
+                        : (user.getPn().length() > 0 ? user.getPn() : "-"), t.getMessage().toString(), "answer Activity - report / failure");
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void bottomSheetReport() {
+        bottomSheetDialog = new BottomSheetDialog(AnswerActivity.this, R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(AnswerActivity.this).inflate(R.layout.layout_bottom_sheet_advice, (LinearLayout) findViewById(R.id.layout));
+
+        bottomSheetView.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextInputEditText advice = bottomSheetView.findViewById(R.id.advice);
+                if (advice.getText().length() > 0) {
+                    bottomSheetDialog.dismiss();
+                    reportApi(advice.getText().toString());
+                } else {
+                    Toasty.error(AnswerActivity.this, "کاربر گرامی حتما باید توضیحاتی را در خصوص علت گزارش ارائه دهید.", Toasty.LENGTH_LONG, true).show();
+                    advice.setError("کاربر گرامی حتما باشد توضیحاتی را در خصوص علت گزارش ارائه دهید.");
+                }
+
+
+            }
+        });
+
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 
     private void removeQueue() {
