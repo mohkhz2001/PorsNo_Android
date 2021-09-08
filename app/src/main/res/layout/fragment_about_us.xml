@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ContactUsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/icon" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:fontFamily="@font/mitra"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:padding="10dp"
+                android:text="پرس نو یک برنامه ی ایرانی است که توسط یک تیم جوان طراحی و اجرا شد که از مهر سال ۱۴۰۰ فعالیت خود را آغاز کرده است.\n کاربران در این برنامه میتوانند پرسشنامه های خود را به نمایش گذاشته و با ارسال لینک پرسش نامه از دوستان و... دعوت به انجام آن کنند.\n این برنامه در جهت کاهش هزینه های محققان ، اساتید و دانشجویانی که قصد تحقیق و ارائه ی پرسش نامه را دارند ساخته شده است. همچنین علاوه بر کاهش هزینه ها ، سبب کمتر مصرف شدن کاغذ و صرف وقت توسط محقق است. محققان با استفاده از این برنامه دیگر نیازی به ورود تک تک اطلاعات به اکسل ندارند چرا که این کار توسط سیستم انجام خواهد شد."
+                android:textColor="#0E0E0E"
+                android:textSize="18dp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/vazir"
+                android:gravity="center"
+                android:text="ارتباط با ما"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:fontFamily="@font/mitra"
+                    android:gravity="center"
+                    android:text="Email:"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/vazir"
+                    android:text="eng.khajehzadeh@gmail.com"
+                    android:textColor="#0017FF"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:fontFamily="@font/mitra"
+                    android:gravity="center"
+                    android:text="Github:"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/github"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/vazir"
+                    android:text="https://github.com/mohkhz2001"
+                    android:textColor="#0017FF"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
