@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.mohammadkz.porsno_android.R;
 
 
-public class ContactUsFragment extends Fragment {
+public class AboutUsFragment extends Fragment {
 
     View view;
     TextView email, github;
 
-    public ContactUsFragment() {
+    public AboutUsFragment() {
         // Required empty public constructor
     }
 
@@ -27,7 +27,7 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_contact_us, container, false);
+        view = inflater.inflate(R.layout.fragment_about_us, container, false);
 
         initViews();
         controllerViews();
