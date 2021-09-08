@@ -2,19 +2,27 @@ package com.mohammadkz.porsno_android.Activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
@@ -37,6 +45,7 @@ public class SignUp extends AppCompatActivity {
     Button sendSMS;
     SweetAlertDialog sweetAlertDialog;
     ApiConfig request;
+    TextView privacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,7 @@ public class SignUp extends AppCompatActivity {
         name = findViewById(R.id.name);
         phoneNumber = findViewById(R.id.phoneNumber);
         sendSMS = findViewById(R.id.send);
+        privacy = findViewById(R.id.privacy);
     }
 
     private void controllerViews() {
@@ -84,6 +94,13 @@ public class SignUp extends AppCompatActivity {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "لطفا ارتباط خود با اینترنت را بررسی نمایید.");
                 }
 
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetPrivacy();
             }
         });
     }
@@ -131,5 +148,28 @@ public class SignUp extends AppCompatActivity {
             return true;
         } else
             return false;
+    }
+
+    private void bottomSheetPrivacy() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(SignUp.this, R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(SignUp.this).inflate(R.layout.layout_bottom_sheet_privacy, (ConstraintLayout) findViewById(R.id.layout));
+
+        bottomSheetView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 }

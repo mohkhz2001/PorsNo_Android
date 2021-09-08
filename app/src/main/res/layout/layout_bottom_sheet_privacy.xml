@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:overScrollMode="never"
+        android:paddingTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/txts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="حریم خصوصی کاربران"
+                android:textColor="#747474"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="رعایت حریم شخصی کاربران برای پرس نو بسیار حائز اهمیت است. در این بخش نحوۀ ذخیره‌سازی و استفادۀ پرس نو از اطلاعاتی که در نتیجه استفادۀ کاربران از خدمات ما در برنامهٔ پرس نو ثبت می‌شود شرح داده شده است."
+                android:textColor="#151515"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text=" اطلاعاتی که جمع آوری می شود"
+                android:textColor="#000"
+                android:textSize="18dp"
+                tools:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="•	 اطلاعاتی که شما در پرس نو ثبت می‌کنید:"
+                android:textColor="#000"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="اطلاعاتی که در پرس نو ثبت می‌کنید اطلاعاتی است که شما به صورت مستقیم در فرآیندهای ثبت‌نام، تماس با پشتیبانی پرس نو، خرید فرم‌هایی که نیاز به پرداخت وجه دارند و ثبت نظرات بر روی فرم ها در سامانه ثبت می‌کنید. این اطلاعات شامل نام‌کاربری، شماره تلفن همراه، آدرس ایمیل و اطلاعاتی از این دست می‌باشد."
+                android:textColor="#151515"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="•	 اطلاعاتی که در نتیجهٔ استفاده شما از سرویس ذخیره می‌شود:"
+                android:textColor="#000"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="تراکنش‌های مالی: در زمان افزایش اعتبار حساب‌کاربری و یا خریدی که هنگام دریافت پکیج‌ها انجام می‌دهید، شمارۀ تراکنش و پیگیری بانکی در پرس نو ثبت می‌شود. لازم به ذکر است، با توجه به اینکه تمامی تراکنش‌های مالی از طریق سامانه‌های بانکی صورت می‌گیرد، پرس نو در فرآیند خرید پکیج‌ها و یا افزایش اعتبار از طریق کارت‌های بانکی هیچ‌گونه دسترسی به اطلاعات کارت بانکی شما ندارد."
+                android:textColor="#000"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text=" امنیت و افشای اطلاعات"
+                android:textColor="#747474"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="اولویت‌ اصلی پرس نو محافظت از اطلاعات حساب کاربران و جلوگیری از دسترسی‌های غیرمجاز به این اطلاعات است.\n بر همین اساس:"
+                android:textColor="#151515"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="رمز عبور و اطلاعات کاربری شما در سرورهای ما کد گذاری شده و کسی به جز شما توانایی خواندن آن ها را ندارد."
+                android:textColor="#151515"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="اگر کاربری هنگام استفاده از پرس نو تخلفی انجام دهد و از سوی مراجع قضایی برای پیگیری فعالیت‌های وی درخواستی ارسال شود، پرس نو موظف به ارائه این اطلاعات به مراجع قضایی می‌باشد."
+                android:textColor="#151515"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text=" استفاده از اطلاعات"
+                android:textColor="#747474"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="اطلاعاتی که در پرس نو ذخیره می‌شود در موارد زیر مورد استفاده قرار می‌گیرد و استفادۀ کاربر از سرویس پرس نو به منزلۀ قبول و اعطای اختیار به پرس نو جهت استفاده و بهره‌برداری از اطلاعات فوق الاشاره به شرح زیر می‌باشد:
+"
+                android:textColor="#151515"
+                android:textSize="18dp"
+                tools:visibility="visible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/mitra"
+                android:gravity="right"
+                android:justificationMode="inter_word"
+                android:lineSpacingExtra="14dp"
+                android:text="استفاده از شماره همراه در جهت اطلاع رسانی و یا پیگیری درخواست ها و تیکت های شما.\n پیگیری سریع‌تر و کمتر شدن مشکلات در استفاده از پرس نو
+ارائه ویژگی‌های جدید و مورد نیاز کاربران"
+                android:textColor="#151515"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:padding="8dp"
+        android:text="بستن"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        tools:layout_editor_absoluteX="30dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
