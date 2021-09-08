@@ -65,7 +65,6 @@ public class AllQuestionFragment extends Fragment {
     TextView emptyList;
     User user;
     SwipeRefreshLayout swipeRefresh;
-    EditText searchEdt;
     List<GetQuestionResponse> allList;
     List<GetQuestionResponse> toDisplay = new ArrayList<>();
     BottomSheetDialog bottomSheetDialog;
@@ -109,11 +108,6 @@ public class AllQuestionFragment extends Fragment {
         list = view.findViewById(R.id.list);
         emptyList = view.findViewById(R.id.emptyList);
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
-        searchEdt = view.findViewById(R.id.searchEdt);
-        YoYo.with(Techniques.SlideInDown)
-                .duration(300)
-                .repeat(0)
-                .playOn(view.findViewById(R.id.list));
     }
 
     private void controllerViews() {
@@ -136,24 +130,6 @@ public class AllQuestionFragment extends Fragment {
                 } else {
                     bottomSheetDialog.dismiss();
                 }
-            }
-        });
-
-        searchEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() > 0)
-                    searchName(editable.toString());
             }
         });
 
