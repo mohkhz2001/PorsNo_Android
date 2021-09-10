@@ -98,7 +98,6 @@ public class AnswerActivity extends AppCompatActivity {
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
             StaticFun.setLog((user == null) ? "-"
                     : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - create");
-            onCreate(savedInstanceState);
         }
 
     }
