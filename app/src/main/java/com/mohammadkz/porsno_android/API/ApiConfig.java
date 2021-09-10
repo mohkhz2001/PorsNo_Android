@@ -164,4 +164,17 @@ public interface ApiConfig {
             , @Field("uId") String uId
             , @Field("description") String description
     );
+
+    // this use just for Bazar IAB =>  after done the request should save the data to DB
+    @FormUrlEncoded
+    @POST("Order_send.php")
+    Call<NormalResponse> newOrder(@Field("OrderId") String orderId
+            , @Field("userId") String uId
+            , @Field("amount") String amount
+            , @Field("name") String name
+            , @Field("phone") String phone
+            , @Field("buyedAccount") String buyedAccount
+            , @Field("status") String status
+            , @Field("paymentTrackId") String token
+    );
 }
