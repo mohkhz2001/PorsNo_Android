@@ -65,7 +65,6 @@ public class SignUp extends AppCompatActivity {
             StaticFun.setLog(phoneNumber.getText() != null ? (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-") : "-"
                     , e.getMessage().toString()
                     , "signup Activity - create");
-            onCreate(savedInstanceState);
         }
 
     }

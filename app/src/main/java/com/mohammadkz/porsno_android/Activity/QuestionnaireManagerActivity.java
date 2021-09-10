@@ -76,7 +76,6 @@ public class QuestionnaireManagerActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
             StaticFun.setLog("-", e.getMessage().toString(), "question manager Activity - create");
-            onCreate(savedInstanceState);
         }
 
     }

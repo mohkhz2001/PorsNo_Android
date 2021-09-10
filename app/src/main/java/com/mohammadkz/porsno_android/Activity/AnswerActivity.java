@@ -98,7 +98,6 @@ public class AnswerActivity extends AppCompatActivity {
             Toasty.error(getApplicationContext(), "متاسفانه در دریافت اطلاعات با مشکل مواجه شدیم", Toasty.LENGTH_LONG, true).show();
             StaticFun.setLog((user == null) ? "-"
                     : (user.getPn().length() > 0 ? user.getPn() : "-"), e.getMessage().toString(), "Answer Activity - create");
-            onCreate(savedInstanceState);
         }
 
     }
@@ -117,7 +116,7 @@ public class AnswerActivity extends AppCompatActivity {
             SweetDialog.getSweetAlertDialog().setConfirmButton("خروج", new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    finish();
+                    AnswerActivity.super.finish();
                 }
             });
             SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
@@ -284,7 +283,6 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     private void save(String comment) {
-        SweetDialog.setSweetDialog(new SweetAlertDialog(AnswerActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ارسال اطلاعات", "لطفا منتظر باشید...");
         SweetDialog.startProgress();
         List<QuestionAnswer> list = adapter.answers();
         Gson gson = new Gson();
@@ -300,7 +298,6 @@ public class AnswerActivity extends AppCompatActivity {
                     SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            Toasty.success(getApplicationContext(), "", Toasty.LENGTH_LONG, true).show();
                             AnswerActivity.super.finish();
                         }
                     });
