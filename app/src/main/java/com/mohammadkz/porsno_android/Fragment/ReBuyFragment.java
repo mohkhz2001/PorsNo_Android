@@ -29,7 +29,6 @@ import com.mohammadkz.porsno_android.Model.Response.LoginResponse;
 import com.mohammadkz.porsno_android.Model.Response.NormalResponse;
 import com.mohammadkz.porsno_android.Model.Response.UpgradeResponse;
 import com.mohammadkz.porsno_android.Model.Response.UrlResponse;
-import com.mohammadkz.porsno_android.Model.SweetDialog;
 import com.mohammadkz.porsno_android.Model.User;
 import com.mohammadkz.porsno_android.R;
 import com.mohammadkz.porsno_android.StaticFun;
@@ -67,6 +66,7 @@ public class ReBuyFragment extends Fragment {
     boolean webViewOpen = false;
     List<PriceResponse> priceResponse;
     boolean bazarIAB = false;
+    SweetAlertDialog sweetAlertDialog;
 
     // The helper object
     IabHelper mHelper;
@@ -110,8 +110,8 @@ public class ReBuyFragment extends Fragment {
 
             request = AppConfig.getRetrofit().create(ApiConfig.class);
 
-            SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-            SweetDialog.getSweetAlertDialog().setCancelable(false);
+            sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+            sweetAlertDialog.setTitleText("در حال دریافت اطلاعات").setContentText("لطفا منتظر باشید...").setCancelable(false);
 
             initViews();
             controllerViews();
@@ -189,7 +189,7 @@ public class ReBuyFragment extends Fragment {
         steelPrice_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bazarIAB) {
+                if (false) {
                     ((MainPageActivity) getActivity()).buy("1002");
                 } else {
                     generatePayUrl(priceResponse.get(1).getCost(), "steel");
@@ -205,16 +205,25 @@ public class ReBuyFragment extends Fragment {
                 // 101=> bronze & 102=>
                 Log.d("result", result.getString("result-Purchase").toString());
 
-                SweetDialog.startProgress();
-                SweetDialog.setSweetDialog(new SweetAlertDialog(getContext()));
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                sweetAlertDialog.show();
 
                 String result_Purchase = result.getString("result-Purchase");
                 String package_code = result.getString("package-code");
                 String tracking_code = result.getString("tracking-code");
+                String level = upgradeInit(package_code);
 
                 if (result_Purchase.equals("fail")) {
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "کد رهگیری:" + tracking_code, "شما از خرید انصراف داده اید.");
-                    SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("کد رهگیری:" + tracking_code);
+                    sweetAlertDialog.setContentText("شما از خرید انصراف داده اید.");
+
+                    setOrder(level, result_Purchase, "-", tracking_code);
+
+                    sweetAlertDialog.setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
@@ -225,11 +234,25 @@ public class ReBuyFragment extends Fragment {
                 } else if (result_Purchase.equals("not-confirmed")) {
                     String order_id = result.getString("order-id");
                     String token = result.getString("order-token");
-                    error("کد رهگیری:" + tracking_code, "متاسفانه خرید شما با مشکل روبرو شد.\n در صورت کسر مبلغ تا ۷۲ ساعت بعد مبلغ به حساب شما باز خواهد گشت.");
+
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("کد رهگیری:" + tracking_code);
+                    sweetAlertDialog.setContentText("متاسفانه خرید شما با مشکل روبرو شد.\n در صورت کسر مبلغ تا ۷۲ ساعت بعد مبلغ به حساب شما باز خواهد گشت.");
+
+                    setOrder(level, result_Purchase, token, tracking_code);
+
+                    sweetAlertDialog.setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
                 } else if (result_Purchase.equals("done")) {
                     String order_id = result.getString("order-id");
                     String token = result.getString("order-token");
-                    upgradeInit(result_Purchase, package_code, token, tracking_code);
+                    upgradeAccount(level, result_Purchase, token, tracking_code);
+
                 }
 
 
@@ -238,7 +261,7 @@ public class ReBuyFragment extends Fragment {
     }
 
     private void getPrice() {
-        SweetDialog.startProgress();
+        sweetAlertDialog.show();
 
         Call<List<PriceResponse>> get = request.getPrice();
 
@@ -253,11 +276,15 @@ public class ReBuyFragment extends Fragment {
                     StaticFun.setLog((user == null) ? "-"
                                     : (user.getPn().length() > 0 ? user.getPn() : "-"), "-"
                             , "re buy fragment - get price / response");
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                    SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                    sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    sweetAlertDialog.setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                            sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                            sweetAlertDialog.setContentText("لطفا منتظر باشید...");
                             getPrice();
                         }
                     });
@@ -271,11 +298,15 @@ public class ReBuyFragment extends Fragment {
                                 : (user.getPn().length() > 0 ? user.getPn() : "-"),
                         t.getMessage().toString()
                         , "re buy fragment - get price / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                        sweetAlertDialog.setContentText("لطفا منتظر باشید...");
                         getPrice();
                     }
                 });
@@ -295,7 +326,7 @@ public class ReBuyFragment extends Fragment {
 
         parseDate();
         root.setVisibility(View.VISIBLE);
-        SweetDialog.stopProgress();
+        sweetAlertDialog.dismiss();
     }
 
     private void setAccountLevel() {
@@ -341,10 +372,12 @@ public class ReBuyFragment extends Fragment {
     // Id pay
 
     private void generatePayUrl(String price, String accountName) {
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-        SweetDialog.startProgress();
+        sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("در حال دریافت اطلاعات").setContentText("لطفا منتظر باشید...").setCancelable(false);
+        sweetAlertDialog.show();
 
-        Call<UrlResponse> get = request.getUrl(price + "0", user.getName(), user.getPn(), user.getID(), accountName);
+
+        Call<UrlResponse> get = request.getUrl("100" + "0", user.getName(), user.getPn(), user.getID(), accountName);
 
         get.enqueue(new Callback<UrlResponse>() {
             @Override
@@ -358,8 +391,10 @@ public class ReBuyFragment extends Fragment {
                                 : (user.getPn().length() > 0 ? user.getPn() : "-"),
                         t.getMessage().toString()
                         , "re buy fragment - generate Pay Url / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
@@ -370,42 +405,51 @@ public class ReBuyFragment extends Fragment {
     }
 
     private void WebViewStart(UrlResponse urlResponse) {
-        if (urlResponse.getLink() != null && urlResponse != null && urlResponse.getLink() != null) {
 
+        Log.d("webview", urlResponse.toString());
+
+        if (urlResponse.getLink() != null && urlResponse != null && urlResponse.getLink() != null) {
+            Log.d("webview", urlResponse.getLink().toString());
             webViewOpen = true;
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
             intent.putExtra("url", urlResponse.getLink());
-            SweetDialog.stopProgress();
+            sweetAlertDialog.dismiss();
             startActivity(intent);
         } else {
+            Log.d("webview", "no url");
             StaticFun.setLog((user == null) ? "-"
                             : (user.getPn().length() > 0 ? user.getPn() : "-"),
                     "there is problem in get or handle link"
                     , "re buy fragment - WebViewStart");
-            SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.");
+            sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+            sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+            sweetAlertDialog.setContentText("متاسفانه امکان ارتقا حساب کاربری در حال حاظر امکان پذیر نیست.");
         }
 
     }
 
     @Override
     public void onPause() {
+        Log.d("activity", "pause");
         super.onPause();
-        SweetDialog.stopProgress();
+        sweetAlertDialog.dismiss();
     }
 
     @Override
     public void onResume() {
         if (webViewOpen) {
-            SweetDialog.setSweetDialog(new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE), "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-            SweetDialog.startProgress();
             updateUser();
-            SweetDialog.stopProgress();
         }
         super.onResume();
     }
 
     // get data from the server to update the user info
     private void updateUser() {
+        sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText("در حال دریافت اطلاعات").setContentText("لطفا منتظر باشید...").setCancelable(false);
+        sweetAlertDialog.show();
+
+        Log.d("update", "update started");
 
         String pwd = "";
         SharedPreferences sh = getContext().getSharedPreferences("userLogin_info", MODE_PRIVATE);
@@ -420,7 +464,7 @@ public class ReBuyFragment extends Fragment {
         }
 
 
-        if (pwd.equals("")) {
+        if (!pwd.equals("")) {
             Call<LoginResponse> get = request.loginResponse(user.getPn(), pwd);
 
             get.enqueue(new Callback<LoginResponse>() {
@@ -442,6 +486,40 @@ public class ReBuyFragment extends Fragment {
                         updateUserData();
                         parseDate();
                         setAccountLevel();
+                        sweetAlertDialog.dismiss();
+                    } else {
+                        StaticFun.setLog((user == null) ? "-"
+                                        : (user.getPn().length() > 0 ? user.getPn() : "-"),
+                                response.body().getMessage() != null ? response.body().getMessage() : "-"
+                                , "re buy fragment - upgrade account / response");
+
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                        sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                        sweetAlertDialog.setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                                sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                                getPrice();
+                            }
+                        });
+
+                        sweetAlertDialog.setCancelButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                                sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                                sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                                updateUser();
+                            }
+                        }).setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        });
                     }
                 }
 
@@ -452,11 +530,13 @@ public class ReBuyFragment extends Fragment {
                             t.getMessage().toString()
                             , "re buy fragment - updateUser / failure");
 
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                    SweetDialog.getSweetAlertDialog().setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                    sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                            sweetAlertDialog.dismiss();
                         }
                     });
                 }
@@ -466,39 +546,25 @@ public class ReBuyFragment extends Fragment {
 
     //     IAB
 
-    private void error(String title, String text) {
-
-        SweetDialog.setSweetDialog(new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE), title, text);
-        SweetDialog.getSweetAlertDialog().setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-            }
-        });
-
-    }
-
-    private void upgradeInit(@Nullable String result, String package_code, @Nullable String token, @Nullable String tracking_code) {
+    private String upgradeInit(String package_code) {
         switch (package_code) {
             case "1001":
-                upgradeAccount("bronze", result, token, tracking_code);
-                break;
+                return "bronze";
             case "1002":
-                upgradeAccount("steel", result, token, tracking_code);
-                break;
+                return "steel";
             case "1003":
-                upgradeAccount("gold", result, token, tracking_code);
-                break;
+                return "gold";
             case "1004":
-                upgradeAccount("diamond", result, token, tracking_code);
-                break;
-
+                return "diamond";
+            default:
+                return "-";
         }
     }
 
     private void upgradeAccount(@NonNull String level, @Nullable String result, @Nullable String token, @Nullable String tracking_code) {
-
-        SweetDialog.startProgress();
+        Log.d("upgrade", "upgrade started");
+        sweetAlertDialog.setTitleText("در حال دریافت اطلاعات").setContentText("لطفا منتظر باشید...").setCancelable(false);
+        sweetAlertDialog.show();
 
         Call<UpgradeResponse> get = request.upgradeAccount(level, user.getID());
 
@@ -507,17 +573,34 @@ public class ReBuyFragment extends Fragment {
             public void onResponse(Call<UpgradeResponse> call, Response<UpgradeResponse> response) {
                 // should check the response
                 if (response.body().getStatus_code().equals("200")) {
-                    setOrder(level, result, token, tracking_code, response.body().getEnd());
+
+                    user.setEndTime(response.body().getEnd());
+
+                    setOrder(level, result, token, tracking_code);
                 } else {
                     StaticFun.setLog((user == null) ? "-"
                                     : (user.getPn().length() > 0 ? user.getPn() : "-"),
                             response.body().getMessage() != null ? response.body().getMessage() : "-"
                             , "re buy fragment - upgrade account / response");
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                    SweetDialog.getSweetAlertDialog().setCancelButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                    sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    sweetAlertDialog.setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                            sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                            sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                            getPrice();
+                        }
+                    });
+                    sweetAlertDialog.setCancelButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                            sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                            sweetAlertDialog.setContentText("لطفا منتظر باشید...");
                             upgradeAccount(level, result, token, tracking_code);
                         }
                     }).setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
@@ -537,11 +620,15 @@ public class ReBuyFragment extends Fragment {
                                 : (user.getPn().length() > 0 ? user.getPn() : "-"),
                         t.getMessage().toString()
                         , "re buy fragment - upgrade account / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                SweetDialog.getSweetAlertDialog().setCancelButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                sweetAlertDialog.setCancelButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                        sweetAlertDialog.setContentText("لطفا منتظر باشید...");
                         upgradeAccount(level, result, token, tracking_code);
                     }
                 }).setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
@@ -555,7 +642,9 @@ public class ReBuyFragment extends Fragment {
     }
 
     // just use when user choose to pay with Bazar IAB
-    private void setOrder(@NonNull String level, @Nullable String result, @Nullable String token, @Nullable String tracking_code, String end) {
+    private void setOrder(@NonNull String level, @Nullable String result, @Nullable String token, @Nullable String tracking_code) {
+
+        Log.d("set order", "order started");
 
         Call<NormalResponse> get = request.newOrder(tracking_code, user.getID(), "2000", user.getName(), user.getPn(), level, result, token);
 
@@ -563,18 +652,22 @@ public class ReBuyFragment extends Fragment {
             @Override
             public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
-                    refresh(end, level);
+                    refresh(level);
                 } else {
                     StaticFun.setLog((user == null) ? "-"
                                     : (user.getPn().length() > 0 ? user.getPn() : "-"),
                             response.body().getMessage() != null ? response.body().getMessage() : "-"
                             , "re buy fragment - set order / response");
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در ارسال اطلاعات", "کاربر گرامی ارتباط با سرور برای ثبت درخواست شما برقرار نشد.");
-                    SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                    sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                    sweetAlertDialog.setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-                            setOrder(level, result, token, tracking_code, end);
+                            sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                            sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                            sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                            setOrder(level, result, token, tracking_code);
                         }
                     });
 
@@ -587,12 +680,16 @@ public class ReBuyFragment extends Fragment {
                                 : (user.getPn().length() > 0 ? user.getPn() : "-"),
                         t.getMessage().toString()
                         , "re buy fragment - set order / failure");
-                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در دریافت اطلاعات", "کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
-                SweetDialog.getSweetAlertDialog().setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
+                sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                sweetAlertDialog.setTitle("مشکل در دریافت اطلاعات");
+                sweetAlertDialog.setContentText("کاربر گرامی ارتباط با سرور برای دریافت اطلاعات برقرار نشد.\nلطفا دقایقی دیگر تلاش نمایید.");
+                sweetAlertDialog.setConfirmButton("تلاش مجدد", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        SweetDialog.changeSweet(SweetAlertDialog.PROGRESS_TYPE, "در حال دریافت اطلاعات", "لطفا منتظر باشید...");
-                        setOrder(level, result, token, tracking_code, end);
+                        sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+                        sweetAlertDialog.setTitle("در حال دریافت اطلاعات");
+                        sweetAlertDialog.setContentText("لطفا منتظر باشید...");
+                        setOrder(level, result, token, tracking_code);
                     }
                 }).setCancelButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -604,9 +701,7 @@ public class ReBuyFragment extends Fragment {
         });
     }
 
-    public void refresh(String end, String level) {
-
-        user.setEndTime(end);
+    public void refresh(String level) {
 
         if (level.equals("bronze")) {
             user.setAccountLevel(StaticFun.account.Bronze);
@@ -622,15 +717,17 @@ public class ReBuyFragment extends Fragment {
             user.setAccountLevel(StaticFun.account.Diamond);
         }
 
-        SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "ارتقا یافت", "حساب شما ارتقا یافت.");
-        SweetDialog.getSweetAlertDialog().setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
+        sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        sweetAlertDialog.setTitle("ارتقا یافت");
+        sweetAlertDialog.setContentText("حساب شما ارتقا یافت.");
+        sweetAlertDialog.setConfirmButton("بستن", new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 sweetAlertDialog.dismiss();
             }
         });
 
-
+        parseDate();
         updateUserData();
     }
 
