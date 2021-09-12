@@ -18,9 +18,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -334,6 +336,26 @@ public class AllQuestionFragment extends Fragment {
                 date_end.setText("");
             }
         });
+
+        bottomSheetView.findViewById(R.id.searchEdt).setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            EditText searchEdt = bottomSheetView.findViewById(R.id.searchEdt);
+                            searchName(searchEdt.getText().toString());
+                            bottomSheetDialog.dismiss();
+                            makeFilterInvisible();
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+
 
         bottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override

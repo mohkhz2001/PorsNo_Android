@@ -65,7 +65,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/search_card"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/search"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -90,9 +90,17 @@
                     android:fontFamily="@font/mitra"
                     android:gravity="center"
                     android:hint="جست و جو"
-                    android:padding="10dp"
+                    android:imeOptions="actionSearch"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="12dp"
+                    android:singleLine="true"
                     android:textDirection="inherit"
-                    android:textSize="18dp" />
+                    android:textSize="19dp" />
 
 
             </androidx.cardview.widget.CardView>
@@ -206,7 +214,7 @@
                             android:fontFamily="@font/vazir"
                             android:gravity="center"
                             android:inputType="text"
-                            android:maxLines="2"
+                            android:maxLines="1"
                             android:singleLine="true"
                             android:textAlignment="center"
                             android:textSize="16dp" />
@@ -254,7 +262,7 @@
                             android:fontFamily="@font/vazir"
                             android:gravity="center"
                             android:inputType="text"
-                            android:maxLines="2"
+                            android:maxLines="1"
                             android:singleLine="true"
                             android:textAlignment="center"
                             android:textSize="16dp" />
