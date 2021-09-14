@@ -2,268 +2,164 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity.ConfirmPhoneNumberActivity">
+    android:layout_height="300dp"
+    android:background="@drawable/ic_confirm_1">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:fontFamily="@font/mitra"
-        android:text="پرس نو"
-        android:textColor="#000"
-        android:textSize="40dp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/ic_down_bottom_sheet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/code_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:enabled="true"
+        android:hint="صورت سوال"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#080e2c"
+        app:boxStrokeWidth="3dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="#080e2c"
+        app:hintEnabled="true"
+        app:hintTextColor="#080e2c"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline2">
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/close">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:orientation="vertical">
+            android:inputType="number"
+            android:maxLength="4"
+            android:maxLines="1"
+            android:minLines="1"
+            android:textSize="18dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/reSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:enabled="false"
                 android:fontFamily="@font/mitra"
-                android:text="کد تایید"
-                android:textColor="#000"
-                android:textSize="40dp"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:text="ارسال مجدد"
+                android:textColor="@drawable/re_send_enable"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:itemTextColor="@drawable/re_send_enable" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
-                android:paddingTop="5dp"
-                android:paddingBottom="10dp"
-                android:weightSum="4">
-
-                <androidx.cardview.widget.CardView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="1dp">
-
-                    <EditText
-                        android:id="@+id/code1"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/vazir"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="1"
-                        android:textSize="25dp" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="1dp">
-
-                    <EditText
-                        android:id="@+id/code2"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/vazir"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="1"
-                        android:textSize="25dp" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="1dp">
-
-                    <EditText
-                        android:id="@+id/code3"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/vazir"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="1"
-                        android:textSize="25dp" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="1dp">
-
-                    <EditText
-                        android:id="@+id/code4"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:background="@drawable/bg_enter_field"
-                        android:fontFamily="@font/vazir"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="1"
-                        android:textSize="25dp" />
-
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/reSend"
+                    android:id="@+id/minute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:enabled="false"
-                    android:fontFamily="@font/mitra"
-                    android:gravity="center"
-                    android:text="ارسال مجدد"
-                    android:textColor="@drawable/re_send_enable"
-                    android:textSize="17dp"
-                    android:textStyle="bold"
-                    app:itemTextColor="@drawable/re_send_enable" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="right"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="1dp"
+                    android:fontFamily="@font/mitra"
+                    android:paddingTop="1dp"
+                    android:text="00"
+                    android:textSize="16dp" />
 
-                    <TextView
-                        android:id="@+id/minute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="1dp"
-                        android:fontFamily="@font/mitra"
-                        android:paddingTop="1dp"
-                        android:text="00"
-                        android:textSize="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text=":"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text=":"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="1dp"
+                    android:fontFamily="@font/mitra"
+                    android:paddingTop="1dp"
+                    android:text="00"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/second"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="1dp"
-                        android:fontFamily="@font/mitra"
-                        android:paddingTop="1dp"
-                        android:text="00"
-                        android:textSize="16dp" />
-                </LinearLayout>
+        </RelativeLayout>
 
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/complete"
+        android:id="@+id/done"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/bg_confirm_btn"
-        android:elevation="5dp"
-        android:enabled="false"
+        android:backgroundTint="#00e2a4"
         android:fontFamily="@font/mitra"
-        android:paddingTop="7dp"
-        android:paddingBottom="7dp"
-        android:text="تایید"
-        android:textColor="#2e2e2e"
-        android:textSize="29dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+        android:text="ثبت اطلاعات"
+        android:textSize="28dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/code_layout" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".26" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".20" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".74" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".53" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".87" />
+        app:layout_constraintGuide_percent=".92" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".13" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".86" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
