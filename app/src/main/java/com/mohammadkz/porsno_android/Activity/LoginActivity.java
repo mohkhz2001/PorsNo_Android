@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,12 +53,12 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     EditText pwd, phoneNumber;
-    TextView signUp, forgotPWD;
-    Button login, signUpBtn;
+    TextView forgotPWD;
+    Button login;
     ApiConfig request;
     User user;
-    ConstraintLayout root;
     BottomSheetDialog bottomSheetDialog;
+    ImageView back, info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +73,6 @@ public class LoginActivity extends AppCompatActivity {
             initViews();
             controllerViews();
 
-            if (autoLogin()) {
-                getData_SharedPreferences();
-            } else {
-//            SweetDialog.stopProgress();
-                root.setVisibility(View.VISIBLE);
-            }
         } catch (Exception e) {
             StaticFun.setLog((user == null) ? (phoneNumber != null && phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")
                     : (user.getPn().length() > 0 ? user.getPn() : (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")), e.getMessage().toString(), "login - create");
@@ -90,16 +85,13 @@ public class LoginActivity extends AppCompatActivity {
     private void initViews() {
         pwd = findViewById(R.id.password);
         phoneNumber = findViewById(R.id.phoneNumber);
-        signUp = findViewById(R.id.signUp);
-        forgotPWD = findViewById(R.id.forgotPWD);
+        forgotPWD = findViewById(R.id.forgetPwd);
         login = findViewById(R.id.login);
-        root = findViewById(R.id.root);
-        signUpBtn = findViewById(R.id.signUpBtn);
+        info = findViewById(R.id.info);
+        back = findViewById(R.id.back);
     }
 
     private void controllerViews() {
-//        phoneNumber.setText("09388209270");
-//        pwd.setText("m9873110");
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 SweetDialog.startProgress();
                 if (StaticFun.isNetworkAvailable(getApplicationContext())) {
                     if (checkValue()) {
-                        login(false);
+                        login();
                     } else {
                         SweetDialog.startProgress();
                         SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "تمامی موارد خواسته شده را وارد نمایید!");
@@ -117,14 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                     SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "", "لطفا ارتباط خود با اینترنت را بررسی نمایید.");
                 }
 
-            }
-        });
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUp.class);
-                startActivity(intent);
             }
         });
 
@@ -139,16 +123,23 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel(DialogInterface dialog) {
                 dialog.dismiss();
-                root.setVisibility(View.VISIBLE);
 
             }
         });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SignUp.class);
+                Intent intent = new Intent(LoginActivity.this, StartActivity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
@@ -160,18 +151,9 @@ public class LoginActivity extends AppCompatActivity {
             return false;
     }
 
-    private void login(boolean shared) {
+    private void login() {
 
-        String pass;
-
-        if (shared) {
-            SweetDialog.setSweetDialog(new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE), "در حال ورود", "لطفا منتظر باشید...");
-            SweetDialog.getSweetAlertDialog().setCancelable(false);
-            SweetDialog.startProgress();
-            pass = pwd.getText().toString();
-        } else {
-            pass = StaticFun.md5(pwd.getText().toString());
-        }
+        String pass = StaticFun.md5(pwd.getText().toString());
 
         Call<LoginResponse> get = request.loginResponse(phoneNumber.getText().toString(), pass);
 
@@ -180,71 +162,28 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.body().getStatus_code().equals("200")) {
 
-                    if (!shared) {
-                        setData_SharedPreferences(pass);
-                    }
-
+                    setData_SharedPreferences(pass);
                     setUser(response.body());
                     Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                     transferData(intent);
                     SweetDialog.changeSweet(SweetAlertDialog.SUCCESS_TYPE, "خوش آمدید", "ورود با موفقیت انجام شد");
                     start(intent);
                 } else {
-                    if (!shared) {
-                        SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در ورود", "نام کاربری یا رمز عبور اشتباه است");
-                    } else {
-                        SweetDialog.stopProgress();
-                        root.setVisibility(View.VISIBLE);
-                    }
-
+                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در ورود", "نام کاربری یا رمز عبور اشتباه است");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 t.getMessage();
-                if (shared) {
-                    SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی تماس حاصل فرمایید.");
-                    root.setVisibility(View.VISIBLE);
-                } else {
-                    SweetDialog.stopProgress();
-                    root.setVisibility(View.VISIBLE);
-                }
 
-                StaticFun.setLog(phoneNumber.getText().toString(), t.getMessage().toString(), "Login - api");
+                SweetDialog.changeSweet(SweetAlertDialog.ERROR_TYPE, "مشکل در برقراری ارتباط", "ارتباط با سرور برقرار نشد\nدقایقی دیگر امتحان کنید و یا با واحد پشتیبانی تماس حاصل فرمایید.");
+
+                StaticFun.setLog(phoneNumber.getText().toString(), t.getMessage().toString(), "Login - api - on fail");
 
             }
         });
 
-    }
-
-    private boolean autoLogin() {
-        SharedPreferences sh = getSharedPreferences("userLogin_info", MODE_PRIVATE);
-        String a = sh.getString("userLogin_info", "");
-
-        if (a.length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    private void getData_SharedPreferences() {
-        SharedPreferences sh = getSharedPreferences("userLogin_info", MODE_PRIVATE);
-        String a = sh.getString("userLogin_info", "");
-        if (!a.equals("")) {
-            try {
-                JSONObject jsonObject = new JSONObject(a);
-                phoneNumber.setText(jsonObject.getString("pn"));
-                pwd.setText(jsonObject.getString("pwd"));
-                login(true);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                StaticFun.setLog((user == null) ? (phoneNumber != null && phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")
-                        : (user.getPn().length() > 0 ? user.getPn() : (phoneNumber.getText().length() > 0 ? phoneNumber.getText().toString() : "-")), e.getMessage().toString(), "login");
-            }
-        }
     }
 
     private void setData_SharedPreferences(String pass) {
@@ -303,11 +242,13 @@ public class LoginActivity extends AppCompatActivity {
     public void bottomSheetChooser() {
 
         bottomSheetDialog = new BottomSheetDialog(LoginActivity.this, R.style.BottomSheetDialogTheme);
+        bottomSheetDialog.setCancelable(false);
         View bottomSheetView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.layout_forget_pwd, (LinearLayout) findViewById(R.id.layout));
         TextInputLayout pn_layout, new_pn_layout, new_rePn_layout;
         TextInputEditText pn, new_pn, new_rePn;
         EditText code;
         Button get, confirm, confirmCode;
+        ImageView close = bottomSheetView.findViewById(R.id.close);
 
         // init views
         pn_layout = bottomSheetView.findViewById(R.id.pn_layout);
@@ -376,36 +317,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (new_pn.getText().toString().equals(new_rePn.getText().toString())) {
-
-                    String pwd = StaticFun.md5(new_pn.getText().toString());
-
-                    Call<NormalResponse> updatePwdCall = request.updatePwd(pn.getText().toString(), pwd);
-
-                    updatePwdCall.enqueue(new Callback<NormalResponse>() {
-                        @Override
-                        public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
-                            if (response.body().getStatus_code().equals("200")) {
-                                Toasty.success(LoginActivity.this, "رمز عبور شما به درستی تغییر کرد.", Toasty.LENGTH_SHORT, true).show();
-                                bottomSheetDialog.dismiss();
-                            } else {
-                                System.out.println();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<NormalResponse> call, Throwable t) {
-                            System.out.println();
-                        }
-                    });
-
-
-                } else {
-                    Toasty.error(LoginActivity.this, "رمز های وارد شده یکسان نمی باشد.", Toasty.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
             }
         });
 
