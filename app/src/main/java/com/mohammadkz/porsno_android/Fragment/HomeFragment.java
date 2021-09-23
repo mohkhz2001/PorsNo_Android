@@ -31,6 +31,8 @@ import com.google.gson.Gson;
 import com.mohammadkz.porsno_android.API.ApiConfig;
 import com.mohammadkz.porsno_android.API.AppConfig;
 import com.mohammadkz.porsno_android.Activity.AnswerActivity;
+import com.mohammadkz.porsno_android.Activity.EditQuestionActivity;
+import com.mohammadkz.porsno_android.Activity.MainPageActivity;
 import com.mohammadkz.porsno_android.Activity.NewQuestionActivity;
 import com.mohammadkz.porsno_android.Activity.QuestionnaireManagerActivity;
 import com.mohammadkz.porsno_android.Adapter.QuestionAdapter;
@@ -63,14 +65,15 @@ public class MyQuestionFragment extends Fragment {
     TextView emptyList;
     ApiConfig request;
     SwipeRefreshLayout swipeRefresh;
+    BottomSheetDialog bottomSheetDialogMore;
     boolean showQueue = false;
+    GetQuestionResponse questionResponse;
 
 
     public MyQuestionFragment(User user) {
         // Required empty public constructor
         this.user = user;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +89,7 @@ public class MyQuestionFragment extends Fragment {
             initViews();
             controllerView();
             getData();
+            bottomSheetMore();
 
             return view;
         } catch (Exception e) {
@@ -154,7 +158,7 @@ public class MyQuestionFragment extends Fragment {
 
         if (questionnaireList.size() > 0) {
 
-            questionAdapter = new QuestionAdapter(getContext(), questionnaireList);
+            questionAdapter = new QuestionAdapter(getContext(), questionnaireList, true);
             myQuestionList.setAdapter(questionAdapter);
             SweetDialog.stopProgress();
             emptyList.setVisibility(View.GONE);
@@ -169,13 +173,21 @@ public class MyQuestionFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+
+            questionAdapter.setOnMoreItemClickListener(new QuestionAdapter.OnMoreItemClickListener() {
+                @Override
+                public void onMoreItemClick(int pos) {
+                    questionResponse = questionnaireList.get(pos);
+                    bottomSheetDialogMore.show();
+                }
+            });
         } else {
             SweetDialog.stopProgress();
             emptyList.setVisibility(View.VISIBLE);
         }
 
-        if (!showQueue){
-            Log.e("te" , "");
+        if (!showQueue) {
+            Log.e("te", "");
             checkQueue();
             showQueue = true;
         }
@@ -206,7 +218,7 @@ public class MyQuestionFragment extends Fragment {
     }
 
     private void bottomSheetQueue(String qId) {
-        Log.e("aaa" , "aaa");
+        Log.e("aaa", "aaa");
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet_queue, (ConstraintLayout) view.findViewById(R.id.layout));
 
@@ -261,5 +273,67 @@ public class MyQuestionFragment extends Fragment {
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
+    }
+
+    private void bottomSheetMore() {
+        bottomSheetDialogMore = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet_more, (ConstraintLayout) view.findViewById(R.id.layout));
+
+        bottomSheetView.findViewById(R.id.info).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bottomSheetView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditQuestionActivity.class);
+                intent.putExtra("qId", questionResponse.getQuestionId());
+                intent.putExtra("user-name", user.getName());
+                transferData(intent);
+                startActivity(intent);
+            }
+        });
+
+        bottomSheetView.findViewById(R.id.checkQuestion).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bottomSheetView.findViewById(R.id.share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareIntent();
+            }
+        });
+
+        bottomSheetView.findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bottomSheetDialogMore.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bottomSheetDialogMore.dismiss();
+            }
+        });
+
+        bottomSheetDialogMore.setContentView(bottomSheetView);
+    }
+
+    private void shareIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String body = user.getName() + "\nشما را به انجام پرسشنامه ی زیر دعوت کرده است.\n" + "http://www.porsno.ir/questions/question.php?id=" + questionResponse.getQuestionId() +
+                "\n * این پیام صرفا جهت تست توسط برنامه ارسال می شود *\n";
+        intent.putExtra(intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(intent, "choose app"));
     }
 }

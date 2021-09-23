@@ -18,4 +18,9 @@
         android:fontWeight="400"
         tools:ignore="ResourceCycle" />
 
+    <font
+        android:font="@font/iran_yekan"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+
 </font-family>
